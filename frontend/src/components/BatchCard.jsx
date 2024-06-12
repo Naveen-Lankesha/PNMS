@@ -58,7 +58,7 @@ const EditableCard = ({
   return (
     <Card
       sx={{
-        minWidth: "700px",
+        minWidth: "1000px",
         maxHeight: "340px",
         border: "solid",
         borderColor: "#144F21",
