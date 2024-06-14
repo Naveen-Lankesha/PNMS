@@ -1,16 +1,28 @@
 import React, { useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import ShoeItem from "../ShoeItem/ShoeItem";
-import { Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const InventoryDisplay = ({ category }) => {
-  const { shoe_list } = useContext(StoreContext);
+  const { shoe_list, getTotalCartAmount } = useContext(StoreContext);
 
   return (
     <div id="display" style={{ margin: 0, padding: 0 }}>
-      {/* <Typography variant="h5" sx={{ textAlign: "center", mb: 2 }}>
-        Shoe Display
-      </Typography> */}
+      <Typography
+        variant="h5"
+        sx={{ textAlign: "center", mb: 2, fontWeight: 600 }}>
+        Inventory Display
+      </Typography>
+      <Stack display={"flex"} flexDirection={"row-reverse"}>
+        <Box>
+          <Link to="/inventory-summary">
+            <Button>Show Inventory summary</Button>
+          </Link>
+        </Box>
+      </Stack>
+      <hr style={{ border: "2px solid green" }} /> {/* Added solid line */}
+      <br />
       <div>
         <Grid
           container
