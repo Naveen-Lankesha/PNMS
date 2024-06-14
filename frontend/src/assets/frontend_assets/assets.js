@@ -15,12 +15,33 @@ import menu_4 from "./Reebok_logo.png";
 // import menu_7 from "./menu_7.png";
 // import menu_8 from "./menu_8.png";
 
-//other
+//Inventory
 import item1 from "./pesticides.png";
 import item2 from "./fertilizers.png";
 import item3 from "./nursarybags.png";
-import item4 from "./burntRiceHusk.png";
+import item4 from "./rice_husk.png";
 import item5 from "./compost.png";
+import item6 from "./ready_to_sell.png"
+import item7 from "./seed.png"
+
+//Vegetable
+import veg1 from "./green_cabbage.png"
+import veg2 from "./purple_cabbage.png"
+import veg3 from "./chilli.png"
+import veg4 from "./waraniya.png"
+import veg5 from "./capsicum.png"
+import veg6 from "./karawila.png"
+import veg7 from "./tomato.png"
+import veg8 from "./carrot.png"
+import veg9 from "./beet.png"
+import veg10 from "./Brinjal.png"
+import veg11 from "./thith_batu.png"
+import veg12 from "./chinese_cabbage.png"
+import veg13 from "./Salad_Leaves.png"
+import veg14 from "./nokol.png"
+import veg15 from "./gourd.png"
+import veg16 from "./Snake_Gaurd.png"
+
 
 import add_icon_white from "./add_icon_white.png";
 import add_icon_green from "./add_icon_green.png";
@@ -85,177 +106,300 @@ export const menu_list = [
 export const shoe_list = [
   {
     _id: "1",
-    name: "Adidas",
+    name: "Pesticides",
     image: item1,
     price: 80.0,
-    description: "Campus 00s Youth trainers",
-    category: "Adidas",
+    description: "In stock",
+    category: "Material",
   },
   {
     _id: "2",
-    name: "Adidas",
+    name: "Fertilizers",
     image: item2,
     price: 40,
-    description: "Adidas Gazelle",
-    category: "Adidas",
+    description: "In stock",
+    category: "Material",
   },
   {
     _id: "3",
-    name: "Adidas",
+    name: "Nursery Bags",
     image: item3,
     price: 50,
-    description: "Samba OG",
-    category: "Adidas",
+    description: "In stock",
+    category: "Material",
   },
   {
     _id: "4",
-    name: "Adidas",
+    name: "Burnt rice husk",
     image: item4,
     price: 65,
-    description: "Vl Court 3.0",
-    category: "Adidas",
+    description: "In stock",
+    category: "Material",
   },
   {
     _id: "5",
-    name: "Nike",
+    name: "Compost",
     image: item5,
     price: 75,
-    description: "Air Force 1",
-    category: "Nike",
+    description: "In stock",
+    category: "Material",
   },
-  // {
-  //   _id: "6",
-  //   name: "Nike",
-  //   image: shoe_6,
-  //   price: 80,
-  //   description: "Al8 trainers in white & grey",
-  //   category: "Nike",
-  // },
-  // {
-  //   _id: "7",
-  //   name: "Nike",
-  //   image: shoe_7,
-  //   price: 38,
-  //   description: "Court Borough Low Girls Junior trainers",
-  //   category: "Nike",
-  // },
-  // {
-  //   _id: "8",
-  //   name: "Nike",
-  //   image: shoe_8,
-  //   price: 35,
-  //   description: "Navy multi court borough low recraft Boys Toddler",
-  //   category: "Nike",
-  // },
-  // {
-  //   _id: "9",
-  //   name: "Puma",
-  //   image: shoe_9,
-  //   price: 50,
-  //   description: "Caven 2.0",
-  //   category: "Puma",
-  // },
-  // {
-  //   _id: "10",
-  //   name: "Puma",
-  //   image: shoe_10,
-  //   price: 75,
-  //   description: "Plermo trainers in green",
-  //   category: "Puma",
-  // },
-  // {
-  //   _id: "11",
-  //   name: "Puma",
-  //   image: shoe_11,
-  //   price: 75,
-  //   description: "Terrace Classic trainers in white & green",
-  //   category: "Puma",
-  // },
-  // {
-  //   _id: "12",
-  //   name: "Puma",
-  //   image: shoe_12,
-  //   price: 52,
-  //   description: "White & green Morphic Junior trainers",
-  //   category: "Puma",
-  // },
-  // {
-  //   _id: "13",
-  //   name: "Reebok",
-  //   image: shoe_13,
-  //   price: 75,
-  //   description: "Club C 85 trainers in white",
-  //   category: "Reebok",
-  // },
-  // {
-  //   _id: "14",
-  //   name: "Reebok",
-  //   image: shoe_14,
-  //   price: 100,
-  //   description: "Club C bulc trainers in white & black",
-  //   category: "Reebok",
-  // },
-  // {
-  //   _id: "15",
-  //   name: "Reebok",
-  //   image: shoe_15,
-  //   price: 100,
-  //   description: "Club C double trainers in white & burgundy",
-  //   category: "Reebok",
-  // },
-  // {
-  //   _id: "75",
-  //   name: "Reebok",
-  //   image: shoe_16,
-  //   price: 24,
-  //   description: "Club C Revenge trainers in white & green",
-  //   category: "Reebok",
-  // },
-  // {
-  //   _id: "17",
-  //   name: "Cup Cake",
-  //   image: food_17,
-  //   price: 14,
-  //   description:
-  //     "Food provides essential nutrients for overall health and well-being",
-  //   category: "Cake",
-  // },
-  // {
-  //   _id: "18",
-  //   name: "Vegan Cake",
-  //   image: food_18,
-  //   price: 12,
-  //   description:
-  //     "Food provides essential nutrients for overall health and well-being",
-  //   category: "Cake",
-  // },
-  // {
-  //   _id: "19",
-  //   name: "Butterscotch Cake",
-  //   image: food_19,
-  //   price: 20,
-  //   description:
-  //     "Food provides essential nutrients for overall health and well-being",
-  //   category: "Cake",
-  // },
-  // {
-  //   _id: "20",
-  //   name: "Sliced Cake",
-  //   image: food_20,
-  //   price: 15,
-  //   description:
-  //     "Food provides essential nutrients for overall health and well-being",
-  //   category: "Cake",
-  // },
-  // {
-  //   _id: "21",
-  //   name: "Garlic Mushroom ",
-  //   image: food_21,
-  //   price: 14,
-  //   description:
-  //     "Food provides essential nutrients for overall health and well-being",
-  //   category: "Pure Veg",
-  // },
+  {
+    _id: "6",
+    name: "Green cabbage",
+    image: veg1,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "7",
+    name: "Purple cabbage",
+    image: veg2,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "8",
+    name: "Green Chilli",
+    image: veg3,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "9",
+    name: "Waraniya",
+    image: veg4,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "10",
+    name: "Capsicum",
+    image: veg5,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "11",
+    name: "Karawila",
+    image: veg6,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "12",
+    name: "Tomato",
+    image: veg7,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "13",
+    name: "Carrot",
+    image: veg8,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "14",
+    name: "Beetroot",
+    image: veg9,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "15",
+    name: "Egg plant",
+    image: veg10,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "16",
+    name: "Thibbatu",
+    image: veg11,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "17",
+    name: "Chinese Cabbage",
+    image: veg12,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "18",
+    name: "Salad Leaves",
+    image: veg13,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "19",
+    name: "Nokol",
+    image: veg14,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "20",
+    name: "Watakolu",
+    image: veg15,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "21",
+    name: "Pathola",
+    image: veg16,
+    price: 80,
+    description: "Seeds in stock",
+    category: "Seeds",
+  },
+  {
+    _id: "22",
+    name: "Green cabbage",
+    image: veg1,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "23",
+    name: "Purple cabbage",
+    image: veg2,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "24",
+    name: "Green Chilli",
+    image: veg3,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "25",
+    name: "Waraniya",
+    image: veg4,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "26",
+    name: "Capsicum",
+    image: veg5,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "27",
+    name: "Karawila",
+    image: veg6,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "28",
+    name: "Tomato",
+    image: veg7,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "29",
+    name: "Carrot",
+    image: veg8,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "30",
+    name: "Beetroot",
+    image: veg9,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "31",
+    name: "Egg plant",
+    image: veg10,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "32",
+    name: "Thibbatu",
+    image: veg11,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "33",
+    name: "Chinese Cabbage",
+    image: veg12,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "34",
+    name: "Salad Leaves",
+    image: veg13,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "35",
+    name: "Nokol",
+    image: veg14,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "36",
+    name: "Watakolu",
+    image: veg15,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "37",
+    name: "Pathola",
+    image: veg16,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
   // {
   //   _id: "22",
   //   name: "Fried Cauliflower",
