@@ -15,9 +15,9 @@ const ShoeItem = ({ id, name, price, description, image }) => {
     useContext(StoreContext);
 
   return (
-    <Paper>
+    <Paper sx={{ minWidth: 200 }}>
       <Box>
-        <img src={image} alt=" " style={{ width: "100%", height: "auto" }} />
+        <img src={image} alt=" " style={{ width: "100%", minheight: "200" }} />
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           {!cartItems[id] ? (
             <AddCircleOutlineOutlinedIcon onClick={() => addToCart(id)} />

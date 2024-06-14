@@ -22,30 +22,6 @@ import item3 from "./nursarybags.png";
 import item4 from "./burntRiceHusk.png";
 import item5 from "./compost.png";
 
-//adidas
-import shoe_1 from "./shoe_1_adidas_campus 00s Youth trainers_70.jpg";
-import shoe_2 from "./shoe_1_adidas_gazelle_40.jpg";
-import shoe_3 from "./shoe_1_adidas_samba og_50.jpg";
-import shoe_4 from "./shoe_1_adidas_vl court 3.0_65.jpg";
-
-//nike
-import shoe_5 from "./shoe_1_nike_air force 1_75.jpg";
-import shoe_6 from "./shoe_1_nike_al8 trainers in white & grey_80.jpg";
-import shoe_7 from "./shoe_1_nike_court borough low Girls Junior trainers_38.jpg";
-import shoe_8 from "./shoe_1_nike_navy multi court borough low recraft Boys Toddler trainers_35.jpg";
-
-//puma
-import shoe_9 from "./shoe_1_puma_caven 2.0_50.jpg";
-import shoe_10 from "./shoe_1_puma_palermo trainers in green_75.jpg";
-import shoe_11 from "./shoe_1_puma_terrace classic trainers in white & green_75.jpg";
-import shoe_12 from "./shoe_1_puma_white & green morphic Junior trainers_52.jpg";
-
-//reebok
-import shoe_13 from "./shoe_1_reebok_club c 85 trainers in white_75.jpg";
-import shoe_14 from "./shoe_1_reebok_club c bulc trainers in white & black_100.jpg";
-import shoe_15 from "./shoe_1_reebok_club c double trainers in white & burgundy_100.jpg";
-import shoe_16 from "./shoe_1_reebok_club c revenge trainers in white & green_75.jpg";
-
 import add_icon_white from "./add_icon_white.png";
 import add_icon_green from "./add_icon_green.png";
 import remove_icon_red from "./remove_icon_red.png";
