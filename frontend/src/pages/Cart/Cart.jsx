@@ -10,7 +10,7 @@ const Cart = () => {
     useContext(StoreContext);
 
   //navigate to place order page
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <Box sx={{ p: 8 }}>
@@ -87,35 +87,34 @@ const Cart = () => {
         <Box flex={1}>
           <Box>
             <Typography fontWeight={"bold"} sx={{ mb: 2 }}>
-              Cart Total
+              Inventory Total
             </Typography>
 
+            <Date />
             <Stack display={"flex"} flexDirection={"row"}>
               <Stack flex={1}>
                 <Typography>Sub Total</Typography>
-                <Typography>Delivery Fee</Typography>
-                <Typography sx={{ fontWeight: "bold" }}>Total</Typography>
+                {/* <Typography>Delivery Fee</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>Total</Typography> */}
               </Stack>
               <Stack flex={1}>
                 <Typography id="Sub_Total">£{getTotalCartAmount()}</Typography>
-                <Typography id="Delivery_Free">
+                {/* <Typography id="Delivery_Free">
                   £{getTotalCartAmount() === 0 ? 0 : 2}
                 </Typography>
                 <Typography id="Total" sx={{ fontWeight: "bold" }}>
                   £{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}
-                </Typography>
+                </Typography> */}
               </Stack>
             </Stack>
           </Box>
           <Box sx={{ mt: 2 }}>
-            <Button
-              variant="contained"
-              onClick={() => navigate("/place-order")}>
-              PROCEED TO CHECKOUT
+            <Button variant="contained" onClick={() => window.print()}>
+              print report
             </Button>
           </Box>
         </Box>
-        <Box flex={1} sx={{ mb: 6 }}>
+        {/* <Box flex={1} sx={{ mb: 6 }}>
           <Typography>If you have a promo code, Enter it here</Typography>
           <TextField
             id="outlined-basic"
@@ -127,7 +126,7 @@ const Cart = () => {
           <Button variant="outlined" sx={{ mt: 2, ml: 2 }}>
             Submit
           </Button>
-        </Box>
+        </Box> */}
       </Stack>
     </Box>
   );

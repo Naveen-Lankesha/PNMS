@@ -123,7 +123,7 @@ export default function ButtonAppBar({ setShowLogin }) {
               Contact Us
             </Button>
           </Stack>
-          <Link to="/cart">
+          {/* <Link to="/cart">
             <Stack direction={"row-reverse"}>
               {getTotalCartAmount() > 0 ? (
                 <FiberManualRecordIcon
@@ -141,7 +141,7 @@ export default function ButtonAppBar({ setShowLogin }) {
                 // }}
               />
             </Stack>
-          </Link>
+          </Link> */}
           <Button
             variant="outlined"
             sx={{ borderRadius: 5, mr: 5, ml: 4 }}
