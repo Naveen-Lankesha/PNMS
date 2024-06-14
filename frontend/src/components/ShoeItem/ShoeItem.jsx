@@ -62,6 +62,7 @@ const ShoeItem = ({ id, name, price, catergory, description, image }) => {
       <Box sx={{ p: 2 }}>
         <h3>{name}</h3>
         <p>{catergory}</p>
+        <p>{description}</p>
         <Typography variant="h6" sx={{ color: "#FD7401" }}>
           Rs.{price}.00
         </Typography>

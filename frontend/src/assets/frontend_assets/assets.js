@@ -117,7 +117,7 @@ export const shoe_list = [
     image: item6,
     price: 490,
     description: "8g packets",
-    category: "Plants",
+    category: "Material",
   },
   {
     _id: "2",
