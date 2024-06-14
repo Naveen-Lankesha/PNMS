@@ -15,13 +15,14 @@ import menu_3 from "./planticon.png";
 // import menu_8 from "./menu_8.png";
 
 //Inventory
-import item1 from "./pesticides.png";
-import item2 from "./fertilizers.png";
+import item1 from "./abamectin.png";
+import item2 from "./coir dust.png";
 import item3 from "./nursarybags.png";
 import item4 from "./rice_husk.png";
 import item5 from "./compost.png";
-import item6 from "./ready_to_sell.png";
-import item7 from "./seed.png";
+import item6 from "./actara.png";
+//import item6 from "./ready_to_sell.png"
+//import item7 from "./seed.png"
 
 //Vegetable
 import veg1 from "./green_cabbage.png";
@@ -104,98 +105,100 @@ export const menu_list = [
 export const shoe_list = [
   {
     _id: "1",
-    name: "Pesticides",
+    name: "Pesticides(Abamectin)",
     image: item1,
-    price: 80.0,
-    description: "In stock",
+    price: 1050,
+    description: "50ml Bottle",
     category: "Material",
+  },
+  {
+    _id: "38",
+    name: "Pesticides(Actara)",
+    image: item6,
+    price: 490,
+    description: "8g packets",
+    category: "Plants",
   },
   {
     _id: "2",
-    name: "Fertilizers",
+    name: "Fertilizers(Coir Dust)",
     image: item2,
-    price: 40,
-    description: "In stock",
-    category: "Material",
-  },
-  {
-    _id: "3",
-    name: "Nursery Bags",
-    image: item3,
-    price: 50,
-    description: "In stock",
-    category: "Material",
-  },
-  {
-    _id: "4",
-    name: "Burnt rice husk",
-    image: item4,
-    price: 65,
-    description: "In stock",
+    price: 520,
+    description: "10kg Package ",
     category: "Material",
   },
   {
     _id: "5",
-    name: "Compost",
+    name: "Fertilizers(Compost)",
     image: item5,
-    price: 75,
-    description: "In stock",
+    price: 725,
+    description: "20kg Package",
     category: "Material",
   },
+
+  {
+    _id: "3",
+    name: "Nursery Bags",
+    image: item3,
+    price: 135,
+    description: " 1kg Polythene bags",
+    category: "Material",
+  },
+
   {
     _id: "6",
     name: "Green cabbage",
     image: veg1,
-    price: 80,
-    description: "Seeds in stock",
+    price: 15000,
+    description: "50g packet",
     category: "Seeds",
   },
   {
     _id: "7",
     name: "Purple cabbage",
     image: veg2,
-    price: 80,
-    description: "Seeds in stock",
+    price: 15000,
+    description: "50g packet",
     category: "Seeds",
   },
   {
     _id: "8",
-    name: "Green Chilli",
+    name: "Green Chilli(F1)",
     image: veg3,
-    price: 80,
-    description: "Seeds in stock",
+    price: 1000,
+    description: "50g packet",
     category: "Seeds",
   },
   {
     _id: "9",
     name: "Waraniya",
     image: veg4,
-    price: 80,
-    description: "Seeds in stock",
+    price: 850,
+    description: "50g packet",
     category: "Seeds",
   },
   {
     _id: "10",
     name: "Capsicum",
     image: veg5,
-    price: 80,
-    description: "Seeds in stock",
+    price: 2500,
+    description: "50g packet",
     category: "Seeds",
   },
   {
     _id: "11",
     name: "Karawila",
     image: veg6,
-    price: 80,
-    description: "Seeds in stock",
+    price: 100,
+    description: "10g packet",
     category: "Seeds",
   },
   {
     _id: "12",
     name: "Tomato",
     image: veg7,
-    price: 80,
-    description: "Seeds in stock",
+    price: 2300,
+    description: "2g packet",
     category: "Seeds",
   },
   {
@@ -203,7 +206,7 @@ export const shoe_list = [
     name: "Carrot",
     image: veg8,
     price: 80,
-    description: "Seeds in stock",
+    description: "2g packet",
     category: "Seeds",
   },
   {
@@ -211,47 +214,47 @@ export const shoe_list = [
     name: "Beetroot",
     image: veg9,
     price: 80,
-    description: "Seeds in stock",
+    description: "2g packet",
     category: "Seeds",
   },
   {
     _id: "15",
-    name: "Egg plant",
+    name: "Brinjal",
     image: veg10,
-    price: 80,
-    description: "Seeds in stock",
+    price: 3500,
+    description: "50g packet",
     category: "Seeds",
   },
   {
     _id: "16",
     name: "Thibbatu",
     image: veg11,
-    price: 80,
-    description: "Seeds in stock",
+    price: 200,
+    description: "5g packet",
     category: "Seeds",
   },
   {
     _id: "17",
     name: "Chinese Cabbage",
     image: veg12,
-    price: 80,
-    description: "Seeds in stock",
+    price: 190,
+    description: "1g packet",
     category: "Seeds",
   },
   {
     _id: "18",
     name: "Salad Leaves",
     image: veg13,
-    price: 80,
-    description: "Seeds in stock",
+    price: 190,
+    description: "1g packet",
     category: "Seeds",
   },
   {
     _id: "19",
     name: "Nokol",
     image: veg14,
-    price: 80,
-    description: "Seeds in stock",
+    price: 1500,
+    description: "10g packet",
     category: "Seeds",
   },
   {
@@ -259,7 +262,7 @@ export const shoe_list = [
     name: "Watakolu",
     image: veg15,
     price: 80,
-    description: "Seeds in stock",
+    description: "2g packet",
     category: "Seeds",
   },
   {
@@ -267,7 +270,7 @@ export const shoe_list = [
     name: "Pathola",
     image: veg16,
     price: 80,
-    description: "Seeds in stock",
+    description: "2g packet",
     category: "Seeds",
   },
   {
