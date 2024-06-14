@@ -24,12 +24,12 @@ export default function ButtonAppBar({ setShowLogin }) {
       menuElement.scrollIntoView({ behavior: "smooth" });
     }
   };
-  const handleMenuClick = () => {
-    const menuElement = document.getElementById("menu");
-    if (menuElement) {
-      menuElement.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  // const handleMenuClick = () => {
+  //   const menuElement = document.getElementById("menu");
+  //   if (menuElement) {
+  //     menuElement.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
   const handleContactClick = () => {
     const menuElement = document.getElementById("footer");
     if (menuElement) {
@@ -86,7 +86,7 @@ export default function ButtonAppBar({ setShowLogin }) {
                 Home
               </Button>
             </Link>
-            <Link to="/#menu">
+            <Link to="/plant-care">
               <Button
                 sx={{
                   "&:hover": {
@@ -100,9 +100,9 @@ export default function ButtonAppBar({ setShowLogin }) {
                 }}
                 onClick={() => {
                   setActiveButton("Menu");
-                  handleMenuClick();
+                  // handleMenuClick();
                 }}>
-                Brands
+                Plant Care
               </Button>
             </Link>
             <Button
