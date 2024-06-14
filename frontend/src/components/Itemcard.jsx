@@ -5,6 +5,7 @@ import {
   TextField,
   CardMedia,
   CardActions,
+  IconButton,
   Button,
   Stack,
   Box,
@@ -14,7 +15,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import DoneIcon from '@mui/icons-material/Done';
 import EditIcon from '@mui/icons-material/Edit';
 
-const EditableCard = ({
+const EditableItemCard = ({
     ItemName,
     Quantity,
     onDelete,
@@ -41,23 +42,21 @@ const EditableCard = ({
         setEditableQuantity(event.target.value);
     };
 
-    const strongStyle = { color: "#144F21" };
+    /*const strongStyle = { color: "#144F21" };*/
 
     return (
       <Card
         sx={{
-          minWidth: "100px",
-          maxHeight: "150px",
+          Width: "300px",
+          Height: "400px",
           border: "solid",
           borderColor: "#144F21",
-          borderBottomWidth: 8,
-          borderRightWidth: 8,
           margin: 3,
           padding: "10px",
         }}>
         
-        <Stack direction="row" justifyContent="flex-start" alignItems="flex-start" spacing={2}>
-          <Box flex={4}>
+        <Stack display="flex" direction="row"  >
+          <Box>
             <CardContent>
              <div>
               {" "}
@@ -76,7 +75,9 @@ const EditableCard = ({
 
             <CardMedia
             component="img"
-            height="50"
+            height="170"
+            width="150"
+            border= "solid"
             image="#"
             alt="Item Image"
             />
@@ -97,15 +98,15 @@ const EditableCard = ({
               </div> 
             </CardContent>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'bottom', pl: 1, pb: 1 }}>
-          <IconButton aria-label="Edit">
-              <EditIconIcon sx={{ height: 38, width: 38 }} />
+          <Box sx={{ display: 'flex', alignItems: 'left', pl: 1, pt: 30}}>
+          <IconButton aria-label="Edit"  onclick={handleEdit}>
+              <EditIcon sx={{ height: 25, width: 25 }} />
           </IconButton>
-          <IconButton aria-label="Done">
-              <DoneIconIconIcon sx={{ height: 38, width: 38 }} />
+          <IconButton aria-label="Done"  onclick={handleSave}>
+              <DoneIcon sx={{ height: 25, width: 25 }} />
           </IconButton>
-          <IconButton aria-label="Delete">
-              <DeleteIconIconIcon sx={{ height: 38, width: 38 }} />
+          <IconButton aria-label="Delete" onclick={onDelete}>
+              <DeleteIcon sx={{ height: 25, width: 25 }} />
           </IconButton>
           </Box>
         </Stack>
@@ -113,9 +114,9 @@ const EditableCard = ({
     );
   };
 
-EditableCard.defautProps={
+EditableItemCard.defautProps={
    ItemName:"Item Name",
    Quantity:"Quantity",
 };
 
-export default ItemCard;
+export default EditableItemCard;
