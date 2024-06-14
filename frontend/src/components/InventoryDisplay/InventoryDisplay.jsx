@@ -52,6 +52,7 @@ const InventoryDisplay = ({ category }) => {
                 <ShoeItem
                   id={item._id}
                   name={item.name}
+                  catergory={item.category}
                   description={item.description}
                   price={item.price}
                   image={item.image}

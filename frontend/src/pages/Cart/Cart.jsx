@@ -19,14 +19,17 @@ const Cart = () => {
           Items
         </Typography>
         <Typography flex={1} fontWeight="bold">
-          Brand
+          Name
+        </Typography>
+        <Typography flex={1} fontWeight="bold">
+          Category
         </Typography>
         <Typography flex={1} fontWeight="bold">
           Type
         </Typography>
-        <Typography flex={1} fontWeight="bold">
+        {/* <Typography flex={1} fontWeight="bold">
           Size
-        </Typography>
+        </Typography> */}
         <Typography flex={1} fontWeight="bold">
           Price
         </Typography>
@@ -55,13 +58,14 @@ const Cart = () => {
                   />
                 </Box>
                 <Typography flex={1}>{item.name}</Typography>
+                <Typography flex={1}>{item.category}</Typography>
                 <Typography flex={1}>{item.description}</Typography>
 
-                <Typography flex={1}>{size[item._id]}</Typography>
-                <Typography flex={1}>£{item.price}</Typography>
+                {/* <Typography flex={1}>{size[item._id]}</Typography> */}
+                <Typography flex={1}>Rs.{item.price}.00</Typography>
                 <Typography flex={1}>{cartItems[item._id]}</Typography>
                 <Typography flex={1}>
-                  £{item.price * cartItems[item._id]}
+                  Rs.{item.price * cartItems[item._id]}.00
                 </Typography>
                 <Box flex={1}>
                   <DeleteOutlineOutlinedIcon
@@ -98,7 +102,9 @@ const Cart = () => {
                 <Typography sx={{ fontWeight: "bold" }}>Total</Typography> */}
               </Stack>
               <Stack flex={1}>
-                <Typography id="Sub_Total">£{getTotalCartAmount()}</Typography>
+                <Typography id="Sub_Total">
+                  Rs.{getTotalCartAmount()}.00
+                </Typography>
                 {/* <Typography id="Delivery_Free">
                   £{getTotalCartAmount() === 0 ? 0 : 2}
                 </Typography>

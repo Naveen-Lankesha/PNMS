@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const ShoeItem = ({ id, name, price, description, image }) => {
+const ShoeItem = ({ id, name, price, catergory, description, image }) => {
   const { size, handleChange, cartItems, addToCart, removeFromCart } =
     useContext(StoreContext);
 
@@ -60,10 +60,10 @@ const ShoeItem = ({ id, name, price, description, image }) => {
         </Box> */}
       </Box>
       <Box sx={{ p: 2 }}>
-        {/* <h3>{name}</h3>
-        <p>{description}</p> */}
+        <h3>{name}</h3>
+        <p>{catergory}</p>
         <Typography variant="h6" sx={{ color: "#FD7401" }}>
-          £{price}
+          Rs.{price}.00
         </Typography>
       </Box>
     </Paper>
