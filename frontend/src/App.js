@@ -9,10 +9,33 @@ function App() {
       <div className="App">
         <div className="Content">
           <Switch>
+            {/* landing  page */}
             <Route exact path="/">
               <Home />
             </Route>
-            <Route path="/Plant-Care-Scheduling">
+
+            {/* login page */}
+            <Route exact path="/Login">
+              <PlantCare />
+            </Route>
+
+            {/* plant care page */}
+            <Route excat path="/Plant-Care-Scheduling">
+              <PlantCare />
+            </Route>
+
+            {/* inventory page */}
+            <Route excat path="/Inventory">
+              <PlantCare />
+            </Route>
+
+            {/* accounts page */}
+            <Route path="/Accounts">
+              <PlantCare />
+            </Route>
+
+            {/* Prediction page */}
+            <Route path="/Prediction">
               <PlantCare />
             </Route>
           </Switch>

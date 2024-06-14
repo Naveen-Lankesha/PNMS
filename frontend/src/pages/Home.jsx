@@ -32,15 +32,21 @@ const Home = () => {
           pr={10}>
           <Box flex={3}></Box>
           <Box flex={1}>
-            <Card sx={{ minWidth: 275, backgroundColor: "#8BD2A0" }}>
+            <Card
+              sx={{
+                minWidth: 275,
+                backgroundColor: "#8BD2A0",
+                borderRadius: 5,
+              }}>
               <CardContent>
                 <Box display="flex" justifyContent={"center"}>
                   <img src={logo} alt="Logo" />
                 </Box>
                 <Box display="flex" justifyContent={"space-between"}>
                   <Typography
+                    fontFamily={"Raleway"}
                     variant="h3"
-                    fontSize={42}
+                    fontSize={40}
                     fontWeight={500}
                     color="black"
                     sx={{ textAlign: "center" }}
