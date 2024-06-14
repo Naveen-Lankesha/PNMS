@@ -11,7 +11,7 @@ const Home = () => {
     <div id="home">
       <Box>
         <Header />
-        {/* <ExploreMenu category={category} setCategory={setCategory} /> */}
+        <ExploreMenu category={category} setCategory={setCategory} />
       </Box>
       <Box sx={{ pr: 8, pl: 8 }}>
         <InventoryDisplay category={category} />

@@ -5,7 +5,7 @@ import { assets } from "../../assets/frontend_assets/assets";
 
 const Header = () => {
   const handleInventoryClick = () => {
-    const menuElement = document.getElementById("display");
+    const menuElement = document.getElementById("menu");
     if (menuElement) {
       menuElement.scrollIntoView({ behavior: "smooth" });
     }
@@ -18,7 +18,8 @@ const Header = () => {
         borderRadius: 8,
 
         p: 8,
-        m: 8,
+        ml: 8,
+        mr: 8,
         backgroundImage: `url(${assets.background})`,
         backgroundSize: "cover",
         backgroundPosition: "center",

@@ -6,10 +6,9 @@ import background from "./background.png";
 import header_img from "./header_img.png";
 import search_icon from "./search_icon.png";
 
-import menu_1 from "./Adidas_logo.png";
-import menu_2 from "./Nike_logo.png";
-import menu_3 from "./Puma_logo.png";
-import menu_4 from "./Reebok_logo.png";
+import menu_1 from "./pesticidesicon.png";
+import menu_2 from "./seedicon.jpg";
+import menu_3 from "./planticon.png";
 // import menu_5 from "./menu_5.png";
 // import menu_6 from "./menu_6.png";
 // import menu_7 from "./menu_7.png";
@@ -21,27 +20,26 @@ import item2 from "./fertilizers.png";
 import item3 from "./nursarybags.png";
 import item4 from "./rice_husk.png";
 import item5 from "./compost.png";
-import item6 from "./ready_to_sell.png"
-import item7 from "./seed.png"
+import item6 from "./ready_to_sell.png";
+import item7 from "./seed.png";
 
 //Vegetable
-import veg1 from "./green_cabbage.png"
-import veg2 from "./purple_cabbage.png"
-import veg3 from "./chilli.png"
-import veg4 from "./waraniya.png"
-import veg5 from "./capsicum.png"
-import veg6 from "./karawila.png"
-import veg7 from "./tomato.png"
-import veg8 from "./carrot.png"
-import veg9 from "./beet.png"
-import veg10 from "./Brinjal.png"
-import veg11 from "./thith_batu.png"
-import veg12 from "./chinese_cabbage.png"
-import veg13 from "./Salad_Leaves.png"
-import veg14 from "./nokol.png"
-import veg15 from "./gourd.png"
-import veg16 from "./Snake_Gaurd.png"
-
+import veg1 from "./green_cabbage.png";
+import veg2 from "./purple_cabbage.png";
+import veg3 from "./chilli.png";
+import veg4 from "./waraniya.png";
+import veg5 from "./capsicum.png";
+import veg6 from "./karawila.png";
+import veg7 from "./tomato.png";
+import veg8 from "./carrot.png";
+import veg9 from "./beet.png";
+import veg10 from "./Brinjal.png";
+import veg11 from "./thith_batu.png";
+import veg12 from "./chinese_cabbage.png";
+import veg13 from "./Salad_Leaves.png";
+import veg14 from "./nokol.png";
+import veg15 from "./gourd.png";
+import veg16 from "./Snake_Gaurd.png";
 
 import add_icon_white from "./add_icon_white.png";
 import add_icon_green from "./add_icon_green.png";
@@ -86,21 +84,21 @@ export const assets = {
 
 export const menu_list = [
   {
-    menu_name: "Adidas",
+    menu_name: "Material",
     menu_image: menu_1,
   },
   {
-    menu_name: "Nike",
+    menu_name: "Seeds",
     menu_image: menu_2,
   },
   {
-    menu_name: "Puma",
+    menu_name: "Plants",
     menu_image: menu_3,
   },
-  {
-    menu_name: "Reebok",
-    menu_image: menu_4,
-  },
+  // {
+  //   menu_name: "Reebok",
+  //   menu_image: menu_4,
+  // },
 ];
 
 export const shoe_list = [

@@ -74,10 +74,10 @@ const Footer = () => {
               Get in Touch
             </Typography>
             <Typography variant="h7" sx={{ color: "white" }}>
-              +1 234 567 890
+              +94 77 123 4567
             </Typography>
             <Typography variant="h7" sx={{ color: "white" }}>
-              cloud7@gmail.com
+              harithaagro@gmail.com
             </Typography>
           </Stack>
         </Box>

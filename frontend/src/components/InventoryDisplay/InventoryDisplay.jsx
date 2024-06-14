@@ -14,13 +14,6 @@ const InventoryDisplay = ({ category }) => {
         sx={{ textAlign: "center", mb: 2, fontWeight: 600 }}>
         Inventory Display
       </Typography>
-      <Stack display={"flex"} flexDirection={"row-reverse"}>
-        <Box>
-          <Link to="/inventory-summary">
-            <Button>Show Inventory summary</Button>
-          </Link>
-        </Box>
-      </Stack>
       <hr style={{ border: "2px solid green" }} /> {/* Added solid line */}
       <br />
       <div>
@@ -38,7 +31,7 @@ const InventoryDisplay = ({ category }) => {
                 item
                 sm={12}
                 md={6}
-                lg={4}
+                lg={3}
                 sx={{
                   display: "flex",
                   justifyContent: "center",
