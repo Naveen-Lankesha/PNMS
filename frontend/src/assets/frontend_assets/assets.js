@@ -15,12 +15,33 @@ import menu_4 from "./Reebok_logo.png";
 // import menu_7 from "./menu_7.png";
 // import menu_8 from "./menu_8.png";
 
-//other
+//Inventory
 import item1 from "./pesticides.png";
 import item2 from "./fertilizers.png";
 import item3 from "./nursarybags.png";
-import item4 from "./burntRiceHusk.png";
+import item4 from "./rice_husk.png";
 import item5 from "./compost.png";
+import item6 from "./ready_to_sell.png"
+import item7 from "./seed.png"
+
+//Vegetable
+import veg1 from "./green_cabbage.png"
+import veg2 from "./purple_cabbage.png"
+import veg3 from "./chilli.png"
+import veg4 from "./waraniya.png"
+import veg5 from "./capsicum.png"
+import veg6 from "./karawila.png"
+import veg7 from "./tomato.png"
+import veg8 from "./carrot.png"
+import veg9 from "./beet.png"
+import veg10 from "./Brinjal.png"
+import veg11 from "./thith_batu.png"
+import veg12 from "./chinese_cabbage.png"
+import veg13 from "./Salad_Leaves.png"
+import veg14 from "./nokol.png"
+import veg15 from "./gourd.png"
+import veg16 from "./Snake_Gaurd.png"
+
 
 import add_icon_white from "./add_icon_white.png";
 import add_icon_green from "./add_icon_green.png";
@@ -85,43 +106,43 @@ export const menu_list = [
 export const shoe_list = [
   {
     _id: "1",
-    name: "Adidas",
+    name: "Pesticides",
     image: item1,
     price: 80.0,
-    description: "Campus 00s Youth trainers",
-    category: "Adidas",
+    description: "In stock",
+    category: "Material",
   },
   {
     _id: "2",
-    name: "Adidas",
+    name: "Fertilizers",
     image: item2,
     price: 40,
-    description: "Adidas Gazelle",
-    category: "Adidas",
+    description: "In stock",
+    category: "Material",
   },
   {
     _id: "3",
-    name: "Adidas",
+    name: "Nursery Bags",
     image: item3,
     price: 50,
-    description: "Samba OG",
-    category: "Adidas",
+    description: "In stock",
+    category: "Material",
   },
   {
     _id: "4",
-    name: "Adidas",
+    name: "Burnt rice husk",
     image: item4,
     price: 65,
-    description: "Vl Court 3.0",
-    category: "Adidas",
+    description: "In stock",
+    category: "Material",
   },
   {
     _id: "5",
-    name: "Nike",
+    name: "Compost",
     image: item5,
     price: 75,
-    description: "Air Force 1",
-    category: "Nike",
+    description: "In stock",
+    category: "Material",
   },
   // {
   //   _id: "6",
