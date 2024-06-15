@@ -27,13 +27,13 @@ const client = new MongoClient(uri, {
 
 async function run() {
     try {
-        // Connect the client to the server	(optional starting in v4.7)
+        // Connect the client to the server
         await client.connect();
         // Send a ping to confirm a successful connection
         const inventory = client.db("Inventory").collection("Items");
 
 
-        // insert a book to db: Post Method
+        // insert an item to db
         app.post("/upload-item", async (req, res) => {
             const data = req.body;
             // console.log(data);
@@ -48,8 +48,8 @@ async function run() {
         //     res.send(result)
         // })
 
-        // get all mobiles & find by a category from db
-        app.get("/all-mobiles", async (req, res) => {
+        // get all items & find by a category from db
+        app.get("/all-items", async (req, res) => {
             let query = {};
             if (req.query?.itemName) {
                 query = { brand: req.query.itemName }
@@ -58,7 +58,7 @@ async function run() {
             res.send(result)
         })
 
-        // update a mobile method
+        // update an item
         app.patch("/item/:id", async (req, res) => {
             const id = req.params.id;
             // console.log(id);
@@ -77,7 +77,7 @@ async function run() {
         })
 
 
-        // delete one mobile item from db
+        // delete one item from db
         app.delete("/item/:id", async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) };
@@ -86,7 +86,7 @@ async function run() {
         })
 
 
-        // get a single mobile data
+        // get a single item data
         app.get("/item/:id", async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) };
