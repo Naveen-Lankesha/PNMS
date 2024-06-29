@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import localImage from "./../../assets/frontend_assets/background.png";
 import BatchCard from "../../components/BatchCard/BatchCard";
 import {
@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  Snackbar,
 } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -15,6 +16,63 @@ const PlantCare = () => {
   const [batchCards, setBatchCards] = useState([]);
   const [nextBatchID, setNextBatchID] = useState(1);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null); // State to handle delete confirmation dialog
+  const [moistureLevel, setMoistureLevel] = useState(null);
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+  }); // State for notificationsconst [notification, setNotification] = useState({ open: false, message: "" }); // State for notifications
+
+  //useEffect hook to fetch moisture level every 10 seconds
+
+  useEffect(() => {
+    const ws = new WebSocket("ws://192.168.43.189/ws"); // Establish WebSocket connection
+
+    ws.onopen = () => {
+      console.log("Connected to WebSocket");
+      ws.send("getMoisture"); // Initial request for moisture level
+    };
+
+    ws.onmessage = (event) => {
+      console.log("WebSocket message received:", event.data);
+      if (!isNaN(event.data)) {
+        setMoistureLevel(parseInt(event.data, 10)); // Update moisture level state
+        console.log(event.data);
+      } else {
+        setNotification({ open: true, message: event.data }); // Show notification
+        console.log(event.data);
+      }
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
+
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+
+    // Clean up the WebSocket connection when the component unmounts
+    return () => {
+      ws.close();
+    };
+  }, []); // Empty dependency array means this effect runs once on mount
+
+  // useEffect(() => {
+  //   const fetchMoistureLevel = async () => {
+  //     try {
+  //       const response = await fetch("http://192.168.43.189/moisture");
+  //       const data = await response.text();
+  //       setMoistureLevel(parseInt(data, 10)); // Convert the string response to an integer
+  //     } catch (error) {
+  //       console.error("Error fetching moisture level:", error);
+  //     }
+  //   };
+
+  //   fetchMoistureLevel(); // Initial fetch
+  //   const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
+
+  //   return () => clearInterval(interval); // Cleanup interval on component unmount
+  // }, []);
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
@@ -23,7 +81,7 @@ const PlantCare = () => {
       type: "Type",
       stage: "Ready to Sell",
       quantity: "Quantity",
-      moistureLevel: 600,
+      moistureLevel: moistureLevel || 600,
       n: 100,
       p: 200,
       k: 300,
@@ -53,6 +111,10 @@ const PlantCare = () => {
     setDeleteConfirmation(null); // Close the confirmation dialog
   };
 
+  const handleCloseNotification = () => {
+    setNotification({ open: false, message: "" }); // Close notification
+  };
+
   return (
     <div>
       <div
@@ -64,11 +126,13 @@ const PlantCare = () => {
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundColor: "rgba(255, 255, 255, 0.05)",
-        }}>
+        }}
+      >
         {/* Add Batch Card button */}
         <div
           className="Content"
-          style={{ display: "flex", flexDirection: "column" }}>
+          style={{ display: "flex", flexDirection: "column" }}
+        >
           <div>
             <Button
               variant="contained"
@@ -79,7 +143,8 @@ const PlantCare = () => {
                 top: "10px", // Adjust as needed
                 right: "20px", // Adjust as needed
                 zIndex: 9999, // Ensure button appears on top
-              }}>
+              }}
+            >
               <AddIcon /> Add a New Batch
             </Button>
           </div>
@@ -96,6 +161,14 @@ const PlantCare = () => {
             </DialogActions>
           </Dialog>
 
+          {/* Notification snackbar */}
+          <Snackbar
+            open={notification.open}
+            message={notification.message}
+            autoHideDuration={60000}
+            onClose={handleCloseNotification}
+          />
+
           {/* Render existing batch cards */}
           <div
             style={{
@@ -106,7 +179,8 @@ const PlantCare = () => {
               marginTop: "50px",
               paddingLeft: "20px",
               paddingRight: "20px",
-            }}>
+            }}
+          >
             {batchCards.map((card) => (
               <BatchCard
                 key={card.batchID}
