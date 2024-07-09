@@ -11,7 +11,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete"; // Add this line
-
+//import axios from "axios";
 import { assets, veg_list } from "../../assets/frontend_assets/assets";
 
 const EditableCard = ({
@@ -34,12 +34,35 @@ const EditableCard = ({
 
   const handleEdit = () => {
     setIsEditing(true);
+    if (!editablePesticidesDate) {
+      setEditablePesticidesDate(getCurrentDate());
+    }
   };
 
   const handleSave = () => {
-    setIsEditing(false);
-    // You can perform save operation here, e.g., send data to backend
+    //   setIsEditing(false);
+    //   const updatedData = {
+    //     batchID,
+    //     type: editableType,
+    //     stage,
+    //     quantity: editableQuantity,
+    //     moistureLevel,
+    //     n,
+    //     p,
+    //     k,
+    //     pesticidesDate: editablePesticidesDate,
   };
+
+  //   // Perform save operation here, e.g., send data to backend
+  //   axios
+  //     .post("/api/updateBatch", updatedData)
+  //     .then((response) => {
+  //       console.log("Data saved successfully:", response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error saving data:", error);
+  //     });
+  // };
 
   const handleTypeChange = (event) => {
     setEditableType(event.target.value);
@@ -53,6 +76,10 @@ const EditableCard = ({
     setEditablePesticidesDate(event.target.value);
   };
 
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+  };
   const selectedItem = veg_list.find((item) => item.name === editableType);
   const imageUrl = selectedItem ? selectedItem.image : "";
   // change strong style
@@ -142,6 +169,7 @@ const EditableCard = ({
                   value={editablePesticidesDate}
                   onChange={handlePesticidesDateChange}
                   variant="outlined"
+                  type="date"
                 />
               ) : (
                 editablePesticidesDate
@@ -197,18 +225,20 @@ const EditableCard = ({
             alignItems: "center",
             justifyContent: "center",
             padding: 2,
-            borderLeft: "1px solid #144F21",
+            //borderLeft: "1px solid #144F21",
           }}
         >
           {imageUrl && (
             <Box
               sx={{
-                width: "150px",
-                height: "150px",
+                width: "200px",
+                height: "200px",
                 backgroundImage: `url(${imageUrl})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 borderRadius: "8px",
+                //position: "absolute",
+                bottom: 0,
                 //border: "2px solid #144F21",
               }}
             />

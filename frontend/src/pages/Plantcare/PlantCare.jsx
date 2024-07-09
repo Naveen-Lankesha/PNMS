@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import localImage from "./../../assets/frontend_assets/background.png";
 import BatchCard from "../../components/BatchCard/BatchCard";
+
 import {
   Dialog,
   DialogTitle,
@@ -24,38 +25,38 @@ const PlantCare = () => {
 
   //useEffect hook to fetch moisture level every 10 seconds
 
-  useEffect(() => {
-    const ws = new WebSocket("ws://192.168.43.189/ws"); // Establish WebSocket connection
+  // useEffect(() => {
+  //   const ws = new WebSocket("ws://192.168.43.189/ws"); // Establish WebSocket connection
 
-    ws.onopen = () => {
-      console.log("Connected to WebSocket");
-      ws.send("getMoisture"); // Initial request for moisture level
-    };
+  //   ws.onopen = () => {
+  //     console.log("Connected to WebSocket");
+  //     ws.send("getMoisture"); // Initial request for moisture level
+  //   };
 
-    ws.onmessage = (event) => {
-      console.log("WebSocket message received:", event.data);
-      if (!isNaN(event.data)) {
-        setMoistureLevel(parseInt(event.data, 10)); // Update moisture level state
-        console.log(event.data);
-      } else {
-        setNotification({ open: true, message: event.data }); // Show notification
-        console.log(event.data);
-      }
-    };
+  //   ws.onmessage = (event) => {
+  //     console.log("WebSocket message received:", event.data);
+  //     if (!isNaN(event.data)) {
+  //       setMoistureLevel(parseInt(event.data, 10)); // Update moisture level state
+  //       console.log(event.data);
+  //     } else {
+  //       setNotification({ open: true, message: event.data }); // Show notification
+  //       console.log(event.data);
+  //     }
+  //   };
 
-    ws.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
+  //   ws.onclose = () => {
+  //     console.log("WebSocket connection closed");
+  //   };
 
-    ws.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
+  //   ws.onerror = (error) => {
+  //     console.error("WebSocket error:", error);
+  //   };
 
-    // Clean up the WebSocket connection when the component unmounts
-    return () => {
-      ws.close();
-    };
-  }, []); // Empty dependency array means this effect runs once on mount
+  //   // Clean up the WebSocket connection when the component unmounts
+  //   return () => {
+  //     ws.close();
+  //   };
+  // }, []); // Empty dependency array means this effect runs once on mount
 
   // useEffect(() => {
   //   const fetchMoistureLevel = async () => {
