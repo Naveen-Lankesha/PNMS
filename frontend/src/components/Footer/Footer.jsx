@@ -13,13 +13,14 @@ const Footer = () => {
     <div id="footer" style={{ marginTop: 30 }}>
       <Stack
         direction={{ md: "column", lg: "row" }}
-        sx={{ pl: 8, pr: 8, pt: 8, pb: 4, backgroundColor: "#607274" }}>
+        sx={{ pl: 8, pr: 8, pt: 8, pb: 4, backgroundColor: "#607274" }}
+      >
         <Box flex={1} sx={{ pr: 8 }}>
           <Stack spacing={2}>
             <img
               src={assets.PNMSlogo}
               alt="logo"
-              style={{ maxHeight: 100, maxWidth: 100 }}
+              style={{ maxHeight: 150, maxWidth: 150 }}
             />
             {/* <Typography
               variant="p"
@@ -47,7 +48,8 @@ const Footer = () => {
                 pb: 2,
                 fontWeight: 700,
                 borderBottom: "2px solid orange",
-              }}>
+              }}
+            >
               Company
             </Typography>
             <Typography variant="h7" sx={{ color: "white" }}>
@@ -70,7 +72,8 @@ const Footer = () => {
                 pb: 2,
                 fontWeight: 700,
                 borderBottom: "2px solid orange",
-              }}>
+              }}
+            >
               Get in Touch
             </Typography>
             <Typography variant="h7" sx={{ color: "white" }}>
@@ -90,7 +93,8 @@ const Footer = () => {
           fontSize: 12,
           p: 2,
           borderTop: "2px solid orange",
-        }}>
+        }}
+      >
         © 2024 HARITHA AGRO | All Rights reserved
       </Typography>
     </div>

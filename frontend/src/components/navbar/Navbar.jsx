@@ -47,7 +47,8 @@ export default function ButtonAppBar({ setShowLogin }) {
         elevation={1}
         sx={{
           background: "white",
-        }}>
+        }}
+      >
         <Toolbar>
           <IconButton
             size="large"
@@ -57,16 +58,18 @@ export default function ButtonAppBar({ setShowLogin }) {
             component="div"
             sx={{
               ml: 4,
-            }}>
+            }}
+          >
             <img
               onClick={() => (window.location.href = "/")}
               src={assets.PNMSlogo}
-              style={{ maxHeight: 50 }}
+              style={{ maxHeight: 80, maxWidth: "auto" }}
             />
           </IconButton>
           <Stack
             direction={"row"}
-            sx={{ flexGrow: 1, justifyContent: "center" }}>
+            sx={{ flexGrow: 1, justifyContent: "center" }}
+          >
             <Link to="/">
               <Button
                 sx={{
@@ -82,7 +85,8 @@ export default function ButtonAppBar({ setShowLogin }) {
                 onClick={() => {
                   handleHomeClick();
                   setActiveButton("Home");
-                }}>
+                }}
+              >
                 Home
               </Button>
             </Link>
@@ -101,7 +105,8 @@ export default function ButtonAppBar({ setShowLogin }) {
                 onClick={() => {
                   setActiveButton("Menu");
                   // handleMenuClick();
-                }}>
+                }}
+              >
                 Plant Care
               </Button>
             </Link>
@@ -119,7 +124,8 @@ export default function ButtonAppBar({ setShowLogin }) {
               onClick={() => {
                 setActiveButton("Contact Us");
                 handleContactClick();
-              }}>
+              }}
+            >
               Contact Us
             </Button>
           </Stack>
@@ -147,7 +153,8 @@ export default function ButtonAppBar({ setShowLogin }) {
             sx={{ borderRadius: 5, mr: 5, ml: 4 }}
             onClick={() => {
               setShowLogin(true);
-            }}>
+            }}
+          >
             Login
           </Button>
         </Toolbar>
