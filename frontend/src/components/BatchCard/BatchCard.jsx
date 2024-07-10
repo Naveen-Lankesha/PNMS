@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import {
   Card,
   CardContent,
@@ -20,9 +21,6 @@ const EditableCard = ({
   stage,
   quantity,
   moistureLevel,
-  n,
-  p,
-  k,
   pesticidesDate,
   onDelete,
 }) => {
@@ -40,29 +38,26 @@ const EditableCard = ({
   };
 
   const handleSave = () => {
-    //   setIsEditing(false);
-    //   const updatedData = {
-    //     batchID,
-    //     type: editableType,
-    //     stage,
-    //     quantity: editableQuantity,
-    //     moistureLevel,
-    //     n,
-    //     p,
-    //     k,
-    //     pesticidesDate: editablePesticidesDate,
+      setIsEditing(false);
+      const updatedData = {
+        batchID,
+        type: editableType,
+        stage,
+        quantity: editableQuantity,
+        moistureLevel,
+        pesticidesDate: editablePesticidesDate,
   };
 
-  //   // Perform save operation here, e.g., send data to backend
-  //   axios
-  //     .post("/api/updateBatch", updatedData)
-  //     .then((response) => {
-  //       console.log("Data saved successfully:", response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error saving data:", error);
-  //     });
-  // };
+    // Perform save operation here, e.g., send data to backend
+    axios
+      .post("http://localhost:4000/api/batch/add", updatedData)
+      .then((response) => {
+        console.log("Data saved successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error saving data:", error);
+      });
+  };
 
   const handleTypeChange = (event) => {
     setEditableType(event.target.value);
@@ -152,15 +147,7 @@ const EditableCard = ({
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
               {moistureLevel}
             </div>
-            <div>
-              <strong style={strongStyle}>N:</strong> {n}
-            </div>
-            <div>
-              <strong style={strongStyle}>P:</strong> {p}
-            </div>
-            <div>
-              <strong style={strongStyle}>K:</strong> {k}
-            </div>
+            
             <div>
               <strong style={strongStyle}>Pesticides applied on:</strong>{" "}
               {isEditing ? (
@@ -255,9 +242,6 @@ EditableCard.defaultProps = {
   stage: "Ready to Sell",
   quantity: "Quantity",
   moistureLevel: 600,
-  n: 100,
-  p: 200,
-  k: 300,
   pesticidesDate: "Date",
 };
 

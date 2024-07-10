@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
-import shoeRouter from "./routes/shoeRoute.js";
-import userRouter from "./routes/userRoute.js";
-import cartRouter from "./routes/cartRoute.js";
+import batchRouter from "./routes/batchRoute.js";
+//import userRouter from "./routes/userRoute.js";
+//import cartRouter from "./routes/cartRoute.js";
 //import orderRouter from "./routes/orderRoute.js";
-import "dotenv/config";
+//import "dotenv/config";
 
 //-----------db pw: 26268
 //app config
@@ -20,11 +20,11 @@ app.use(cors());
 connectDB();
 
 // API endpoints
-app.use("/api/shoe", shoeRouter);
-app.use("/images", express.static("uploads")); // Serving the uploaded images from the "uploads" folder by mounting the "/images" route to the "uploads" folder using express.static middleware
-app.use("/api/user", userRouter);
-app.use("/api/cart", cartRouter);
-app.use("/api/order", orderRouter);
+app.use("/api/batch", batchRouter);
+//app.use("/images", express.static("uploads")); // Serving the uploaded images from the "uploads" folder by mounting the "/images" route to the "uploads" folder using express.static middleware
+//app.use("/api/user", userRouter);
+//app.use("/api/cart", cartRouter);
+//app.use("/api/order", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");
