@@ -15,6 +15,24 @@ const PlantCare = () => {
   const [batchCards, setBatchCards] = useState([]);
   const [nextBatchID, setNextBatchID] = useState(1);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null); // State to handle delete confirmation dialog
+  //const [moistureLevel, setMoistureLevel] = useState(null); // State for the moisture level
+
+  // useEffect(() => {
+  //   const fetchMoistureLevel = async () => {
+  //     try {
+  //       const response = await fetch("http://<ESP32_IP_ADDRESS>/moisture");
+  //       const data = await response.text();
+  //       setMoistureLevel(parseInt(data, 10)); // Convert the string response to an integer
+  //     } catch (error) {
+  //       console.error("Error fetching moisture level:", error);
+  //     }
+  //   };
+
+  //   fetchMoistureLevel();
+  //   const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
+
+  //   return () => clearInterval(interval); // Cleanup on unmount
+  // }, []);
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
@@ -23,7 +41,7 @@ const PlantCare = () => {
       type: "Type",
       stage: "Ready to Sell",
       quantity: "Quantity",
-      moistureLevel: 600,
+      moistureLevel: 600, //moistureLevel: moistureLevel || 600,
       n: 100,
       p: 200,
       k: 300,
