@@ -31,21 +31,6 @@ const StoreContextProvider = (props) => {
     });
   };
 
-  // useEffect(() => {
-  //   fetch("http://localhost:5001/all-items")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const initialCartItems = {};
-  //       data.forEach((item) => {
-  //         if (item.quantity > 0) {
-  //           initialCartItems[item._id] = item.quantity;
-  //         }
-  //       });
-  //       setCartItems(initialCartItems);
-  //     });
-  // }, []);
-
-
   const getTotalCartAmount = () => {
     let totalAmount = 0;
     for (const item in cartItems) {

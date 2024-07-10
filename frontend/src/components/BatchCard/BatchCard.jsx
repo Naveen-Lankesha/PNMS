@@ -11,8 +11,7 @@ import {
   Box,
   MenuItem,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete"; // Add this line
-//import axios from "axios";
+import DeleteIcon from "@mui/icons-material/Delete"; 
 import { assets, veg_list } from "../../assets/frontend_assets/assets";
 
 const EditableCard = ({
@@ -21,14 +20,17 @@ const EditableCard = ({
   stage,
   quantity,
   moistureLevel,
-  pesticidesDate,
+  pestDate,
   onDelete,
 }) => {
   const [editableType, setEditableType] = useState(type);
   const [editableQuantity, setEditableQuantity] = useState(quantity);
-  const [editablePesticidesDate, setEditablePesticidesDate] =
-    useState(pesticidesDate);
+  const [editablePesticidesDate, setEditablePesticidesDate] = useState(pestDate);
   const [isEditing, setIsEditing] = useState(false);
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+  });
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -45,18 +47,29 @@ const EditableCard = ({
         stage,
         quantity: editableQuantity,
         moistureLevel,
-        pesticidesDate: editablePesticidesDate,
+        pestDate: editablePesticidesDate,
   };
-
-    // Perform save operation here, e.g., send data to backend
+  
     axios
       .post("http://localhost:4000/api/batch/add", updatedData)
       .then((response) => {
-        console.log("Data saved successfully:", response.data);
+        if (response.data.success) {
+          console.log("Data saved successfully:", response.data);
+        } else {
+          setNotification({
+            open: true,
+            message: response.data.message || "Failed to add new batch",
+          });
+        }
       })
       .catch((error) => {
         console.error("Error saving data:", error);
+        setNotification({
+          open: true,
+          message: "Error saving data. Please try again later.",
+        });
       });
+
   };
 
   const handleTypeChange = (event) => {
@@ -242,7 +255,7 @@ EditableCard.defaultProps = {
   stage: "Ready to Sell",
   quantity: "Quantity",
   moistureLevel: 600,
-  pesticidesDate: "Date",
+  pestDate: "Date",
 };
 
 export default EditableCard;

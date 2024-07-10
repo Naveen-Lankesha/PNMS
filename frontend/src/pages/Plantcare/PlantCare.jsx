@@ -83,7 +83,7 @@ const PlantCare = () => {
       stage: "Ready to Sell",
       quantity: "Quantity",
       moistureLevel: moistureLevel || 600,
-      pesticidesDate: "Date",
+      pestDate: "Date",
     };
 
     setBatchCards([newBatchCard, ...batchCards]); // Add new card at the beginning of the array
