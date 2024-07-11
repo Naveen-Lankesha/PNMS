@@ -11,7 +11,11 @@ const Home = () => {
     <div id="home">
       <Box>
         <Header />
+<<<<<<< HEAD
         {/* <ExploreMenu category={category} setCategory={setCategory} /> */}
+=======
+        <ExploreMenu category={category} setCategory={setCategory} />
+>>>>>>> origin/mayumi
       </Box>
       <Box sx={{ pr: 8, pl: 8 }}>
         <InventoryDisplay category={category} />

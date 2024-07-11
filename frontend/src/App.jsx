@@ -9,6 +9,10 @@ import Cart from "./pages/Cart/Cart";
 import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
 import Footer from "./components/Footer/Footer";
 import LoginPopUp from "./components/LoginPopUp/LoginPopUp";
+<<<<<<< HEAD
+=======
+import PlantCare from "./pages/Plantcare/PlantCare";
+>>>>>>> origin/mayumi
 
 // Create a custom theme
 const theme = createTheme({
@@ -45,7 +49,12 @@ function App() {
       <Routes>
         <Route>
           <Route path="/" element={<Home />} />
+<<<<<<< HEAD
           <Route path="/cart" element={<Cart />} />
+=======
+          <Route path="/inventory-summary" element={<Cart />} />
+          <Route path="/plant-care" element={<PlantCare />} />
+>>>>>>> origin/mayumi
           <Route path="/place-order" element={<PlaceOrder />} />
         </Route>
       </Routes>

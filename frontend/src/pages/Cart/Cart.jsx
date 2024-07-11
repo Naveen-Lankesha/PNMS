@@ -10,7 +10,11 @@ const Cart = () => {
     useContext(StoreContext);
 
   //navigate to place order page
+<<<<<<< HEAD
   const navigate = useNavigate();
+=======
+  // const navigate = useNavigate();
+>>>>>>> origin/mayumi
 
   return (
     <Box sx={{ p: 8 }}>
@@ -19,14 +23,27 @@ const Cart = () => {
           Items
         </Typography>
         <Typography flex={1} fontWeight="bold">
+<<<<<<< HEAD
           Brand
+=======
+          Name
+        </Typography>
+        <Typography flex={1} fontWeight="bold">
+          Category
+>>>>>>> origin/mayumi
         </Typography>
         <Typography flex={1} fontWeight="bold">
           Type
         </Typography>
+<<<<<<< HEAD
         <Typography flex={1} fontWeight="bold">
           Size
         </Typography>
+=======
+        {/* <Typography flex={1} fontWeight="bold">
+          Size
+        </Typography> */}
+>>>>>>> origin/mayumi
         <Typography flex={1} fontWeight="bold">
           Price
         </Typography>
@@ -55,6 +72,7 @@ const Cart = () => {
                   />
                 </Box>
                 <Typography flex={1}>{item.name}</Typography>
+<<<<<<< HEAD
                 <Typography flex={1}>{item.description}</Typography>
 
                 <Typography flex={1}>{size[item._id]}</Typography>
@@ -62,6 +80,16 @@ const Cart = () => {
                 <Typography flex={1}>{cartItems[item._id]}</Typography>
                 <Typography flex={1}>
                   £{item.price * cartItems[item._id]}
+=======
+                <Typography flex={1}>{item.category}</Typography>
+                <Typography flex={1}>{item.description}</Typography>
+
+                {/* <Typography flex={1}>{size[item._id]}</Typography> */}
+                <Typography flex={1}>Rs.{item.price}.00</Typography>
+                <Typography flex={1}>{cartItems[item._id]}</Typography>
+                <Typography flex={1}>
+                  Rs.{item.price * cartItems[item._id]}.00
+>>>>>>> origin/mayumi
                 </Typography>
                 <Box flex={1}>
                   <DeleteOutlineOutlinedIcon
@@ -87,6 +115,7 @@ const Cart = () => {
         <Box flex={1}>
           <Box>
             <Typography fontWeight={"bold"} sx={{ mb: 2 }}>
+<<<<<<< HEAD
               Cart Total
             </Typography>
 
@@ -99,15 +128,37 @@ const Cart = () => {
               <Stack flex={1}>
                 <Typography id="Sub_Total">£{getTotalCartAmount()}</Typography>
                 <Typography id="Delivery_Free">
+=======
+              Inventory Total
+            </Typography>
+
+            <Date />
+            <Stack display={"flex"} flexDirection={"row"}>
+              <Stack flex={1}>
+                <Typography>Sub Total</Typography>
+                {/* <Typography>Delivery Fee</Typography>
+                <Typography sx={{ fontWeight: "bold" }}>Total</Typography> */}
+              </Stack>
+              <Stack flex={1}>
+                <Typography id="Sub_Total">
+                  Rs.{getTotalCartAmount()}.00
+                </Typography>
+                {/* <Typography id="Delivery_Free">
+>>>>>>> origin/mayumi
                   £{getTotalCartAmount() === 0 ? 0 : 2}
                 </Typography>
                 <Typography id="Total" sx={{ fontWeight: "bold" }}>
                   £{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}
+<<<<<<< HEAD
                 </Typography>
+=======
+                </Typography> */}
+>>>>>>> origin/mayumi
               </Stack>
             </Stack>
           </Box>
           <Box sx={{ mt: 2 }}>
+<<<<<<< HEAD
             <Button
               variant="contained"
               onClick={() => navigate("/place-order")}>
@@ -116,6 +167,14 @@ const Cart = () => {
           </Box>
         </Box>
         <Box flex={1} sx={{ mb: 6 }}>
+=======
+            <Button variant="contained" onClick={() => window.print()}>
+              print report
+            </Button>
+          </Box>
+        </Box>
+        {/* <Box flex={1} sx={{ mb: 6 }}>
+>>>>>>> origin/mayumi
           <Typography>If you have a promo code, Enter it here</Typography>
           <TextField
             id="outlined-basic"
@@ -127,7 +186,11 @@ const Cart = () => {
           <Button variant="outlined" sx={{ mt: 2, ml: 2 }}>
             Submit
           </Button>
+<<<<<<< HEAD
         </Box>
+=======
+        </Box> */}
+>>>>>>> origin/mayumi
       </Stack>
     </Box>
   );

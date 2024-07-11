@@ -24,12 +24,21 @@ export default function ButtonAppBar({ setShowLogin }) {
       menuElement.scrollIntoView({ behavior: "smooth" });
     }
   };
+<<<<<<< HEAD
   const handleMenuClick = () => {
     const menuElement = document.getElementById("menu");
     if (menuElement) {
       menuElement.scrollIntoView({ behavior: "smooth" });
     }
   };
+=======
+  // const handleMenuClick = () => {
+  //   const menuElement = document.getElementById("menu");
+  //   if (menuElement) {
+  //     menuElement.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
+>>>>>>> origin/mayumi
   const handleContactClick = () => {
     const menuElement = document.getElementById("footer");
     if (menuElement) {
@@ -47,7 +56,12 @@ export default function ButtonAppBar({ setShowLogin }) {
         elevation={1}
         sx={{
           background: "white",
+<<<<<<< HEAD
         }}>
+=======
+        }}
+      >
+>>>>>>> origin/mayumi
         <Toolbar>
           <IconButton
             size="large"
@@ -57,16 +71,30 @@ export default function ButtonAppBar({ setShowLogin }) {
             component="div"
             sx={{
               ml: 4,
+<<<<<<< HEAD
             }}>
             <img
               onClick={() => (window.location.href = "/")}
               src={assets.PNMSlogo}
               style={{ maxHeight: 50 }}
+=======
+            }}
+          >
+            <img
+              onClick={() => (window.location.href = "/")}
+              src={assets.PNMSlogo}
+              style={{ maxHeight: 80, maxWidth: "auto" }}
+>>>>>>> origin/mayumi
             />
           </IconButton>
           <Stack
             direction={"row"}
+<<<<<<< HEAD
             sx={{ flexGrow: 1, justifyContent: "center" }}>
+=======
+            sx={{ flexGrow: 1, justifyContent: "center" }}
+          >
+>>>>>>> origin/mayumi
             <Link to="/">
               <Button
                 sx={{
@@ -82,11 +110,20 @@ export default function ButtonAppBar({ setShowLogin }) {
                 onClick={() => {
                   handleHomeClick();
                   setActiveButton("Home");
+<<<<<<< HEAD
                 }}>
                 Home
               </Button>
             </Link>
             <Link to="/#menu">
+=======
+                }}
+              >
+                Home
+              </Button>
+            </Link>
+            <Link to="/plant-care">
+>>>>>>> origin/mayumi
               <Button
                 sx={{
                   "&:hover": {
@@ -100,9 +137,16 @@ export default function ButtonAppBar({ setShowLogin }) {
                 }}
                 onClick={() => {
                   setActiveButton("Menu");
+<<<<<<< HEAD
                   handleMenuClick();
                 }}>
                 Brands
+=======
+                  // handleMenuClick();
+                }}
+              >
+                Plant Care
+>>>>>>> origin/mayumi
               </Button>
             </Link>
             <Button
@@ -119,11 +163,20 @@ export default function ButtonAppBar({ setShowLogin }) {
               onClick={() => {
                 setActiveButton("Contact Us");
                 handleContactClick();
+<<<<<<< HEAD
               }}>
               Contact Us
             </Button>
           </Stack>
           <Link to="/cart">
+=======
+              }}
+            >
+              Contact Us
+            </Button>
+          </Stack>
+          {/* <Link to="/cart">
+>>>>>>> origin/mayumi
             <Stack direction={"row-reverse"}>
               {getTotalCartAmount() > 0 ? (
                 <FiberManualRecordIcon
@@ -141,13 +194,22 @@ export default function ButtonAppBar({ setShowLogin }) {
                 // }}
               />
             </Stack>
+<<<<<<< HEAD
           </Link>
+=======
+          </Link> */}
+>>>>>>> origin/mayumi
           <Button
             variant="outlined"
             sx={{ borderRadius: 5, mr: 5, ml: 4 }}
             onClick={() => {
               setShowLogin(true);
+<<<<<<< HEAD
             }}>
+=======
+            }}
+          >
+>>>>>>> origin/mayumi
             Login
           </Button>
         </Toolbar>

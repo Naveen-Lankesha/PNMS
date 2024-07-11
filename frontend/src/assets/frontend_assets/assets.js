@@ -6,21 +6,57 @@ import background from "./background.png";
 import header_img from "./header_img.png";
 import search_icon from "./search_icon.png";
 
+<<<<<<< HEAD
 import menu_1 from "./Adidas_logo.png";
 import menu_2 from "./Nike_logo.png";
 import menu_3 from "./Puma_logo.png";
 import menu_4 from "./Reebok_logo.png";
+=======
+import menu_1 from "./pesticidesicon.png";
+import menu_2 from "./seedicon.jpg";
+import menu_3 from "./planticon.png";
+>>>>>>> origin/mayumi
 // import menu_5 from "./menu_5.png";
 // import menu_6 from "./menu_6.png";
 // import menu_7 from "./menu_7.png";
 // import menu_8 from "./menu_8.png";
 
+<<<<<<< HEAD
 //other
 import item1 from "./pesticides.png";
 import item2 from "./fertilizers.png";
 import item3 from "./nursarybags.png";
 import item4 from "./burntRiceHusk.png";
 import item5 from "./compost.png";
+=======
+//Inventory
+import item1 from "./abamectin.png";
+import item2 from "./coir dust.png";
+import item3 from "./nursarybags.png";
+import item4 from "./rice_husk.png";
+import item5 from "./compost.png";
+import item6 from "./actara.png";
+//import item6 from "./ready_to_sell.png"
+//import item7 from "./seed.png"
+
+//Vegetable
+import veg1 from "./green_cabbage.png";
+import veg2 from "./purple_cabbage.png";
+import veg3 from "./chilli.png";
+import veg4 from "./waraniya.png";
+import veg5 from "./capsicum.png";
+import veg6 from "./karawila.png";
+import veg7 from "./tomato.png";
+import veg8 from "./carrot.png";
+import veg9 from "./beet.png";
+import veg10 from "./Brinjal.png";
+import veg11 from "./thith_batu.png";
+import veg12 from "./chinese_cabbage.png";
+import veg13 from "./Salad_Leaves.png";
+import veg14 from "./nokol.png";
+import veg15 from "./gourd.png";
+import veg16 from "./Snake_Gaurd.png";
+>>>>>>> origin/mayumi
 
 import add_icon_white from "./add_icon_white.png";
 import add_icon_green from "./add_icon_green.png";
@@ -37,6 +73,10 @@ import profile_icon from "./profile_icon.png";
 import bag_icon from "./bag_icon.png";
 import logout_icon from "./logout_icon.png";
 import parcel_icon from "./parcel_icon.png";
+<<<<<<< HEAD
+=======
+import notificationback from "./notificationback.png";
+>>>>>>> origin/mayumi
 
 export const assets = {
   logo,
@@ -61,10 +101,15 @@ export const assets = {
   logout_icon,
   bag_icon,
   parcel_icon,
+<<<<<<< HEAD
+=======
+  notificationback,
+>>>>>>> origin/mayumi
 };
 
 export const menu_list = [
   {
+<<<<<<< HEAD
     menu_name: "Adidas",
     menu_image: menu_1,
   },
@@ -256,6 +301,451 @@ export const shoe_list = [
   //     "Food provides essential nutrients for overall health and well-being",
   //   category: "Pure Veg",
   // },
+=======
+    menu_name: "Material",
+    menu_image: menu_1,
+  },
+  {
+    menu_name: "Seeds",
+    menu_image: menu_2,
+  },
+  {
+    menu_name: "Plants",
+    menu_image: menu_3,
+  },
+  // {
+  //   menu_name: "Reebok",
+  //   menu_image: menu_4,
+  // },
+];
+export const veg_list=[{
+  _id: "6",
+  name: "Green cabbage",
+  image: veg1,
+  price: 15000,
+  description: "50g packet",
+  category: "Seeds",
+},
+{
+  _id: "7",
+  name: "Purple cabbage",
+  image: veg2,
+  price: 15000,
+  description: "50g packet",
+  category: "Seeds",
+},
+{
+  _id: "8",
+  name: "Green Chilli(F1)",
+  image: veg3,
+  price: 1000,
+  description: "50g packet",
+  category: "Seeds",
+},
+{
+  _id: "9",
+  name: "Waraniya",
+  image: veg4,
+  price: 850,
+  description: "50g packet",
+  category: "Seeds",
+},
+{
+  _id: "10",
+  name: "Capsicum",
+  image: veg5,
+  price: 2500,
+  description: "50g packet",
+  category: "Seeds",
+},
+{
+  _id: "11",
+  name: "Karawila",
+  image: veg6,
+  price: 100,
+  description: "10g packet",
+  category: "Seeds",
+},
+{
+  _id: "12",
+  name: "Tomato",
+  image: veg7,
+  price: 2300,
+  description: "2g packet",
+  category: "Seeds",
+},
+{
+  _id: "13",
+  name: "Carrot",
+  image: veg8,
+  price: 80,
+  description: "2g packet",
+  category: "Seeds",
+},
+{
+  _id: "14",
+  name: "Beetroot",
+  image: veg9,
+  price: 80,
+  description: "2g packet",
+  category: "Seeds",
+},
+{
+  _id: "15",
+  name: "Brinjal",
+  image: veg10,
+  price: 3500,
+  description: "50g packet",
+  category: "Seeds",
+},
+{
+  _id: "16",
+  name: "Thibbatu",
+  image: veg11,
+  price: 200,
+  description: "5g packet",
+  category: "Seeds",
+},
+{
+  _id: "17",
+  name: "Chinese Cabbage",
+  image: veg12,
+  price: 190,
+  description: "1g packet",
+  category: "Seeds",
+},
+{
+  _id: "18",
+  name: "Salad Leaves",
+  image: veg13,
+  price: 190,
+  description: "1g packet",
+  category: "Seeds",
+},
+{
+  _id: "19",
+  name: "Nokol",
+  image: veg14,
+  price: 1500,
+  description: "10g packet",
+  category: "Seeds",
+},
+{
+  _id: "20",
+  name: "Watakolu",
+  image: veg15,
+  price: 80,
+  description: "2g packet",
+  category: "Seeds",
+},
+{
+  _id: "21",
+  name: "Pathola",
+  image: veg16,
+  price: 80,
+  description: "2g packet",
+  category: "Seeds",
+}];
+export const shoe_list = [
+  {
+    _id: "1",
+    name: "Pesticides(Abamectin)",
+    image: item1,
+    price: 1050,
+    description: "50ml Bottle",
+    category: "Material",
+  },
+  {
+    _id: "38",
+    name: "Pesticides(Actara)",
+    image: item6,
+    price: 490,
+    description: "8g packets",
+    category: "Material",
+  },
+  {
+    _id: "2",
+    name: "Fertilizers(Coir Dust)",
+    image: item2,
+    price: 520,
+    description: "10kg Package ",
+    category: "Material",
+  },
+  {
+    _id: "5",
+    name: "Fertilizers(Compost)",
+    image: item5,
+    price: 725,
+    description: "20kg Package",
+    category: "Material",
+  },
+
+  {
+    _id: "3",
+    name: "Nursery Bags",
+    image: item3,
+    price: 135,
+    description: " 1kg Polythene bags",
+    category: "Material",
+  },
+
+  {
+    _id: "6",
+    name: "Green cabbage",
+    image: veg1,
+    price: 15000,
+    description: "50g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "7",
+    name: "Purple cabbage",
+    image: veg2,
+    price: 15000,
+    description: "50g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "8",
+    name: "Green Chilli(F1)",
+    image: veg3,
+    price: 1000,
+    description: "50g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "9",
+    name: "Waraniya",
+    image: veg4,
+    price: 850,
+    description: "50g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "10",
+    name: "Capsicum",
+    image: veg5,
+    price: 2500,
+    description: "50g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "11",
+    name: "Karawila",
+    image: veg6,
+    price: 100,
+    description: "10g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "12",
+    name: "Tomato",
+    image: veg7,
+    price: 2300,
+    description: "2g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "13",
+    name: "Carrot",
+    image: veg8,
+    price: 80,
+    description: "2g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "14",
+    name: "Beetroot",
+    image: veg9,
+    price: 80,
+    description: "2g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "15",
+    name: "Brinjal",
+    image: veg10,
+    price: 3500,
+    description: "50g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "16",
+    name: "Thibbatu",
+    image: veg11,
+    price: 200,
+    description: "5g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "17",
+    name: "Chinese Cabbage",
+    image: veg12,
+    price: 190,
+    description: "1g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "18",
+    name: "Salad Leaves",
+    image: veg13,
+    price: 190,
+    description: "1g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "19",
+    name: "Nokol",
+    image: veg14,
+    price: 1500,
+    description: "10g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "20",
+    name: "Watakolu",
+    image: veg15,
+    price: 80,
+    description: "2g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "21",
+    name: "Pathola",
+    image: veg16,
+    price: 80,
+    description: "2g packet",
+    category: "Seeds",
+  },
+  {
+    _id: "22",
+    name: "Green cabbage",
+    image: veg1,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "23",
+    name: "Purple cabbage",
+    image: veg2,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "24",
+    name: "Green Chilli",
+    image: veg3,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "25",
+    name: "Waraniya",
+    image: veg4,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "26",
+    name: "Capsicum",
+    image: veg5,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "27",
+    name: "Karawila",
+    image: veg6,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "28",
+    name: "Tomato",
+    image: veg7,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "29",
+    name: "Carrot",
+    image: veg8,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "30",
+    name: "Beetroot",
+    image: veg9,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "31",
+    name: "Egg plant",
+    image: veg10,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "32",
+    name: "Thibbatu",
+    image: veg11,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "33",
+    name: "Chinese Cabbage",
+    image: veg12,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "34",
+    name: "Salad Leaves",
+    image: veg13,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "35",
+    name: "Nokol",
+    image: veg14,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "36",
+    name: "Watakolu",
+    image: veg15,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+  {
+    _id: "37",
+    name: "Pathola",
+    image: veg16,
+    price: 80,
+    description: "Plants Ready to sell",
+    category: "Plants",
+  },
+>>>>>>> origin/mayumi
   // {
   //   _id: "22",
   //   name: "Fried Cauliflower",
