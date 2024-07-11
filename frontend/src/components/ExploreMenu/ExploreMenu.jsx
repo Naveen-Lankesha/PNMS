@@ -17,13 +17,10 @@ import { menu_list } from "../../assets/frontend_assets/assets";
 import { Link } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 
+import AddItems from "../AddItems/AddItems";
+
 const ExploreMenu = ({ category, setCategory }) => {
   const [open, setOpen] = useState(false);
-  const [newItem, setNewItem] = useState({
-    name: "",
-    description: "",
-    price: "",
-  });
 
   const handleBrandClick = () => {
     const menuElement = document.getElementById("display");
@@ -45,17 +42,6 @@ const ExploreMenu = ({ category, setCategory }) => {
     });
   };
 
-  const handleSave = () => {
-    // Perform save operation here, e.g., send data to backend
-    console.log("Saving new item", newItem);
-    handleClose();
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setNewItem((prev) => ({ ...prev, [name]: value }));
-  };
-
   return (
     <div id="menu">
       <Box sx={{ p: 8 }}>
@@ -65,8 +51,7 @@ const ExploreMenu = ({ category, setCategory }) => {
             fontSize: { md: 40, lg: 50 },
             textAlign: "center",
             fontWeight: 600,
-          }}
-        >
+          }}>
           Our Inventory
         </Typography>
         <Typography
@@ -76,22 +61,19 @@ const ExploreMenu = ({ category, setCategory }) => {
             fontSize: { sm: 16, md: 20, lg: 24 },
             mt: 2,
             mb: 2,
-          }}
-        >
+          }}>
           Inventory Category
         </Typography>
         <Stack
           display="flex"
           flexDirection="row"
           justifyContent="space-between"
-          alignItems="center"
-        >
+          alignItems="center">
           <Box>
             <Button
               variant="contained"
               startIcon={<AddIcon />}
-              onClick={handleClickOpen}
-            >
+              onClick={handleClickOpen}>
               Add New Inventory Item
             </Button>
           </Box>
@@ -122,8 +104,7 @@ const ExploreMenu = ({ category, setCategory }) => {
                     transform:
                       category === item.menu_name ? "scale(1.3)" : "scale(1)",
                     transition: "transform 0.3s ease-in-out",
-                  }}
-                >
+                  }}>
                   <Stack
                     display={"flex"}
                     direction={"column"}
@@ -133,8 +114,7 @@ const ExploreMenu = ({ category, setCategory }) => {
                       setCategory((prev) =>
                         prev === item.menu_name ? "All" : item.menu_name
                       );
-                    }}
-                  >
+                    }}>
                     <img
                       style={{ maxHeight: 120 }}
                       src={item.menu_image}
@@ -155,64 +135,20 @@ const ExploreMenu = ({ category, setCategory }) => {
           <Card
             sx={{
               borderRadius: "20px",
-              border: "solid",
-              borderColor: "#144F21",
-              borderBottomWidth: 8,
-              borderRightWidth: 8,
               margin: 3,
               padding: "10px",
               display: "flex",
               flexDirection: "column",
               position: "relative",
               minHeight: "340px", // Ensure minimum height for visibility
-            }}
-          >
+            }}>
             <CardContent>
-              <Box flex={3} padding={2}>
-                <div>
-                  <strong style={{ color: "#144F21" }}>Item Name:</strong>{" "}
-                  <TextField
-                    size="small"
-                    name="name"
-                    value={newItem.name}
-                    onChange={handleChange}
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mb: 2 }}
-                  />
-                </div>
-                <div>
-                  <strong style={{ color: "#144F21" }}>Description:</strong>{" "}
-                  <TextField
-                    size="small"
-                    name="description"
-                    value={newItem.description}
-                    onChange={handleChange}
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mb: 2 }}
-                  />
-                </div>
-                <div>
-                  <strong style={{ color: "#144F21" }}>Price:</strong>{" "}
-                  <TextField
-                    size="small"
-                    name="price"
-                    type="number"
-                    value={newItem.price}
-                    onChange={handleChange}
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mb: 2 }}
-                  />
-                </div>
-              </Box>
+              <AddItems />
             </CardContent>
           </Card>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSave}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>
