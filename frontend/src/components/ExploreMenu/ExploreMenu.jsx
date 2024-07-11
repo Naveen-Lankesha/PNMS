@@ -129,7 +129,7 @@ const ExploreMenu = ({ category, setCategory }) => {
         </div>
       </Box>
 
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog fullScreen open={open} onClose={handleClose}>
         <DialogTitle>Add New Inventory Item</DialogTitle>
         <DialogContent>
           <Card
