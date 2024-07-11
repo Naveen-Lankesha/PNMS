@@ -4,6 +4,7 @@ import { connectDB } from "./config/db.js";
 import batchRouter from "./routes/batchRoute.js";
 import userRouter from "./routes/userRoute.js";
 import itemRouter from "./routes/itemRoute.js";
+import inventoryRouter from "./routes/inventoryRoute.js";
 
 //import cartRouter from "./routes/cartRoute.js";
 //import orderRouter from "./routes/orderRoute.js";
@@ -26,6 +27,8 @@ app.use("/api/batch", batchRouter);
 app.use("/images", express.static("uploads")); // Serving the uploaded images from the "uploads" folder by mounting the "/images" route to the "uploads" folder using express.static middleware
 app.use("/api/user", userRouter);
 app.use("/api/item", itemRouter);
+app.use("/api/inventory", inventoryRouter);
+
 //app.use("/api/cart", cartRouter);
 //app.use("/api/order", orderRouter);
 
