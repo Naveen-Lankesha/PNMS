@@ -23,7 +23,7 @@ const EditableCard = ({
   pestDate,
   //cnextpestDate,
   onDelete,
-  isEditing,
+  //isEditing,
 }) => {
   const [editableType, setEditableType] = useState(type);
   const [editableStage, setEditableStage] = useState(stage);
