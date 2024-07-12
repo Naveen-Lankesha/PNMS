@@ -86,7 +86,7 @@ const PlantCare = () => {
       pestDate: "Date",
     };
 
-    setBatchCards([newBatchCard, ...batchCards]); // Add new card at the beginning of the array
+    setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]); // Add new card at the beginning of the array
     setNextBatchID(nextBatchID + 1); // Increment the counter for next batchID
   };
 
@@ -112,7 +112,15 @@ const PlantCare = () => {
   const handleCloseNotification = () => {
     setNotification({ open: false, message: "" }); // Close notification
   };
-
+  const handleEditCard = (batchID) => {
+    setBatchCards(
+      batchCards.map((card) =>
+        card.batchID === batchID
+          ? { ...card, isEditing: !card.isEditing }
+          : card
+      )
+    );
+  };
   return (
     <div>
       <div
@@ -184,6 +192,7 @@ const PlantCare = () => {
               <BatchCard
                 key={card.batchID}
                 {...card}
+                onEdit={() => handleEditCard(card.batchID)}
                 onDelete={() => handleDeleteBatchCard(card.batchID)}
               />
             ))}

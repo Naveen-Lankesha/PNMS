@@ -23,28 +23,28 @@ const EditableCard = ({
   pestDate,
   //cnextpestDate,
   onDelete,
-  //isEditing,
+  isEditing,
+  onEdit,
 }) => {
   const [editableType, setEditableType] = useState(type);
   const [editableStage, setEditableStage] = useState(stage);
   const [editableQuantity, setEditableQuantity] = useState(quantity);
   const [editablePesticidesDate, setEditablePesticidesDate] =
     useState(pestDate);
-  const [isEditing, setIsEditing] = useState(false);
+  //const [isEditing, setIsEditing] = useState(false);
   const [notification, setNotification] = useState({
     open: false,
     message: "",
   });
 
   const handleEdit = () => {
-    setIsEditing(true);
     if (!editablePesticidesDate) {
       setEditablePesticidesDate(getCurrentDate());
     }
+    onEdit();
   };
 
   const handleSave = () => {
-    setIsEditing(false);
     const updatedData = {
       batchID,
       type: editableType,
@@ -59,6 +59,7 @@ const EditableCard = ({
       .then((response) => {
         if (response.data.success) {
           console.log("Data saved successfully:", response.data);
+          onEdit();
         } else {
           setNotification({
             open: true,
@@ -252,23 +253,42 @@ const EditableCard = ({
           flex={1}
           sx={{
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 2,
-            //borderLeft: "1px solid #144F21",
+            flexDirection: "column",
+            alignItems: "left",
+            border: "2px solid #144F21",
+            padding: 8,
+            borderRadius: "8px",
+            marginLeft: "6px",
+            position: "relative",
           }}
         >
+          {/* Content for the new box */}
+          <div
+            style={{
+              top: 20,
+              aligh: "center",
+              position: "absolute",
+            }}
+          >
+            <div style={{ color: "red", fontSize: "Medium" }}>
+              NOTIFICATIONS!
+            </div>
+          </div>
+
           {imageUrl && (
             <Box
               sx={{
-                width: "200px",
-                height: "200px",
+                width: "150px",
+                height: "150px",
                 backgroundImage: `url(${imageUrl})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                backgroundColor: "white",
                 borderRadius: "8px",
                 //position: "absolute",
                 bottom: 0,
+                position: "absolute",
+                right: 0,
                 //border: "2px solid #144F21",
               }}
             />
