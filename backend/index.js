@@ -2,10 +2,13 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
 import batchRouter from "./routes/batchRoute.js";
-//import userRouter from "./routes/userRoute.js";
+import userRouter from "./routes/userRoute.js";
+import itemRouter from "./routes/itemRoute.js";
+import inventoryRouter from "./routes/inventoryRoute.js";
+
 //import cartRouter from "./routes/cartRoute.js";
 //import orderRouter from "./routes/orderRoute.js";
-//import "dotenv/config";
+import "dotenv/config";
 
 //-----------db pw: 26268
 //app config
@@ -21,8 +24,11 @@ connectDB();
 
 // API endpoints
 app.use("/api/batch", batchRouter);
-//app.use("/images", express.static("uploads")); // Serving the uploaded images from the "uploads" folder by mounting the "/images" route to the "uploads" folder using express.static middleware
-//app.use("/api/user", userRouter);
+app.use("/images", express.static("uploads")); // Serving the uploaded images from the "uploads" folder by mounting the "/images" route to the "uploads" folder using express.static middleware
+app.use("/api/user", userRouter);
+app.use("/api/item", itemRouter);
+app.use("/api/inventory", inventoryRouter);
+
 //app.use("/api/cart", cartRouter);
 //app.use("/api/order", orderRouter);
 
@@ -35,6 +41,7 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
+//--------------------------------------------item>>shoe cart>>inventory
 // mongodb+srv://lankesha:26268@cluster0.nnacnu2.mongodb.net/?
 
 // const express = require('express')
@@ -42,10 +49,9 @@ app.listen(port, () => {
 // const cors = require('cors')
 // const port = process.env.PORT || 5001;
 
-// // middlewear 
+// // middlewear
 // app.use(cors());
 // app.use(express.json());
-
 
 // app.get('/', (req, res) => {
 //     res.send('Hello World!')
@@ -70,7 +76,6 @@ app.listen(port, () => {
 //         await client.connect();
 //         // Send a ping to confirm a successful connection
 //         const inventory = client.db("Inventory").collection("Items");
-
 
 //         // insert an item to db
 //         app.post("/upload-item", async (req, res) => {
@@ -115,7 +120,6 @@ app.listen(port, () => {
 //             res.send(result);
 //         })
 
-
 //         // delete one item from db
 //         app.delete("/item/:id", async (req, res) => {
 //             const id = req.params.id;
@@ -124,7 +128,6 @@ app.listen(port, () => {
 //             res.send(result);
 //         })
 
-
 //         // get a single item data
 //         app.get("/item/:id", async (req, res) => {
 //             const id = req.params.id;
@@ -132,7 +135,6 @@ app.listen(port, () => {
 //             const result = await inventory.findOne(filter);
 //             res.send(result)
 //         })
-
 
 //         await client.db("admin").command({ ping: 1 });
 //         console.log("Pinged your deployment. You successfully connected to MongoDB!");
