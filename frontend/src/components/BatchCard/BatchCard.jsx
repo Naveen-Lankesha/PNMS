@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import {
   Card,
   CardContent,
@@ -11,8 +11,8 @@ import {
   Box,
   MenuItem,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete"; 
-import { assets, veg_list } from "../../assets/frontend_assets/assets";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { veg_list } from "../../assets/frontend_assets/assets";
 
 const EditableCard = ({
   batchID,
@@ -21,11 +21,15 @@ const EditableCard = ({
   quantity,
   moistureLevel,
   pestDate,
+  //cnextpestDate,
   onDelete,
+  isEditing,
 }) => {
   const [editableType, setEditableType] = useState(type);
+  const [editableStage, setEditableStage] = useState(stage);
   const [editableQuantity, setEditableQuantity] = useState(quantity);
-  const [editablePesticidesDate, setEditablePesticidesDate] = useState(pestDate);
+  const [editablePesticidesDate, setEditablePesticidesDate] =
+    useState(pestDate);
   const [isEditing, setIsEditing] = useState(false);
   const [notification, setNotification] = useState({
     open: false,
@@ -40,16 +44,16 @@ const EditableCard = ({
   };
 
   const handleSave = () => {
-      setIsEditing(false);
-      const updatedData = {
-        batchID,
-        type: editableType,
-        stage,
-        quantity: editableQuantity,
-        moistureLevel,
-        pestDate: editablePesticidesDate,
-  };
-  
+    setIsEditing(false);
+    const updatedData = {
+      batchID,
+      type: editableType,
+      stage,
+      quantity: editableQuantity,
+      moistureLevel,
+      pestDate: editablePesticidesDate,
+    };
+
     axios
       .post("http://localhost:4000/api/batch/add", updatedData)
       .then((response) => {
@@ -69,13 +73,15 @@ const EditableCard = ({
           message: "Error saving data. Please try again later.",
         });
       });
-
   };
 
   const handleTypeChange = (event) => {
     setEditableType(event.target.value);
   };
 
+  const handleStageChange = (event) => {
+    setEditableStage(event.target.value);
+  };
   const handleQuantityChange = (event) => {
     setEditableQuantity(event.target.value);
   };
@@ -88,6 +94,7 @@ const EditableCard = ({
     const today = new Date();
     return today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
   };
+
   const selectedItem = veg_list.find((item) => item.name === editableType);
   const imageUrl = selectedItem ? selectedItem.image : "";
   // change strong style
@@ -96,6 +103,8 @@ const EditableCard = ({
     id: item._id,
     value: item.name,
   }));
+
+  const StageList = ["Seedlings", "Young Plants", "Mature Plants"];
 
   return (
     <Card
@@ -117,18 +126,21 @@ const EditableCard = ({
       <Stack display={"flex"} direction={"row"}>
         <Box flex={4}>
           <CardContent>
-            <div>
-              <strong style={strongStyle}>Batch ID:</strong> {batchID}
+            <div style={{ marginBottom: "2px" }}>
+              <strong style={{ ...strongStyle, marginRight: "11px" }}>
+                Batch ID :
+              </strong>{" "}
+              {batchID}
             </div>
-            <div>
+
+            <div style={{ marginBottom: "2px" }}>
               <strong style={strongStyle}>Type:</strong>{" "}
               {isEditing ? (
                 <Select
                   size="small"
                   value={editableType}
                   onChange={handleTypeChange}
-                  variant="outlined"
-                  sx={{ minWidth: 120 }}
+                  style={{ minWidth: "50px", width: "50%", marginLeft: "48px" }}
                 >
                   {typeOptions.map((option) => (
                     <MenuItem key={option.id} value={option.value}>
@@ -140,28 +152,46 @@ const EditableCard = ({
                 editableType
               )}
             </div>
-            <div>
-              <strong style={strongStyle}>Stage:</strong> {stage}
+            <div style={{ marginBottom: "2px" }}>
+              <strong style={strongStyle}>Stage:</strong>{" "}
+              {isEditing ? (
+                <Select
+                  size="small"
+                  value={editableStage}
+                  onChange={handleStageChange}
+                  style={{ minWidth: "50px", width: "50%", marginLeft: "40px" }}
+                >
+                  {StageList.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+              ) : (
+                editableStage
+              )}
             </div>
-            <div>
-              <strong style={strongStyle}>Quantity:</strong>{" "}
+            <div style={{ marginBottom: "2px", width: "300px" }}>
+              <strong style={strongStyle}>Quantity:</strong>
               {isEditing ? (
                 <TextField
                   size="small"
                   value={editableQuantity}
                   onChange={handleQuantityChange}
                   variant="outlined"
+                  style={{ minWidth: "50px", width: "22%", marginLeft: "24px" }} // Set desired min width and width
+                  inputProps={{ maxLength: 10 }}
                 />
               ) : (
                 editableQuantity
               )}
             </div>
-            <div>
+            <div style={{ marginBottom: "2px" }}>
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
               {moistureLevel}
             </div>
-            
-            <div>
+
+            <div style={{ marginBottom: "2px" }}>
               <strong style={strongStyle}>Pesticides applied on:</strong>{" "}
               {isEditing ? (
                 <TextField
@@ -185,7 +215,7 @@ const EditableCard = ({
                 onClick={handleSave}
                 sx={{
                   backgroundColor: "#289040",
-                  "&:hover": { backgroundColor: "gray" },
+                  "&:hover": { backgroundColor: "#144820" },
                 }}
               >
                 Save
@@ -197,7 +227,7 @@ const EditableCard = ({
                 onClick={handleEdit}
                 sx={{
                   backgroundColor: "#289040",
-                  "&:hover": { backgroundColor: "gray" },
+                  "&:hover": { backgroundColor: "#144820" },
                 }}
               >
                 Edit
@@ -251,9 +281,9 @@ const EditableCard = ({
 
 // Default data
 EditableCard.defaultProps = {
-  type: "Type",
-  stage: "Ready to Sell",
-  quantity: "Quantity",
+  type: "type",
+  stage: "stage",
+  quantity: "00",
   moistureLevel: 600,
   pestDate: "Date",
 };

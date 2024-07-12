@@ -11,9 +11,9 @@ import { Stack } from "@mui/material";
 
 import { StoreContext } from "../../context/StoreContext";
 
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import HdrStrongIcon from "@mui/icons-material/HdrStrong";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+//import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+//import HdrStrongIcon from "@mui/icons-material/HdrStrong";
+//import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 export default function ButtonAppBar({ setShowLogin }) {
   const [activeButton, setActiveButton] = React.useState("Home");

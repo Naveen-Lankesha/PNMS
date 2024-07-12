@@ -79,9 +79,9 @@ const PlantCare = () => {
   const handleAddBatchCard = () => {
     const newBatchCard = {
       batchID: `00${nextBatchID}`, // Generate unique batchID
-      type: "Type",
-      stage: "Ready to Sell",
-      quantity: "Quantity",
+      type: "select type",
+      stage: "select stage",
+      quantity: "00",
       moistureLevel: moistureLevel || 600,
       pestDate: "Date",
     };
@@ -118,11 +118,12 @@ const PlantCare = () => {
       <div
         style={{
           position: "relative", // Position relative for the container
-          width: "100vw",
-          height: "100vh",
+          //width: "100vw",
+          minHeight: "100vh",
           backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${localImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundSize: "auto", // Default size to allow tiling
+          backgroundRepeat: "repeat",
+          backgroundPosition: "top left",
           backgroundColor: "rgba(255, 255, 255, 0.05)",
         }}
       >
@@ -138,9 +139,9 @@ const PlantCare = () => {
               style={{
                 backgroundColor: "#289040",
                 position: "absolute",
-                top: "10px", // Adjust as needed
-                right: "20px", // Adjust as needed
-                zIndex: 9999, // Ensure button appears on top
+                top: "10px",
+                right: "20px",
+                zIndex: 9999,
               }}
             >
               <AddIcon /> Add a New Batch
