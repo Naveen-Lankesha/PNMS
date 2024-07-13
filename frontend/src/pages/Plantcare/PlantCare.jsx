@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import localImage from "./../../assets/frontend_assets/background.png";
 import BatchCard from "../../components/BatchCard/BatchCard";
-
 import {
   Dialog,
   DialogTitle,
@@ -10,7 +9,6 @@ import {
   Button,
   Snackbar,
 } from "@mui/material";
-
 import AddIcon from "@mui/icons-material/Add";
 
 const PlantCare = () => {
@@ -21,59 +19,25 @@ const PlantCare = () => {
   const [notification, setNotification] = useState({
     open: false,
     message: "",
-  }); // State for notificationsconst [notification, setNotification] = useState({ open: false, message: "" }); // State for notifications
+  }); // State for notifications
 
-  //useEffect hook to fetch moisture level every 10 seconds
+  // useEffect hook to fetch moisture level every 10 seconds
+  useEffect(() => {
+    const fetchMoistureLevel = async () => {
+      try {
+        const response = await fetch("http://your-backend-url/sensor-data");
+        const data = await response.json();
+        setMoistureLevel(data.moistureLevel); // Assuming your backend returns { moistureLevel: value }
+      } catch (error) {
+        console.error("Error fetching moisture level:", error);
+      }
+    };
 
-  // useEffect(() => {
-  //   const ws = new WebSocket("ws://192.168.43.189/ws"); // Establish WebSocket connection
+    fetchMoistureLevel(); // Initial fetch
+    const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
 
-  //   ws.onopen = () => {
-  //     console.log("Connected to WebSocket");
-  //     ws.send("getMoisture"); // Initial request for moisture level
-  //   };
-
-  //   ws.onmessage = (event) => {
-  //     console.log("WebSocket message received:", event.data);
-  //     if (!isNaN(event.data)) {
-  //       setMoistureLevel(parseInt(event.data, 10)); // Update moisture level state
-  //       console.log(event.data);
-  //     } else {
-  //       setNotification({ open: true, message: event.data }); // Show notification
-  //       console.log(event.data);
-  //     }
-  //   };
-
-  //   ws.onclose = () => {
-  //     console.log("WebSocket connection closed");
-  //   };
-
-  //   ws.onerror = (error) => {
-  //     console.error("WebSocket error:", error);
-  //   };
-
-  //   // Clean up the WebSocket connection when the component unmounts
-  //   return () => {
-  //     ws.close();
-  //   };
-  // }, []); // Empty dependency array means this effect runs once on mount
-
-  // useEffect(() => {
-  //   const fetchMoistureLevel = async () => {
-  //     try {
-  //       const response = await fetch("http://192.168.43.189/moisture");
-  //       const data = await response.text();
-  //       setMoistureLevel(parseInt(data, 10)); // Convert the string response to an integer
-  //     } catch (error) {
-  //       console.error("Error fetching moisture level:", error);
-  //     }
-  //   };
-
-  //   fetchMoistureLevel(); // Initial fetch
-  //   const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
-
-  //   return () => clearInterval(interval); // Cleanup interval on component unmount
-  // }, []);
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
@@ -163,7 +127,7 @@ const PlantCare = () => {
           <Snackbar
             open={notification.open}
             message={notification.message}
-            autoHideDuration={60000}
+            autoHideDuration={6000}
             onClose={handleCloseNotification}
           />
 
@@ -173,7 +137,6 @@ const PlantCare = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-
               marginTop: "50px",
               paddingLeft: "20px",
               paddingRight: "20px",
