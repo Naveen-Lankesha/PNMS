@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import {
   Card,
   CardContent,
@@ -10,8 +11,7 @@ import {
   Box,
   MenuItem,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete"; // Add this line
-//import axios from "axios";
+import DeleteIcon from "@mui/icons-material/Delete"; 
 import { assets, veg_list } from "../../assets/frontend_assets/assets";
 
 const EditableCard = ({
@@ -20,17 +20,17 @@ const EditableCard = ({
   stage,
   quantity,
   moistureLevel,
-  n,
-  p,
-  k,
-  pesticidesDate,
+  pestDate,
   onDelete,
 }) => {
   const [editableType, setEditableType] = useState(type);
   const [editableQuantity, setEditableQuantity] = useState(quantity);
-  const [editablePesticidesDate, setEditablePesticidesDate] =
-    useState(pesticidesDate);
+  const [editablePesticidesDate, setEditablePesticidesDate] = useState(pestDate);
   const [isEditing, setIsEditing] = useState(false);
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+  });
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -40,29 +40,37 @@ const EditableCard = ({
   };
 
   const handleSave = () => {
-    //   setIsEditing(false);
-    //   const updatedData = {
-    //     batchID,
-    //     type: editableType,
-    //     stage,
-    //     quantity: editableQuantity,
-    //     moistureLevel,
-    //     n,
-    //     p,
-    //     k,
-    //     pesticidesDate: editablePesticidesDate,
+      setIsEditing(false);
+      const updatedData = {
+        batchID,
+        type: editableType,
+        stage,
+        quantity: editableQuantity,
+        moistureLevel,
+        pestDate: editablePesticidesDate,
   };
+  
+    axios
+      .post("http://localhost:4000/api/batch/add", updatedData)
+      .then((response) => {
+        if (response.data.success) {
+          console.log("Data saved successfully:", response.data);
+        } else {
+          setNotification({
+            open: true,
+            message: response.data.message || "Failed to add new batch",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error saving data:", error);
+        setNotification({
+          open: true,
+          message: "Error saving data. Please try again later.",
+        });
+      });
 
-  //   // Perform save operation here, e.g., send data to backend
-  //   axios
-  //     .post("/api/updateBatch", updatedData)
-  //     .then((response) => {
-  //       console.log("Data saved successfully:", response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error saving data:", error);
-  //     });
-  // };
+  };
 
   const handleTypeChange = (event) => {
     setEditableType(event.target.value);
@@ -152,15 +160,7 @@ const EditableCard = ({
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
               {moistureLevel}
             </div>
-            <div>
-              <strong style={strongStyle}>N:</strong> {n}
-            </div>
-            <div>
-              <strong style={strongStyle}>P:</strong> {p}
-            </div>
-            <div>
-              <strong style={strongStyle}>K:</strong> {k}
-            </div>
+            
             <div>
               <strong style={strongStyle}>Pesticides applied on:</strong>{" "}
               {isEditing ? (
@@ -255,10 +255,7 @@ EditableCard.defaultProps = {
   stage: "Ready to Sell",
   quantity: "Quantity",
   moistureLevel: 600,
-  n: 100,
-  p: 200,
-  k: 300,
-  pesticidesDate: "Date",
+  pestDate: "Date",
 };
 
 export default EditableCard;

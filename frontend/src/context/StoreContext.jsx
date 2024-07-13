@@ -13,20 +13,23 @@ const StoreContextProvider = (props) => {
   };
 
   const addToCart = (itemId) => {
-    if (!cartItems[itemId]) {
-      setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
-    } else {
-      setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-    }
+    setCartItems((prev) => ({
+      ...prev,
+      [itemId]: (prev[itemId] || 0) + 1,
+    }));
   };
 
   const removeFromCart = (itemId) => {
-    setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+    setCartItems((prev) => {
+      const newCartItems = { ...prev };
+      if (newCartItems[itemId] > 1) {
+        newCartItems[itemId] -= 1;
+      } else {
+        delete newCartItems[itemId];
+      }
+      return newCartItems;
+    });
   };
-
-  // useEffect(() => {
-  //   console.log(cartItems);
-  // }, [cartItems]);
 
   const getTotalCartAmount = () => {
     let totalAmount = 0;
@@ -105,3 +108,22 @@ export default StoreContextProvider;
 // };
 
 // export default StoreContextProvider;
+
+
+
+//NIKINI
+// const addToCart = (itemId) => {
+//   if (!cartItems[itemId]) {
+//     setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
+//   } else {
+//     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+//   }
+// };
+
+// const removeFromCart = (itemId) => {
+//   setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+// };
+
+// useEffect(() => {
+//   fetch("http://localhost:5001/all-items").then(res => res.json()).then(data => console.log(data))
+//  }, []);
