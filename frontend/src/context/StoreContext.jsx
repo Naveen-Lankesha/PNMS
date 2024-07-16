@@ -12,17 +12,6 @@ const StoreContextProvider = (props) => {
 
   const [cartItems, setCartItems] = useState({});
 
-  const handleChange = async (id, event) => {
-    setSize((prevSize) => ({ ...prevSize, [id]: event.target.value }));
-    if (token) {
-      await axios.post(
-        url + "/api/inventory/updateShoeSize",
-        { itemId: id, size: event.target.value },
-        { headers: { token } }
-      );
-    }
-  };
-
   const addToCart = async (itemId) => {
     if (!cartItems[itemId]) {
       setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
@@ -106,7 +95,6 @@ const StoreContextProvider = (props) => {
   }, []);
 
   const contextValue = {
-    handleChange,
     shoe_list,
     cartItems,
     setCartItems,

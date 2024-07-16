@@ -1,19 +1,12 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 const Cart = () => {
-  const {
-    shoe_list,
-    cartItems,
-    removeFromCart,
-    size,
-    getTotalCartAmount,
-    url,
-  } = useContext(StoreContext);
+  const { shoe_list, cartItems, removeFromCart, getTotalCartAmount, url } =
+    useContext(StoreContext);
 
   //navigate to place order page
   // const navigate = useNavigate();
