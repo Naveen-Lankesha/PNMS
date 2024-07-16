@@ -6,7 +6,7 @@ const batchSchema = new mongoose.Schema({
   stage: { type: String, required: true },
   quantity: { type: Number, required: true },
   moistureLevel: { type: Number, required: true },
-  pestDate: { type: String, required: true }
+  pestDate: { type: String,  }
 });
 
 // The expression mongoose.models.batch is checking if there is already a model named "batch" defined in the mongoose.models object. If such a model exists, it will be assigned to batchModel.
