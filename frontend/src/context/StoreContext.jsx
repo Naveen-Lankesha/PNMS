@@ -76,7 +76,7 @@ const StoreContextProvider = (props) => {
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token"));
         await loadCartData(localStorage.getItem("token")); //to keep the items in the cart after refresh
-        await loadShoeSize(localStorage.getItem("token")); //to keep the shoeSize in the cart after refresh
+        //await loadShoeSize(localStorage.getItem("token")); //to keep the shoeSize in the cart after refresh
       }
     }
     fetchData();
