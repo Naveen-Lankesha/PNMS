@@ -21,69 +21,69 @@ const PlantCare = () => {
   const [notification, setNotification] = useState({
     open: false,
     message: "",
-  }); // State for notificationsconst [notification, setNotification] = useState({ open: false, message: "" }); // State for notifications
-
+  }); // State for notifications
+  
   //useEffect hook to fetch moisture level every 10 seconds
 
-  // useEffect(() => {
-  //   const ws = new WebSocket("ws://192.168.43.189/ws"); // Establish WebSocket connection
+  useEffect(() => {
+    const ws = new WebSocket("ws://192.168.43.189/ws"); // Establish WebSocket connection
 
-  //   ws.onopen = () => {
-  //     console.log("Connected to WebSocket");
-  //     ws.send("getMoisture"); // Initial request for moisture level
-  //   };
+    ws.onopen = () => {
+      console.log("Connected to WebSocket");
+      ws.send("getMoisture"); // Initial request for moisture level
+    };
 
-  //   ws.onmessage = (event) => {
-  //     console.log("WebSocket message received:", event.data);
-  //     if (!isNaN(event.data)) {
-  //       setMoistureLevel(parseInt(event.data, 10)); // Update moisture level state
-  //       console.log(event.data);
-  //     } else {
-  //       setNotification({ open: true, message: event.data }); // Show notification
-  //       console.log(event.data);
-  //     }
-  //   };
+    ws.onmessage = (event) => {
+      console.log("WebSocket message received:", event.data);
+      if (!isNaN(event.data)) {
+        setMoistureLevel(parseInt(event.data, 10)); // Update moisture level state
+        console.log(event.data);
+      } else {
+        setNotification({ open: true, message: event.data }); // Show notification
+        console.log(event.data);
+      }
+    };
 
-  //   ws.onclose = () => {
-  //     console.log("WebSocket connection closed");
-  //   };
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
 
-  //   ws.onerror = (error) => {
-  //     console.error("WebSocket error:", error);
-  //   };
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
 
-  //   // Clean up the WebSocket connection when the component unmounts
-  //   return () => {
-  //     ws.close();
-  //   };
-  // }, []); // Empty dependency array means this effect runs once on mount
+    // Clean up the WebSocket connection when the component unmounts
+    return () => {
+      ws.close();
+    };
+  }, []); // Empty dependency array means this effect runs once on mount
 
-  // useEffect(() => {
-  //   const fetchMoistureLevel = async () => {
-  //     try {
-  //       const response = await fetch("http://192.168.43.189/moisture");
-  //       const data = await response.text();
-  //       setMoistureLevel(parseInt(data, 10)); // Convert the string response to an integer
-  //     } catch (error) {
-  //       console.error("Error fetching moisture level:", error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchMoistureLevel = async () => {
+      try {
+        const response = await fetch("http://192.168.43.189/moisture");
+        const data = await response.text();
+        setMoistureLevel(parseInt(data, 10)); // Convert the string response to an integer
+      } catch (error) {
+        console.error("Error fetching moisture level:", error);
+      }
+    };
 
-  //   fetchMoistureLevel(); // Initial fetch
-  //   const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
+    fetchMoistureLevel(); // Initial fetch
+    const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
 
-  //   return () => clearInterval(interval); // Cleanup interval on component unmount
-  // }, []);
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, []);
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
     const newBatchCard = {
       batchID: `00${nextBatchID}`, // Generate unique batchID
-      type: "Type",
+      type: "Plant",
       stage: "Ready to Sell",
-      quantity: "Quantity",
+      quantity: "Plants quantity",
       moistureLevel: moistureLevel || 600,
-      pestDate: "Date",
+      pestDate: "Date"
     };
 
     setBatchCards([newBatchCard, ...batchCards]); // Add new card at the beginning of the array
@@ -138,9 +138,9 @@ const PlantCare = () => {
               style={{
                 backgroundColor: "#289040",
                 position: "absolute",
-                top: "10px", // Adjust as needed
-                right: "20px", // Adjust as needed
-                zIndex: 9999, // Ensure button appears on top
+                top: "10px", 
+                right: "20px", 
+                zIndex: 9999, 
               }}
             >
               <AddIcon /> Add a New Batch
@@ -149,9 +149,9 @@ const PlantCare = () => {
 
           {/* Delete confirmation dialog */}
           <Dialog open={!!deleteConfirmation} onClose={cancelDelete}>
-            <DialogTitle>Delete Batch Card</DialogTitle>
+            <DialogTitle>Delete Batch</DialogTitle>
             <DialogContent>
-              <p>Are you sure you want to delete this batch card?</p>
+              <p>Are you sure you want to delete this batch?</p>
             </DialogContent>
             <DialogActions>
               <Button onClick={confirmDelete}>Yes</Button>

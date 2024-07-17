@@ -21,7 +21,7 @@ const EditableCard = ({
   quantity,
   moistureLevel,
   pestDate,
-  onDelete,
+  onDelete
 }) => {
   const [editableType, setEditableType] = useState(type);
   const [editableQuantity, setEditableQuantity] = useState(quantity);
@@ -70,6 +70,32 @@ const EditableCard = ({
         });
       });
 
+  };
+
+  const handleDelete = () => {
+    axios
+      .delete(`http://localhost:4000/api/batch/remove/${batchID}`)
+      .then((response) => {
+        if (response.data.success) {
+          onDelete(); // Call the onDelete function passed as a prop
+          setNotification({
+            open: true,
+            message: "Batch deleted successfully",
+          });
+        } else {
+          setNotification({
+            open: true,
+            message: response.data.message || "Failed to delete batch",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting batch:", error);
+        setNotification({
+          open: true,
+          message: "Error deleting batch. Please try again later.",
+        });
+      });
   };
 
   const handleTypeChange = (event) => {
@@ -158,7 +184,11 @@ const EditableCard = ({
             </div>
             <div>
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
-              {moistureLevel}
+              {isEditing ? (
+                moistureLevel
+              ) : (
+                "Soil moisture"
+              )}
             </div>
             
             <div>
@@ -208,10 +238,10 @@ const EditableCard = ({
               size={"small"}
               variant="contained"
               color="secondary"
-              onClick={onDelete}
+              onClick={handleDelete}
               sx={{
-                backgroundColor: "gray",
-                "&:hover": { backgroundColor: "red" },
+                backgroundColor: "red",
+                "&:hover": { backgroundColor: "gray" },
               }}
             >
               <DeleteIcon sx={{ color: "white" }} />

@@ -21,7 +21,7 @@ const batchRouter = express.Router();
 
 batchRouter.post("/add", addBatch); 
 batchRouter.get("/list", listBatch); 
-batchRouter.post("/remove", removeBatch); 
+batchRouter.delete("/remove/:id", removeBatch); 
 batchRouter.post("/removeAll", removeAllBatches); 
 
 export default batchRouter; 
