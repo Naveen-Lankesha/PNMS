@@ -14,6 +14,6 @@ inventoryRouter.post("/add", authMiddleware, addToCart);
 inventoryRouter.post("/remove", authMiddleware, removeFromCart);
 inventoryRouter.post("/get", authMiddleware, getCart);
 //cartRouter.post("/updateShoeSize", authMiddleware, updateShoeSize);
-//cartRouter.post("/getShoeSize", authMiddleware, getSize);
+//inventoryRouter.post("/getShoeSize", authMiddleware, getSize);
 
 export default inventoryRouter;

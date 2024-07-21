@@ -111,14 +111,15 @@ const EditableCard = ({
     <Card
       sx={{
         borderRadius: "20px",
-        minWidth: "700px",
+        maxWdith: { xs: "280px" },
+        minWidth: { sm: "700px" },
         maxHeight: "400px",
         border: "solid",
         borderColor: "#144F21",
-        borderBottomWidth: 8,
-        borderRightWidth: 8,
+        borderBottomWidth: { sm: 8 },
+        borderRightWidth: { sm: 8 },
         margin: 3,
-        padding: "10px",
+        padding: { sm: "10px" },
         display: "flex",
         flexDirection: "column",
         position: "relative",
@@ -190,6 +191,7 @@ const EditableCard = ({
             <div style={{ marginBottom: "2px" }}>
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
               {moistureLevel}
+              {"%"}
             </div>
 
             <div style={{ marginBottom: "2px" }}>
@@ -252,7 +254,7 @@ const EditableCard = ({
         <Box
           flex={1}
           sx={{
-            display: "flex",
+            display: { xs: "none", sm: "block flex" },
             flexDirection: "column",
             alignItems: "left",
             border: "2px solid #144F21",
