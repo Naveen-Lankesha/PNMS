@@ -10,6 +10,7 @@ import { Stack, useMediaQuery, useTheme } from "@mui/material";
 import { assets } from "../../assets/frontend_assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import LoginIcon from "@mui/icons-material/Login";
+import localImage from "./../../assets/frontend_assets/newlogo.png";
 
 export default function ButtonAppBar({ setShowLogin }) {
   const [activeButton, setActiveButton] = React.useState("Home");
@@ -68,7 +69,7 @@ export default function ButtonAppBar({ setShowLogin }) {
           >
             <img
               onClick={() => (window.location.href = "/")}
-              src={assets.PNMSlogo}
+              src={localImage}
               style={{
                 maxHeight: isSmallScreen ? 30 : 80,
                 maxWidth: "auto",

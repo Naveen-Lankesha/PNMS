@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import { Box, Button, TextField, InputAdornment } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
+import localImage from "./../../assets/frontend_assets/background.png";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,31 +33,56 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(
+  type,
+  durationtoPot,
+  DurationtoFertilize,
+  DurationtoPesticides,
+  DurationtoSell
+) {
+  return {
+    type,
+    durationtoPot,
+    DurationtoFertilize,
+    DurationtoPesticides,
+    DurationtoSell,
+  };
 }
 
 const initialRows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
+  createData("Purple Cabbage", 1, 3, 5, 6),
+  createData("Green Cabbage", 1, 3, 5, 6),
 ];
 
 export default function PlantRecipes() {
   const [rows, setRows] = React.useState(initialRows);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [editIdx, setEditIdx] = React.useState(null);
 
   const addNewRow = () => {
     const newRow = createData(
-      `New Dessert ${rows.length + 1}`,
-      300,
-      10.0,
-      50,
-      5.0
+      `New Plant ${rows.length + 1}`,
+      "-",
+      "-",
+      "-",
+      "-"
     );
     setRows([newRow, ...rows]);
+  };
+
+  const handleEdit = (idx) => {
+    setEditIdx(idx);
+  };
+
+  const handleSave = () => {
+    setEditIdx(null);
+  };
+
+  const handleChange = (e, field, idx) => {
+    const updatedRows = rows.map((row, rowIdx) =>
+      rowIdx === idx ? { ...row, [field]: e.target.value } : row
+    );
+    setRows(updatedRows);
   };
 
   const handleSearchChange = (event) => {
@@ -64,7 +90,7 @@ export default function PlantRecipes() {
   };
 
   const filteredRows = rows.filter((row) =>
-    row.name.toLowerCase().includes(searchQuery.toLowerCase())
+    row.type.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -89,10 +115,11 @@ export default function PlantRecipes() {
         onChange={handleSearchChange}
         sx={{
           position: "relative",
-          mb: 8,
-          top: "20px",
+          mb: 10,
+          ml: { xs: 0, sm: 60, md: 150 },
+          top: "60px",
+          //right: "-1000px", // Position the element 20px from the right edge of the page
           minWidth: "100px",
-          left: "540px",
           "& .MuiInputBase-root": {
             height: "40px", // Adjust height of the input element
           },
@@ -115,7 +142,11 @@ export default function PlantRecipes() {
 
       <TableContainer
         component={Paper}
-        sx={{ display: "flex", justifyContent: "center" }}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${localImage})`,
+        }}
       >
         <Table
           sx={{
@@ -129,26 +160,89 @@ export default function PlantRecipes() {
         >
           <TableHead>
             <TableRow>
-              <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-              <StyledTableCell align="right">Calories</StyledTableCell>
-              <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+              <StyledTableCell>Type</StyledTableCell>
+              <StyledTableCell align="right">
+                Duration to Pot (Weeks)
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                Duration to Fertilize (Weeks)
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                Duration to Pesticides (Weeks)
+              </StyledTableCell>
+              <StyledTableCell align="right">
+                Duration to Sell (Weeks)
+              </StyledTableCell>
+              <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredRows.map((row) => (
+            {filteredRows.map((row, idx) => (
               <StyledTableRow
-                key={row.name}
+                key={idx}
                 sx={{ border: "2px solid rgba(20, 119, 33, 0.5)" }}
               >
                 <StyledTableCell component="th" scope="row">
-                  {row.name}
+                  {editIdx === idx ? (
+                    <TextField
+                      value={row.type}
+                      onChange={(e) => handleChange(e, "type", idx)}
+                    />
+                  ) : (
+                    row.type
+                  )}
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                <StyledTableCell align="center">
+                  {editIdx === idx ? (
+                    <TextField
+                      value={row.durationtoPot}
+                      onChange={(e) => handleChange(e, "durationtoPot", idx)}
+                    />
+                  ) : (
+                    row.durationtoPot
+                  )}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {editIdx === idx ? (
+                    <TextField
+                      value={row.DurationtoFertilize}
+                      onChange={(e) =>
+                        handleChange(e, "DurationtoFertilize", idx)
+                      }
+                    />
+                  ) : (
+                    row.DurationtoFertilize
+                  )}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {editIdx === idx ? (
+                    <TextField
+                      value={row.DurationtoPesticides}
+                      onChange={(e) =>
+                        handleChange(e, "DurationtoPesticides", idx)
+                      }
+                    />
+                  ) : (
+                    row.DurationtoPesticides
+                  )}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {editIdx === idx ? (
+                    <TextField
+                      value={row.DurationtoSell}
+                      onChange={(e) => handleChange(e, "DurationtoSell", idx)}
+                    />
+                  ) : (
+                    row.DurationtoSell
+                  )}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {editIdx === idx ? (
+                    <Button onClick={() => handleSave(idx)}>Save</Button>
+                  ) : (
+                    <Button onClick={() => handleEdit(idx)}>Edit</Button>
+                  )}
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
