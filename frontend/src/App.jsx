@@ -10,7 +10,7 @@ import PlaceOrder from "./pages/PlaceOrder/PlaceOrder";
 import Footer from "./components/Footer/Footer";
 import LoginPopUp from "./components/LoginPopUp/LoginPopUp";
 import PlantCare from "./pages/Plantcare/PlantCare";
-
+import PlantRecipes from "./pages/PlantRecipes/PlantRecipes";
 // Create a custom theme
 const theme = createTheme({
   palette: {
@@ -42,13 +42,13 @@ function App() {
         <LoginPopUp setShowLogin={setShowLogin} />
       </Dialog>
       <Navbar setShowLogin={setShowLogin} />
-
       <Routes>
         <Route>
           <Route path="/" element={<Home />} />
           <Route path="/inventory-summary" element={<Cart />} />
           <Route path="/plant-care" element={<PlantCare />} />
           <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path="/Plant-recipes" element={<PlantRecipes />} />
         </Route>
       </Routes>
       <Footer />

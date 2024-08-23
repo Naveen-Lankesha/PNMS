@@ -10,7 +10,7 @@ const Cart = () => {
     shoe_list,
     cartItems,
     removeFromCart,
-    size,
+    // size,
     getTotalCartAmount,
     url,
   } = useContext(StoreContext);
@@ -93,7 +93,8 @@ const Cart = () => {
           md: "row",
           lg: "row",
         }}
-        sx={{ mt: 8 }}>
+        sx={{ mt: 8 }}
+      >
         <Box flex={1}>
           <Box>
             <Typography fontWeight={"bold"} sx={{ mb: 2 }}>
