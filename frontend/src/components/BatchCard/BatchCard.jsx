@@ -243,7 +243,7 @@ const EditableCard = ({
               size={"small"}
               variant="contained"
               color="secondary"
-              onClick={handleDelete}
+              onClick={onDelete}
               sx={{
                 backgroundColor: "red",
                 "&:hover": { backgroundColor: "gray" },

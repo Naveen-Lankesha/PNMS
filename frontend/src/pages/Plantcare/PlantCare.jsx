@@ -22,7 +22,27 @@ const PlantCare = () => {
     open: false,
     message: "",
   }); // State for notifications
+
+  useEffect(() => {
+    const fetchBatches = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/batch/list");
+        if (response.data.success) {
+          setBatchCards(response.data.data); // Set the fetched batches to state
+          const highestBatchID = Math.max(
+            ...response.data.data.map((batch) => parseInt(batch.batchID, 10)),
+            0
+          );
+          setNextBatchID(highestBatchID + 1); // Update nextBatchID based on the highest batchID
+        }
+      } catch (error) {
+        console.error("Error fetching batch list:", error);
+      }
+    };
   
+    fetchBatches();
+  }, []); // Empty dependency array means this effect runs once on mount
+
   //useEffect hook to fetch moisture level every 10 seconds
 
   useEffect(() => {
