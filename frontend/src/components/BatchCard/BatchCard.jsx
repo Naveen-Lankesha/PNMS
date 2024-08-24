@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import {
   Card,
   CardContent,
@@ -11,8 +11,8 @@ import {
   Box,
   MenuItem,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete"; 
-import { assets, veg_list } from "../../assets/frontend_assets/assets";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { veg_list } from "../../assets/frontend_assets/assets";
 
 const EditableCard = ({
   batchID,
@@ -21,40 +21,45 @@ const EditableCard = ({
   quantity,
   moistureLevel,
   pestDate,
+  //cnextpestDate,
   onDelete,
+  isEditing,
+  onEdit,
 }) => {
   const [editableType, setEditableType] = useState(type);
+  const [editableStage, setEditableStage] = useState(stage);
   const [editableQuantity, setEditableQuantity] = useState(quantity);
-  const [editablePesticidesDate, setEditablePesticidesDate] = useState(pestDate);
-  const [isEditing, setIsEditing] = useState(false);
+  const [editablePesticidesDate, setEditablePesticidesDate] =
+    useState(pestDate);
+  //const [isEditing, setIsEditing] = useState(false);
   const [notification, setNotification] = useState({
     open: false,
     message: "",
   });
 
   const handleEdit = () => {
-    setIsEditing(true);
     if (!editablePesticidesDate) {
       setEditablePesticidesDate(getCurrentDate());
     }
+    onEdit();
   };
 
   const handleSave = () => {
-      setIsEditing(false);
-      const updatedData = {
-        batchID,
-        type: editableType,
-        stage,
-        quantity: editableQuantity,
-        moistureLevel,
-        pestDate: editablePesticidesDate,
-  };
-  
+    const updatedData = {
+      batchID,
+      type: editableType,
+      stage,
+      quantity: editableQuantity,
+      moistureLevel,
+      pestDate: editablePesticidesDate,
+    };
+
     axios
       .post("http://localhost:4000/api/batch/add", updatedData)
       .then((response) => {
         if (response.data.success) {
           console.log("Data saved successfully:", response.data);
+          onEdit();
         } else {
           setNotification({
             open: true,
@@ -69,13 +74,15 @@ const EditableCard = ({
           message: "Error saving data. Please try again later.",
         });
       });
-
   };
 
   const handleTypeChange = (event) => {
     setEditableType(event.target.value);
   };
 
+  const handleStageChange = (event) => {
+    setEditableStage(event.target.value);
+  };
   const handleQuantityChange = (event) => {
     setEditableQuantity(event.target.value);
   };
@@ -88,6 +95,7 @@ const EditableCard = ({
     const today = new Date();
     return today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
   };
+
   const selectedItem = veg_list.find((item) => item.name === editableType);
   const imageUrl = selectedItem ? selectedItem.image : "";
   // change strong style
@@ -97,18 +105,21 @@ const EditableCard = ({
     value: item.name,
   }));
 
+  const StageList = ["Seedlings", "Young Plants", "Mature Plants"];
+
   return (
     <Card
       sx={{
         borderRadius: "20px",
-        minWidth: "700px",
+        maxWdith: { xs: "280px" },
+        minWidth: { sm: "700px" },
         maxHeight: "400px",
         border: "solid",
         borderColor: "#144F21",
-        borderBottomWidth: 8,
-        borderRightWidth: 8,
+        borderBottomWidth: { sm: 8 },
+        borderRightWidth: { sm: 8 },
         margin: 3,
-        padding: "10px",
+        padding: { sm: "10px" },
         display: "flex",
         flexDirection: "column",
         position: "relative",
@@ -117,18 +128,21 @@ const EditableCard = ({
       <Stack display={"flex"} direction={"row"}>
         <Box flex={4}>
           <CardContent>
-            <div>
-              <strong style={strongStyle}>Batch ID:</strong> {batchID}
+            <div style={{ marginBottom: "2px" }}>
+              <strong style={{ ...strongStyle, marginRight: "11px" }}>
+                Batch ID :
+              </strong>{" "}
+              {batchID}
             </div>
-            <div>
+
+            <div style={{ marginBottom: "2px" }}>
               <strong style={strongStyle}>Type:</strong>{" "}
               {isEditing ? (
                 <Select
                   size="small"
                   value={editableType}
                   onChange={handleTypeChange}
-                  variant="outlined"
-                  sx={{ minWidth: 120 }}
+                  style={{ minWidth: "50px", width: "50%", marginLeft: "48px" }}
                 >
                   {typeOptions.map((option) => (
                     <MenuItem key={option.id} value={option.value}>
@@ -140,28 +154,47 @@ const EditableCard = ({
                 editableType
               )}
             </div>
-            <div>
-              <strong style={strongStyle}>Stage:</strong> {stage}
+            <div style={{ marginBottom: "2px" }}>
+              <strong style={strongStyle}>Stage:</strong>{" "}
+              {isEditing ? (
+                <Select
+                  size="small"
+                  value={editableStage}
+                  onChange={handleStageChange}
+                  style={{ minWidth: "50px", width: "50%", marginLeft: "40px" }}
+                >
+                  {StageList.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+              ) : (
+                editableStage
+              )}
             </div>
-            <div>
-              <strong style={strongStyle}>Quantity:</strong>{" "}
+            <div style={{ marginBottom: "2px", width: "300px" }}>
+              <strong style={strongStyle}>Quantity:</strong>
               {isEditing ? (
                 <TextField
                   size="small"
                   value={editableQuantity}
                   onChange={handleQuantityChange}
                   variant="outlined"
+                  style={{ minWidth: "50px", width: "22%", marginLeft: "24px" }} // Set desired min width and width
+                  inputProps={{ maxLength: 10 }}
                 />
               ) : (
                 editableQuantity
               )}
             </div>
-            <div>
+            <div style={{ marginBottom: "2px" }}>
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
               {moistureLevel}
+              {"%"}
             </div>
-            
-            <div>
+
+            <div style={{ marginBottom: "2px" }}>
               <strong style={strongStyle}>Pesticides applied on:</strong>{" "}
               {isEditing ? (
                 <TextField
@@ -185,7 +218,7 @@ const EditableCard = ({
                 onClick={handleSave}
                 sx={{
                   backgroundColor: "#289040",
-                  "&:hover": { backgroundColor: "gray" },
+                  "&:hover": { backgroundColor: "#144820" },
                 }}
               >
                 Save
@@ -197,7 +230,7 @@ const EditableCard = ({
                 onClick={handleEdit}
                 sx={{
                   backgroundColor: "#289040",
-                  "&:hover": { backgroundColor: "gray" },
+                  "&:hover": { backgroundColor: "#144820" },
                 }}
               >
                 Edit
@@ -221,24 +254,43 @@ const EditableCard = ({
         <Box
           flex={1}
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 2,
-            //borderLeft: "1px solid #144F21",
+            display: { xs: "none", sm: "block flex" },
+            flexDirection: "column",
+            alignItems: "left",
+            border: "2px solid #144F21",
+            padding: 8,
+            borderRadius: "8px",
+            marginLeft: "6px",
+            position: "relative",
           }}
         >
+          {/* Content for the new box */}
+          <div
+            style={{
+              top: 20,
+              aligh: "center",
+              position: "absolute",
+            }}
+          >
+            <div style={{ color: "red", fontSize: "Medium" }}>
+              NOTIFICATIONS!
+            </div>
+          </div>
+
           {imageUrl && (
             <Box
               sx={{
-                width: "200px",
-                height: "200px",
+                width: "150px",
+                height: "150px",
                 backgroundImage: `url(${imageUrl})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
+                backgroundColor: "white",
                 borderRadius: "8px",
                 //position: "absolute",
                 bottom: 0,
+                position: "absolute",
+                right: 0,
                 //border: "2px solid #144F21",
               }}
             />
@@ -251,9 +303,9 @@ const EditableCard = ({
 
 // Default data
 EditableCard.defaultProps = {
-  type: "Type",
-  stage: "Ready to Sell",
-  quantity: "Quantity",
+  type: "type",
+  stage: "stage",
+  quantity: "00",
   moistureLevel: 600,
   pestDate: "Date",
 };

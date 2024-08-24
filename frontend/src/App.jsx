@@ -12,7 +12,6 @@ import LoginPopUp from "./components/LoginPopUp/LoginPopUp";
 <<<<<<< HEAD
 =======
 import PlantCare from "./pages/Plantcare/PlantCare";
->>>>>>> origin/mayumi
 
 // Create a custom theme
 const theme = createTheme({
@@ -45,7 +44,6 @@ function App() {
         <LoginPopUp setShowLogin={setShowLogin} />
       </Dialog>
       <Navbar setShowLogin={setShowLogin} />
-
       <Routes>
         <Route>
           <Route path="/" element={<Home />} />
@@ -56,6 +54,7 @@ function App() {
           <Route path="/plant-care" element={<PlantCare />} />
 >>>>>>> origin/mayumi
           <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path="/Plant-recipes" element={<PlantRecipes />} />
         </Route>
       </Routes>
       <Footer />

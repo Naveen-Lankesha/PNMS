@@ -6,8 +6,14 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 const Cart = () => {
-  const { shoe_list, cartItems, removeFromCart, size, getTotalCartAmount } =
-    useContext(StoreContext);
+  const {
+    shoe_list,
+    cartItems,
+    removeFromCart,
+    // size,
+    getTotalCartAmount,
+    url,
+  } = useContext(StoreContext);
 
   //navigate to place order page
 <<<<<<< HEAD
@@ -66,7 +72,7 @@ const Cart = () => {
               <Stack display={"flex"} direction={"row"}>
                 <Box flex={1}>
                   <img
-                    src={item.image}
+                    src={url + "/images/" + item.image}
                     alt={item.name}
                     style={{ maxWidth: "90px" }}
                   />
@@ -111,7 +117,8 @@ const Cart = () => {
           md: "row",
           lg: "row",
         }}
-        sx={{ mt: 8 }}>
+        sx={{ mt: 8 }}
+      >
         <Box flex={1}>
           <Box>
             <Typography fontWeight={"bold"} sx={{ mb: 2 }}>
