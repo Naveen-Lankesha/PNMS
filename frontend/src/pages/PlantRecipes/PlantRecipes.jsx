@@ -11,6 +11,7 @@ import { Box, Button, TextField, InputAdornment } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import localImage from "./../../assets/frontend_assets/background.png";
+import axios from 'axios';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -24,6 +25,8 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
+const url = "http://localhost:4000"; // Backend URL
+
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
@@ -35,16 +38,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function createData(
   type,
-  durationtoPot,
+  DurationtoPot,
   DurationtoFertilize,
-  DurationtoPesticides,
+  DurationtoPesticide,
   DurationtoSell
 ) {
   return {
     type,
-    durationtoPot,
+    DurationtoPot,
     DurationtoFertilize,
-    DurationtoPesticides,
+    DurationtoPesticide,
     DurationtoSell,
   };
 }
@@ -58,25 +61,73 @@ export default function PlantRecipes() {
   const [rows, setRows] = React.useState(initialRows);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [editIdx, setEditIdx] = React.useState(null);
+  const [notification, setNotification] = React.useState({ open: false, message: "" });
+
+  /*useEffect(() => {
+    // Fetching plant data from the backend when the component mounts
+    const fetchPlantData = async () => {
+      try {
+        const response = await axios.get(`${url}/api/plants/list`);
+        setRows(response.data.data);
+      } catch (error) {
+        console.log("Failed to fetch plant data", error);
+      }
+    };
+    fetchPlantData();
+  }, []);*/
 
   const addNewRow = () => {
     const newRow = createData(
       `New Plant ${rows.length + 1}`,
-      "-",
-      "-",
-      "-",
-      "-"
+      0,
+      0,
+      0,
+      0
     );
     setRows([newRow, ...rows]);
   };
+
 
   const handleEdit = (idx) => {
     setEditIdx(idx);
   };
 
-  const handleSave = () => {
-    setEditIdx(null);
+  const handleSave = (idx) => {
+    const updatedData = {
+      type: rows[idx].type,
+      duration_to_pot: rows[idx].DurationtoPot,
+      duration_to_fertilize: rows[idx].DurationtoFertilize,
+      duration_to_pesticide: rows[idx].DurationtoPesticide,
+      duration_to_sell: rows[idx].DurationtoSell
+    };
+
+    axios
+      .post("http://localhost:4000/api/plant/add", updatedData)
+      .then((response) => {
+        if (response.data.success) {
+          console.log("Data saved successfully:", response.data);
+          setEditIdx(null);
+          //onEdit();
+          setNotification({ open: true, message: "Plant added successfully!" });
+        } else {
+          setNotification({
+            open: true,
+            message: response.data.message || "Failed to add new plant",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error saving data:", error);
+        setNotification({
+          open: true,
+          message: "Error saving data. Please try again later.",
+        });
+      });
   };
+
+  // const handleSave = () => {
+  //   setEditIdx(null);
+  // };
 
   const handleChange = (e, field, idx) => {
     const updatedRows = rows.map((row, rowIdx) =>
@@ -168,7 +219,7 @@ export default function PlantRecipes() {
                 Duration to Fertilize (Weeks)
               </StyledTableCell>
               <StyledTableCell align="right">
-                Duration to Pesticides (Weeks)
+                Duration to Pesticide (Weeks)
               </StyledTableCell>
               <StyledTableCell align="right">
                 Duration to Sell (Weeks)
@@ -195,11 +246,11 @@ export default function PlantRecipes() {
                 <StyledTableCell align="center">
                   {editIdx === idx ? (
                     <TextField
-                      value={row.durationtoPot}
-                      onChange={(e) => handleChange(e, "durationtoPot", idx)}
+                      value={row.DurationtoPot}
+                      onChange={(e) => handleChange(e, "DurationtoPot", idx)}
                     />
                   ) : (
-                    row.durationtoPot
+                    row.DurationtoPot
                   )}
                 </StyledTableCell>
                 <StyledTableCell align="center">
@@ -217,13 +268,13 @@ export default function PlantRecipes() {
                 <StyledTableCell align="center">
                   {editIdx === idx ? (
                     <TextField
-                      value={row.DurationtoPesticides}
+                      value={row.DurationtoPesticide}
                       onChange={(e) =>
-                        handleChange(e, "DurationtoPesticides", idx)
+                        handleChange(e, "DurationtoPesticide", idx)
                       }
                     />
                   ) : (
-                    row.DurationtoPesticides
+                    row.DurationtoPesticide
                   )}
                 </StyledTableCell>
                 <StyledTableCell align="center">

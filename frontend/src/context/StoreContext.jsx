@@ -92,7 +92,8 @@ const StoreContextProvider = (props) => {
     setSize(response.data.shoeSize);
   };
 
-  //prevet refresh logout
+  
+  //prevent refresh logout
   useEffect(() => {
     async function fetchData() {
       await fetchShoeList();
