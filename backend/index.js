@@ -7,8 +7,6 @@ import itemRouter from "./routes/itemRoute.js";
 import plantRouter from "./routes/plantRoute.js";
 import inventoryRouter from "./routes/inventoryRoute.js";
 
-//import cartRouter from "./routes/cartRoute.js";
-//import orderRouter from "./routes/orderRoute.js";
 import "dotenv/config";
 
 //-----------db pw: 26268
@@ -32,7 +30,6 @@ app.use("/api/plant", plantRouter);
 app.use("/api/inventory", inventoryRouter);
 
 //app.use("/api/cart", cartRouter);
-//app.use("/api/order", orderRouter);
 
 app.get("/", (req, res) => {
   res.send("API working");
