@@ -23,12 +23,14 @@ export default function ButtonAppBar({ setShowLogin }) {
       menuElement.scrollIntoView({ behavior: "smooth" });
     }
   };
-  // const handleMenuClick = () => {
-  //   const menuElement = document.getElementById("menu");
-  //   if (menuElement) {
-  //     menuElement.scrollIntoView({ behavior: "smooth" });
-  //   }
-  // };
+
+  const handleplantRecipesClick = () => {
+    const menuElement = document.getElementById("plantRecipes");
+    if (menuElement) {
+      menuElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const handleContactClick = () => {
     const menuElement = document.getElementById("footer");
     if (menuElement) {
@@ -45,30 +47,45 @@ export default function ButtonAppBar({ setShowLogin }) {
         elevation={1}
         sx={{
           background: "white",
+          px: { xs: 1, sm: 2 },
+          py: { xs: 1, sm: 2 },
         }}
       >
-        <Toolbar>
+        <Toolbar
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            p: 0,
+          }}
+        >
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
             component="div"
-            sx={{
-              ml: 4,
-            }}
+            sx={{ ml: { xs: 0, sm: 4 } }}
           >
             <img
               onClick={() => (window.location.href = "/")}
-              src={assets.PNMSlogo}
-              style={{ maxHeight: 80, maxWidth: "auto" }}
+              src={localImage}
+              style={{
+                maxHeight: isSmallScreen ? 30 : 80,
+                maxWidth: "auto",
+              }}
+              alt="Logo"
             />
           </IconButton>
           <Stack
             direction={"row"}
-            sx={{ flexGrow: 1, justifyContent: "center" }}
+            spacing={0}
+            sx={{
+              flexGrow: 1,
+              justifyContent: isSmallScreen ? "flex-start" : "center",
+              display: "flex",
+            }}
           >
->>>>>>> origin/mayumi
             <Link to="/">
               <Button
                 sx={{
@@ -85,20 +102,12 @@ export default function ButtonAppBar({ setShowLogin }) {
                 onClick={() => {
                   handleHomeClick();
                   setActiveButton("Home");
-<<<<<<< HEAD
-                }}>
-                Home
-              </Button>
-            </Link>
-            <Link to="/#menu">
-=======
                 }}
               >
                 Home
               </Button>
             </Link>
             <Link to="/plant-care">
->>>>>>> origin/mayumi
               <Button
                 sx={{
                   fontSize: { xs: "0.6rem", sm: "1rem" },
@@ -113,11 +122,9 @@ export default function ButtonAppBar({ setShowLogin }) {
                 }}
                 onClick={() => {
                   setActiveButton("Menu");
-                  // handleMenuClick();
                 }}
               >
                 Plant Care
->>>>>>> origin/mayumi
               </Button>
             </Link>
             <Link to="/plant-recipes">
@@ -155,37 +162,11 @@ export default function ButtonAppBar({ setShowLogin }) {
               onClick={() => {
                 setActiveButton("Contact Us");
                 handleContactClick();
-<<<<<<< HEAD
-              }}>
-              Contact Us
-            </Button>
-          </Stack>
-          <Link to="/cart">
-=======
               }}
             >
               Contact Us
             </Button>
           </Stack>
-          {/* <Link to="/cart">
-            <Stack direction={"row-reverse"}>
-              {getTotalCartAmount() > 0 ? (
-                <FiberManualRecordIcon
-                  sx={{
-                    color: "green",
-                    fontSize: "small",
-                  }}
-                />
-              ) : null}
-
-              <ShoppingCartOutlinedIcon
-                sx={{ color: "#FD7401" }}
-                // onClick={() => {
-                //   window.location.href = "/cart";
-                // }}
-              />
-            </Stack>
-          </Link> */}
           <Button
             variant="outlined"
             sx={{
@@ -196,12 +177,8 @@ export default function ButtonAppBar({ setShowLogin }) {
             }}
             onClick={() => {
               setShowLogin(true);
-<<<<<<< HEAD
-            }}>
-=======
             }}
           >
->>>>>>> origin/mayumi
             Login
           </Button>
           <IconButton

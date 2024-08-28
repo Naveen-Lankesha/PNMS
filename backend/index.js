@@ -12,8 +12,8 @@ import "dotenv/config";
 //-----------db pw: 26268
 //app config
 const app = express();
-const cors = require('cors');
-const port = process.env.PORT || 5001;
+//const cors = require('cors');
+const port = process.env.PORT || 4000;
 
 // Middleware to handle CORS and JSON body parsing
 app.use(cors());

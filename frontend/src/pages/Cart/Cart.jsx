@@ -15,14 +15,10 @@ const Cart = () => {
           Items
         </Typography>
         <Typography flex={1} fontWeight="bold">
-<<<<<<< HEAD
-          Brand
-=======
           Name
         </Typography>
         <Typography flex={1} fontWeight="bold">
           Category
->>>>>>> origin/mayumi
         </Typography>
         <Typography flex={1} fontWeight="bold">
           Type
@@ -56,22 +52,12 @@ const Cart = () => {
                   />
                 </Box>
                 <Typography flex={1}>{item.name}</Typography>
-<<<<<<< HEAD
-                <Typography flex={1}>{item.description}</Typography>
-
-                <Typography flex={1}>{size[item._id]}</Typography>
-                <Typography flex={1}>£{item.price}</Typography>
-                <Typography flex={1}>{cartItems[item._id]}</Typography>
-                <Typography flex={1}>
-                  £{item.price * cartItems[item._id]}
-=======
                 <Typography flex={1}>{item.category}</Typography>
                 <Typography flex={1}>{item.description}</Typography>
                 <Typography flex={1}>Rs.{item.price}.00</Typography>
                 <Typography flex={1}>{cartItems[item._id]}</Typography>
                 <Typography flex={1}>
                   Rs.{item.price * cartItems[item._id]}.00
->>>>>>> origin/mayumi
                 </Typography>
                 <Box flex={1}>
                   <DeleteOutlineOutlinedIcon
@@ -98,20 +84,6 @@ const Cart = () => {
         <Box flex={1}>
           <Box>
             <Typography fontWeight={"bold"} sx={{ mb: 2 }}>
-<<<<<<< HEAD
-              Cart Total
-            </Typography>
-
-            <Stack display={"flex"} flexDirection={"row"}>
-              <Stack flex={1}>
-                <Typography>Sub Total</Typography>
-                <Typography>Delivery Fee</Typography>
-                <Typography sx={{ fontWeight: "bold" }}>Total</Typography>
-              </Stack>
-              <Stack flex={1}>
-                <Typography id="Sub_Total">£{getTotalCartAmount()}</Typography>
-                <Typography id="Delivery_Free">
-=======
               Inventory Total
             </Typography>
 
@@ -128,16 +100,6 @@ const Cart = () => {
             </Stack>
           </Box>
           <Box sx={{ mt: 2 }}>
-<<<<<<< HEAD
-            <Button
-              variant="contained"
-              onClick={() => navigate("/place-order")}>
-              PROCEED TO CHECKOUT
-            </Button>
-          </Box>
-        </Box>
-        <Box flex={1} sx={{ mb: 6 }}>
-=======
             <Button variant="contained" onClick={() => window.print()}>
               print report
             </Button>
