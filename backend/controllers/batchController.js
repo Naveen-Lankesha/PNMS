@@ -1,5 +1,5 @@
 import batchModel from "../models/batchModel.js"; 
-import fs from "fs"; // Importing the fs module for file system operations
+//import fs from "fs"; // Importing the fs module for file system operations
 
 // add batch
 const addBatch = async (req, res) => {

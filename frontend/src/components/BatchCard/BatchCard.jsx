@@ -107,6 +107,32 @@ const EditableCard = ({
 
   const StageList = ["Seedlings", "Young Plants", "Mature Plants"];
 
+  const handleDelete = () => {
+    const removedData = {
+      batchID
+    };
+    axios
+    .post(`http://localhost:4000/api/batch/remove/${batchID}`, removedData)
+    .then((response) => {
+      if (response.data.success) {
+        console.log("Batch removed successfully:", response.data);
+        onDelete();
+      } else {
+        setNotification({
+          open: true,
+          message: response.data.message || "Failed to remove batch",
+        });
+      }
+    })
+    .catch((error) => {
+      console.error("Error removing data:", error);
+      setNotification({
+        open: true,
+        message: "Error removing data. Please try again later.",
+      });
+    });
+  };
+
   return (
     <Card
       sx={{
@@ -241,7 +267,7 @@ const EditableCard = ({
               size={"small"}
               variant="contained"
               color="secondary"
-              onClick={onDelete}
+              onClick={handleDelete}
               sx={{
                 backgroundColor: "red",
                 "&:hover": { backgroundColor: "gray" },
@@ -311,3 +337,4 @@ EditableCard.defaultProps = {
 };
 
 export default EditableCard;
+

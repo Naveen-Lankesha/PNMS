@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import localImage from "./../../assets/frontend_assets/background.png";
 import BatchCard from "../../components/BatchCard/BatchCard";
 
@@ -23,6 +24,7 @@ const PlantCare = () => {
     message: "",
   }); // State for notifications
 
+  //fetching batches from database
   useEffect(() => {
     const fetchBatches = async () => {
       try {
@@ -44,9 +46,8 @@ const PlantCare = () => {
   }, []); // Empty dependency array means this effect runs once on mount
 
   //useEffect hook to fetch moisture level every 10 seconds
-
   useEffect(() => {
-    const ws = new WebSocket("ws://192.168.43.189/ws"); // Establish WebSocket connection
+    const ws = new WebSocket("ws://192.168.230.206/ws"); // Establish WebSocket connection
 
     ws.onopen = () => {
       console.log("Connected to WebSocket");
