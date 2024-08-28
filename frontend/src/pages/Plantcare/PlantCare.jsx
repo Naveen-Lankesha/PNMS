@@ -67,11 +67,11 @@ const PlantCare = () => {
   //     }
   //   };
 
-    fetchMoistureLevel(); // Initial fetch
-    const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
+  //   fetchMoistureLevel(); // Initial fetch
+  //   const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
 
-    return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, []);
+  //   return () => clearInterval(interval); // Cleanup interval on component unmount
+  // }, []);
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
