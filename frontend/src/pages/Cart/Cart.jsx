@@ -1,26 +1,12 @@
 import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import { StoreContext } from "../../context/StoreContext";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 const Cart = () => {
-  const {
-    shoe_list,
-    cartItems,
-    removeFromCart,
-    // size,
-    getTotalCartAmount,
-    url,
-  } = useContext(StoreContext);
-
-  //navigate to place order page
-<<<<<<< HEAD
-  const navigate = useNavigate();
-=======
-  // const navigate = useNavigate();
->>>>>>> origin/mayumi
+  const { shoe_list, cartItems, removeFromCart, getTotalCartAmount, url } =
+    useContext(StoreContext);
 
   return (
     <Box sx={{ p: 8 }}>
@@ -41,15 +27,7 @@ const Cart = () => {
         <Typography flex={1} fontWeight="bold">
           Type
         </Typography>
-<<<<<<< HEAD
-        <Typography flex={1} fontWeight="bold">
-          Size
-        </Typography>
-=======
-        {/* <Typography flex={1} fontWeight="bold">
-          Size
-        </Typography> */}
->>>>>>> origin/mayumi
+
         <Typography flex={1} fontWeight="bold">
           Price
         </Typography>
@@ -89,8 +67,6 @@ const Cart = () => {
 =======
                 <Typography flex={1}>{item.category}</Typography>
                 <Typography flex={1}>{item.description}</Typography>
-
-                {/* <Typography flex={1}>{size[item._id]}</Typography> */}
                 <Typography flex={1}>Rs.{item.price}.00</Typography>
                 <Typography flex={1}>{cartItems[item._id]}</Typography>
                 <Typography flex={1}>
@@ -143,24 +119,11 @@ const Cart = () => {
             <Stack display={"flex"} flexDirection={"row"}>
               <Stack flex={1}>
                 <Typography>Sub Total</Typography>
-                {/* <Typography>Delivery Fee</Typography>
-                <Typography sx={{ fontWeight: "bold" }}>Total</Typography> */}
               </Stack>
               <Stack flex={1}>
                 <Typography id="Sub_Total">
                   Rs.{getTotalCartAmount()}.00
                 </Typography>
-                {/* <Typography id="Delivery_Free">
->>>>>>> origin/mayumi
-                  £{getTotalCartAmount() === 0 ? 0 : 2}
-                </Typography>
-                <Typography id="Total" sx={{ fontWeight: "bold" }}>
-                  £{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 2}
-<<<<<<< HEAD
-                </Typography>
-=======
-                </Typography> */}
->>>>>>> origin/mayumi
               </Stack>
             </Stack>
           </Box>
@@ -180,24 +143,6 @@ const Cart = () => {
             </Button>
           </Box>
         </Box>
-        {/* <Box flex={1} sx={{ mb: 6 }}>
->>>>>>> origin/mayumi
-          <Typography>If you have a promo code, Enter it here</Typography>
-          <TextField
-            id="outlined-basic"
-            label="Promo Code"
-            variant="outlined"
-            size="small"
-            sx={{ mt: 2 }}
-          />
-          <Button variant="outlined" sx={{ mt: 2, ml: 2 }}>
-            Submit
-          </Button>
-<<<<<<< HEAD
-        </Box>
-=======
-        </Box> */}
->>>>>>> origin/mayumi
       </Stack>
     </Box>
   );

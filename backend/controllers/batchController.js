@@ -38,17 +38,17 @@ const listBatch = async (req, res) => {
 //remove batch item
 const removeBatch = async (req, res) => {
   try {
-    const batch = await batchModel.findById(req.body.id); 
-    //const imagePath = `uploads/${shoe.image}`; // Constructing the path to the image file
+    const batch = await batchModel.findOne({batchID: req.params.id}); 
+    if (!batch) {
+      return res.status(404).json({ success: false, message: "Batch not found" });
+    }
 
-    //fs.unlinkSync(imagePath, () => {}); // Deleting the image file from the file system
-
-    await batchModel.findByIdAndDelete(req.body.id); 
+    await batchModel.findByIdAndDelete(batch._id); 
 
     res.json({ success: true, message: "Batch removed successfully" }); 
   } catch (error) {
     console.log(error); 
-    res.json({ success: false, message: "Failed to remove the batch" }); 
+    res.status(500).json({ success: false, message: "Failed to remove the batch" }); 
   }
 };
 

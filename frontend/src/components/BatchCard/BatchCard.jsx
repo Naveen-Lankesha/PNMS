@@ -243,8 +243,8 @@ const EditableCard = ({
               color="secondary"
               onClick={onDelete}
               sx={{
-                backgroundColor: "gray",
-                "&:hover": { backgroundColor: "red" },
+                backgroundColor: "red",
+                "&:hover": { backgroundColor: "gray" },
               }}
             >
               <DeleteIcon sx={{ color: "white" }} />

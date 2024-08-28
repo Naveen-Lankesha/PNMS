@@ -13,7 +13,5 @@ const inventoryRouter = express.Router();
 inventoryRouter.post("/add", authMiddleware, addToCart);
 inventoryRouter.post("/remove", authMiddleware, removeFromCart);
 inventoryRouter.post("/get", authMiddleware, getCart);
-//cartRouter.post("/updateShoeSize", authMiddleware, updateShoeSize);
-//inventoryRouter.post("/getShoeSize", authMiddleware, getSize);
 
 export default inventoryRouter;

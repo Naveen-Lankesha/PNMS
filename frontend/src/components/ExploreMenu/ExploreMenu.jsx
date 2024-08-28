@@ -183,7 +183,9 @@ const ExploreMenu = ({ category, setCategory }) => {
 =======
 
       <Dialog fullScreen open={open} onClose={handleClose}>
-        <DialogTitle>Add New Inventory Item</DialogTitle>
+        <DialogTitle sx={{ fontWeight: 600 }}>
+          Add New Inventory Item
+        </DialogTitle>
         <DialogContent>
           <Card
             sx={{
@@ -200,8 +202,10 @@ const ExploreMenu = ({ category, setCategory }) => {
             </CardContent>
           </Card>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+        <DialogActions sx={{ pr: 4 }}>
+          <Button variant="outlined" color="error" onClick={handleClose}>
+            Cancel
+          </Button>
         </DialogActions>
       </Dialog>
 >>>>>>> origin/mayumi

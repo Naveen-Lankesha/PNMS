@@ -21,6 +21,26 @@ const PlantCare = () => {
     message: "",
   }); // State for notifications
 
+  useEffect(() => {
+    const fetchBatches = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/batch/list");
+        if (response.data.success) {
+          setBatchCards(response.data.data); // Set the fetched batches to state
+          const highestBatchID = Math.max(
+            ...response.data.data.map((batch) => parseInt(batch.batchID, 10)),
+            0
+          );
+          setNextBatchID(highestBatchID + 1); // Update nextBatchID based on the highest batchID
+        }
+      } catch (error) {
+        console.error("Error fetching batch list:", error);
+      }
+    };
+  
+    fetchBatches();
+  }, []); // Empty dependency array means this effect runs once on mount
+
   //useEffect hook to fetch moisture level every 10 seconds
 
   // useEffect(() => {
@@ -81,7 +101,7 @@ const PlantCare = () => {
       stage: "select stage",
       quantity: "00",
       moistureLevel: moistureLevel || 600,
-      pestDate: "Date",
+      pestDate: "Date"
     };
 
     setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]); // Add new card at the beginning of the array
@@ -156,9 +176,9 @@ const PlantCare = () => {
 
           {/* Delete confirmation dialog */}
           <Dialog open={!!deleteConfirmation} onClose={cancelDelete}>
-            <DialogTitle>Delete Batch Card</DialogTitle>
+            <DialogTitle>Delete Batch</DialogTitle>
             <DialogContent>
-              <p>Are you sure you want to delete this batch card?</p>
+              <p>Are you sure you want to delete this batch?</p>
             </DialogContent>
             <DialogActions>
               <Button onClick={confirmDelete}>Yes</Button>
