@@ -63,19 +63,6 @@ export default function PlantRecipes() {
   const [editIdx, setEditIdx] = React.useState(null);
   const [notification, setNotification] = React.useState({ open: false, message: "" });
 
-  /*useEffect(() => {
-    // Fetching plant data from the backend when the component mounts
-    const fetchPlantData = async () => {
-      try {
-        const response = await axios.get(`${url}/api/plants/list`);
-        setRows(response.data.data);
-      } catch (error) {
-        console.log("Failed to fetch plant data", error);
-      }
-    };
-    fetchPlantData();
-  }, []);*/
-
   const addNewRow = () => {
     const newRow = createData(
       `New Plant ${rows.length + 1}`,
@@ -125,8 +112,54 @@ export default function PlantRecipes() {
       });
   };
 
-  // const handleSave = () => {
-  //   setEditIdx(null);
+  React.useEffect(() => {
+    const fetchRows = async (query = "") => {
+      try {
+        const response = await axios.get("http://localhost:4000/api/plant/list", {
+          params: { type: query }, // Assuming backend supports querying by name
+        });
+        if (response.data.success) {
+          const fetchedData = response.data.data.map((plant) => ({
+            type: plant.type,
+            DurationtoPot: plant.duration_to_pot,
+            DurationtoFertilize: plant.duration_to_fertilize,
+            DurationtoPesticide: plant.duration_to_pesticide,
+            DurationtoSell: plant.duration_to_sell,
+          }));
+          setRows(fetchedData); // Set the fetched plants to state
+        }
+      } catch (error) {
+        console.error("Error fetching plant list:", error);
+      }
+    };
+  
+    fetchRows();
+  }, []);
+
+  // const handleDelete = (idx) => {
+  //   const removedData = {
+  //     plant: rows[idx].type
+  //   };
+  //   axios
+  //   .post("http://localhost:4000/api/plant/remove", removedData)
+  //   .then((response) => {
+  //     if (response.data.success) {
+  //       console.log("Plant removed successfully:", response.data);
+  //       onDelete();
+  //     } else {
+  //       setNotification({
+  //         open: true,
+  //         message: response.data.message || "Failed to remove plant",
+  //       });
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error removing data:", error);
+  //     setNotification({
+  //       open: true,
+  //       message: "Error removing data. Please try again later.",
+  //     });
+  //   });
   // };
 
   const handleChange = (e, field, idx) => {
