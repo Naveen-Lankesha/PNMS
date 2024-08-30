@@ -5,7 +5,7 @@ const batchSchema = new mongoose.Schema({
   type: { type: String, required: true },
   stage: { type: String, required: true },
   quantity: { type: Number, required: true },
-  moistureLevel: { type: Number, required: true },
+  moistureLevel: { type: String, required: true },
   pestDate: { type: String,  }
 });
 

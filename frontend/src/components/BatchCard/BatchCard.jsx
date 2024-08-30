@@ -109,28 +109,28 @@ const EditableCard = ({
 
   const handleDelete = () => {
     const removedData = {
-      batchID
+      batchID,
     };
     axios
-    .post(`http://localhost:4000/api/batch/remove/${batchID}`, removedData)
-    .then((response) => {
-      if (response.data.success) {
-        console.log("Batch removed successfully:", response.data);
-        onDelete();
-      } else {
+      .post(`http://localhost:4000/api/batch/remove/${batchID}`, removedData)
+      .then((response) => {
+        if (response.data.success) {
+          console.log("Batch removed successfully:", response.data);
+          onDelete();
+        } else {
+          setNotification({
+            open: true,
+            message: response.data.message || "Failed to remove batch",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error removing data:", error);
         setNotification({
           open: true,
-          message: response.data.message || "Failed to remove batch",
+          message: "Error removing data. Please try again later.",
         });
-      }
-    })
-    .catch((error) => {
-      console.error("Error removing data:", error);
-      setNotification({
-        open: true,
-        message: "Error removing data. Please try again later.",
       });
-    });
   };
 
   return (
@@ -154,10 +154,11 @@ const EditableCard = ({
       <Stack display={"flex"} direction={"row"}>
         <Box flex={4}>
           <CardContent>
-            <div style={{ marginBottom: "2px" }}>
+            <div style={{ marginBottom: "2px", display: "flex" }}>
               <strong style={{ ...strongStyle, marginRight: "11px" }}>
                 Batch ID :
-              </strong>{" "}
+              </strong>
+              {"  "}
               {batchID}
             </div>
 
@@ -217,7 +218,6 @@ const EditableCard = ({
             <div style={{ marginBottom: "2px" }}>
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
               {moistureLevel}
-              {"%"}
             </div>
 
             <div style={{ marginBottom: "2px" }}>
@@ -278,13 +278,13 @@ const EditableCard = ({
           </CardActions>
         </Box>
         <Box
-          flex={1}
+          flex={2}
           sx={{
             display: { xs: "none", sm: "block flex" },
             flexDirection: "column",
-            alignItems: "left",
+            alignItems: "flex-start",
             border: "2px solid #144F21",
-            padding: 8,
+            padding: 3,
             borderRadius: "8px",
             marginLeft: "6px",
             position: "relative",
@@ -294,29 +294,28 @@ const EditableCard = ({
           <div
             style={{
               top: 20,
-              aligh: "center",
+              textalign: "left",
               position: "absolute",
+              width: "100%",
             }}
           >
-            <div style={{ color: "red", fontSize: "Medium" }}>
-              NOTIFICATIONS!
-            </div>
+            <div style={{ fontSize: "Medium" }}>NOTIFICATIONS</div>
           </div>
 
           {imageUrl && (
             <Box
               sx={{
-                width: "150px",
-                height: "150px",
+                width: "130px",
+                height: "130px",
                 backgroundImage: `url(${imageUrl})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundColor: "white",
                 borderRadius: "8px",
                 //position: "absolute",
-                bottom: 0,
+                bottom: -20,
                 position: "absolute",
-                right: 0,
+                right: -20,
                 //border: "2px solid #144F21",
               }}
             />
@@ -337,4 +336,3 @@ EditableCard.defaultProps = {
 };
 
 export default EditableCard;
-

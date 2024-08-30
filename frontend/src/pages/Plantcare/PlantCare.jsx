@@ -28,7 +28,9 @@ const PlantCare = () => {
   useEffect(() => {
     const fetchBatches = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/batch/list");
+        const response = await axios.get(
+          "http://localhost:4000/api/batch/list"
+        );
         if (response.data.success) {
           setBatchCards(response.data.data); // Set the fetched batches to state
           const highestBatchID = Math.max(
@@ -41,7 +43,7 @@ const PlantCare = () => {
         console.error("Error fetching batch list:", error);
       }
     };
-  
+
     fetchBatches();
   }, []); // Empty dependency array means this effect runs once on mount
 
@@ -100,11 +102,13 @@ const PlantCare = () => {
   const handleAddBatchCard = () => {
     const newBatchCard = {
       batchID: `00${nextBatchID}`, // Generate unique batchID
-      type: "select type",
-      stage: "select stage",
+      type: "Select Type",
+      stage: "Select Stage",
       quantity: "00",
-      moistureLevel: moistureLevel || 600,
-      pestDate: "Date"
+      moistureLevel: moistureLevel
+        ? `${moistureLevel}%`
+        : "Sensor not connected!",
+      pestDate: "Date",
     };
 
     setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]); // Add new card at the beginning of the array
