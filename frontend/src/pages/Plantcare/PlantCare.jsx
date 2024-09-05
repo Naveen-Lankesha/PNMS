@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import localImage from "./../../assets/frontend_assets/background.png";
 import BatchCard from "../../components/BatchCard/BatchCard";
-
 import {
   Dialog,
   DialogTitle,
@@ -11,7 +10,6 @@ import {
   Button,
   Snackbar,
 } from "@mui/material";
-
 import AddIcon from "@mui/icons-material/Add";
 
 const PlantCare = () => {
@@ -24,7 +22,56 @@ const PlantCare = () => {
     message: "",
   }); // State for notifications
 
-  //fetching batches from database
+  // Define the custom hook useAutoRefresh
+  const useAutoRefresh = (url, interval) => {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const saveScrollPosition = () => {
+      sessionStorage.setItem("scrollPosition", window.scrollY);
+    };
+
+    const restoreScrollPosition = () => {
+      const savedPosition = sessionStorage.getItem("scrollPosition");
+      if (savedPosition !== null) {
+        window.scrollTo(0, parseInt(savedPosition, 10));
+      }
+    };
+
+    const fetchData = async () => {
+      saveScrollPosition(); // Save the current scroll position
+      try {
+        const response = await axios.get(url);
+        if (response.data.success) {
+          setData(response.data);
+        } else {
+          setError(response.data.message || "Error fetching data");
+        }
+      } catch (err) {
+        setError("Error fetching data");
+        console.error(err);
+      }
+      restoreScrollPosition(); // Restore the scroll position after fetching data
+    };
+
+    fetchData(); // Fetch data immediately on mount
+    const id = setInterval(fetchData, interval); // Set up auto-refresh
+
+    return () => clearInterval(id); // Cleanup interval on component unmount
+  }, [url, interval]);
+
+  return { data, error };
+};
+  
+  // Handle sensor data update
+  useEffect(() => {
+    if (moistureLevel) {
+      console.log("Moisture Level Updated:", moistureLevel);
+    }
+  }, [moistureLevel]);
+
+  // Fetch initial batch list
   useEffect(() => {
     const fetchBatches = async () => {
       try {
@@ -45,56 +92,11 @@ const PlantCare = () => {
     fetchBatches();
   }, []); // Empty dependency array means this effect runs once on mount
 
-  //useEffect hook to fetch moisture level every 10 seconds
-  // useEffect(() => {
-  //   const ws = new WebSocket("ws://192.168.230.206/ws"); // Establish WebSocket connection
-
-  //   ws.onopen = () => {
-  //     console.log("Connected to WebSocket");
-  //     ws.send("getMoisture"); // Initial request for moisture level
-  //   };
-
-  //   ws.onmessage = (event) => {
-  //     console.log("WebSocket message received:", event.data);
-  //     if (!isNaN(event.data)) {
-  //       setMoistureLevel(parseInt(event.data, 10)); // Update moisture level state
-  //       console.log(event.data);
-  //     } else {
-  //       setNotification({ open: true, message: event.data }); // Show notification
-  //       console.log(event.data);
-  //     }
-  //   };
-
-  //   ws.onclose = () => {
-  //     console.log("WebSocket connection closed");
-  //   };
-
-  //   ws.onerror = (error) => {
-  //     console.error("WebSocket error:", error);
-  //   };
-
-  //   // Clean up the WebSocket connection when the component unmounts
-  //   return () => {
-  //     ws.close();
-  //   };
-  // }, []); // Empty dependency array means this effect runs once on mount
-
-  // useEffect(() => {
-  //   const fetchMoistureLevel = async () => {
-  //     try {
-  //       const response = await fetch("http://192.168.43.189/moisture");
-  //       const data = await response.text();
-  //       setMoistureLevel(parseInt(data, 10)); // Convert the string response to an integer
-  //     } catch (error) {
-  //       console.error("Error fetching moisture level:", error);
-  //     }
-  //   };
-
-  //   fetchMoistureLevel(); // Initial fetch
-  //   const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
-
-  //   return () => clearInterval(interval); // Cleanup interval on component unmount
-  // }, []);
+ // Use the custom hook
+ const { data: sensorData, error } = useAutoRefresh(
+  "http://192.168.230.207:4000/api/upload-sensor-data",
+  5000
+);
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
@@ -103,7 +105,7 @@ const PlantCare = () => {
       type: "select type",
       stage: "select stage",
       quantity: "00",
-      moistureLevel: moistureLevel || 600,
+      moistureLevel: moistureLevel || 100,
       pestDate: "Date"
     };
 
@@ -193,7 +195,7 @@ const PlantCare = () => {
           <Snackbar
             open={notification.open}
             message={notification.message}
-            autoHideDuration={60000}
+            autoHideDuration={6000}
             onClose={handleCloseNotification}
           />
 
@@ -203,7 +205,6 @@ const PlantCare = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-
               marginTop: "50px",
               paddingLeft: "20px",
               paddingRight: "20px",
