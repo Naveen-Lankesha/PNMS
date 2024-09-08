@@ -7,12 +7,13 @@ const addBatch = async (req, res) => {
 
   const batch = new batchModel({
     // Creating a new instance of the batchModel class
-    batchID: req.body.batchID, 
-    type: req.body.type, 
-    stage: req.body.stage, 
-    quantity: req.body.quantity, 
+    
+    batchID: req.body.batchID,          
+    type: req.body.type,                  
+    quantity: req.body.quantity,          
     moistureLevel: req.body.moistureLevel, 
-    pestDate: req.body.pestDate
+    startDate: req.body.startDate,        
+    ageOfBatch: req.body.ageOfBatch 
   });
 
   try {

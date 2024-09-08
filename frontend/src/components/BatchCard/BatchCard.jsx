@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Card,
@@ -17,41 +17,76 @@ import { veg_list } from "../../assets/frontend_assets/assets";
 const EditableCard = ({
   batchID,
   type,
-  stage,
   quantity,
   moistureLevel,
-  pestDate,
-  //cnextpestDate,
+  startDate,
+  ageOfBatch,
   onDelete,
   isEditing,
   onEdit,
 }) => {
   const [editableType, setEditableType] = useState(type);
-  const [editableStage, setEditableStage] = useState(stage);
   const [editableQuantity, setEditableQuantity] = useState(quantity);
-  const [editablePesticidesDate, setEditablePesticidesDate] =
-    useState(pestDate);
-  //const [isEditing, setIsEditing] = useState(false);
+  const [editableDate, setEditableDate] = useState(startDate);
   const [notification, setNotification] = useState({
     open: false,
     message: "",
   });
+  const [plantData, setPlantData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/plant/list"
+        );
+        console.log("API Response:", response.data); // Log the response data
+
+        if (response.data.success && Array.isArray(response.data.data)) {
+          setPlantData(response.data.data);
+        } else {
+          console.error("Unexpected response data format:", response.data);
+          setError(new Error("Unexpected response data format"));
+        }
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const calculateAge = (startDate) => {
+    const today = new Date();
+    const start = new Date(startDate);
+    const diffInMs = today - start;
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    const weeks = Math.floor(diffInDays / 7);
+    const days = diffInDays % 7;
+    return { weeks, days };
+  };
 
   const handleEdit = () => {
-    if (!editablePesticidesDate) {
-      setEditablePesticidesDate(getCurrentDate());
+    if (!editableDate) {
+      setEditableDate(getCurrentDate());
     }
     onEdit();
   };
 
   const handleSave = () => {
+    const { weeks, days } = calculateAge(editableDate);
     const updatedData = {
       batchID,
       type: editableType,
-      stage,
       quantity: editableQuantity,
       moistureLevel,
-      pestDate: editablePesticidesDate,
+      startDate: editableDate,
+      ageOfBatch: `${weeks} Weeks and ${days} Days`,
     };
 
     axios
@@ -80,15 +115,12 @@ const EditableCard = ({
     setEditableType(event.target.value);
   };
 
-  const handleStageChange = (event) => {
-    setEditableStage(event.target.value);
-  };
   const handleQuantityChange = (event) => {
     setEditableQuantity(event.target.value);
   };
 
-  const handlePesticidesDateChange = (event) => {
-    setEditablePesticidesDate(event.target.value);
+  const handleDateChange = (event) => {
+    setEditableDate(event.target.value);
   };
 
   const getCurrentDate = () => {
@@ -98,14 +130,12 @@ const EditableCard = ({
 
   const selectedItem = veg_list.find((item) => item.name === editableType);
   const imageUrl = selectedItem ? selectedItem.image : "";
-  // change strong style
   const strongStyle = { color: "#144F21" };
-  const typeOptions = veg_list.map((item) => ({
-    id: item._id,
-    value: item.name,
-  }));
-
-  const StageList = ["Seedlings", "Young Plants", "Mature Plants"];
+  const typeOptions = plantData.map((item) => (
+    <MenuItem key={item._id} value={item.type}>
+      {item.type}
+    </MenuItem>
+  ));
 
   const handleDelete = () => {
     const removedData = {
@@ -137,7 +167,7 @@ const EditableCard = ({
     <Card
       sx={{
         borderRadius: "20px",
-        maxWdith: { xs: "280px" },
+        maxWidth: { xs: "280px" },
         minWidth: { sm: "700px" },
         maxHeight: "400px",
         border: "solid",
@@ -158,7 +188,6 @@ const EditableCard = ({
               <strong style={{ ...strongStyle, marginRight: "11px" }}>
                 Batch ID :
               </strong>
-              {"  "}
               {batchID}
             </div>
 
@@ -171,35 +200,17 @@ const EditableCard = ({
                   onChange={handleTypeChange}
                   style={{ minWidth: "50px", width: "50%", marginLeft: "48px" }}
                 >
-                  {typeOptions.map((option) => (
-                    <MenuItem key={option.id} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
+                  {typeOptions.length > 0 ? (
+                    typeOptions
+                  ) : (
+                    <MenuItem value="">No data available</MenuItem>
+                  )}
                 </Select>
               ) : (
                 editableType
               )}
             </div>
-            <div style={{ marginBottom: "2px" }}>
-              <strong style={strongStyle}>Stage:</strong>{" "}
-              {isEditing ? (
-                <Select
-                  size="small"
-                  value={editableStage}
-                  onChange={handleStageChange}
-                  style={{ minWidth: "50px", width: "50%", marginLeft: "40px" }}
-                >
-                  {StageList.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              ) : (
-                editableStage
-              )}
-            </div>
+
             <div style={{ marginBottom: "2px", width: "300px" }}>
               <strong style={strongStyle}>Quantity:</strong>
               {isEditing ? (
@@ -208,7 +219,7 @@ const EditableCard = ({
                   value={editableQuantity}
                   onChange={handleQuantityChange}
                   variant="outlined"
-                  style={{ minWidth: "50px", width: "22%", marginLeft: "24px" }} // Set desired min width and width
+                  style={{ minWidth: "50px", width: "22%", marginLeft: "24px" }}
                   inputProps={{ maxLength: 10 }}
                 />
               ) : (
@@ -221,18 +232,26 @@ const EditableCard = ({
             </div>
 
             <div style={{ marginBottom: "2px" }}>
-              <strong style={strongStyle}>Pesticides applied on:</strong>{" "}
+              <strong style={strongStyle}>Batch Start Date:</strong>{" "}
               {isEditing ? (
                 <TextField
                   size="small"
-                  value={editablePesticidesDate}
-                  onChange={handlePesticidesDateChange}
+                  value={editableDate}
+                  onChange={handleDateChange}
                   variant="outlined"
                   type="date"
                 />
               ) : (
-                editablePesticidesDate
+                editableDate
               )}
+            </div>
+
+            <div style={{ marginBottom: "2px" }}>
+              <strong style={{ color: "#144F21" }}>Age of Batch:</strong>{" "}
+              {(() => {
+                const { weeks, days } = calculateAge(editableDate);
+                return `${weeks} Weeks and ${days} Days`;
+              })()}
             </div>
           </CardContent>
 
@@ -294,7 +313,7 @@ const EditableCard = ({
           <div
             style={{
               top: 20,
-              textalign: "left",
+              textAlign: "left",
               position: "absolute",
               width: "100%",
             }}
@@ -304,20 +323,20 @@ const EditableCard = ({
 
           {imageUrl && (
             <Box
+              component="img"
               sx={{
-                width: "130px",
                 height: "130px",
-                backgroundImage: `url(${imageUrl})`,
+                width: "130px",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundColor: "white",
                 borderRadius: "8px",
-                //position: "absolute",
                 bottom: -20,
                 position: "absolute",
                 right: -20,
-                //border: "2px solid #144F21",
               }}
+              alt="Plant Image"
+              src={imageUrl}
             />
           )}
         </Box>
@@ -325,14 +344,13 @@ const EditableCard = ({
     </Card>
   );
 };
-
-// Default data
 EditableCard.defaultProps = {
   type: "type",
   stage: "stage",
   quantity: "00",
   moistureLevel: 600,
-  pestDate: "Date",
+  startDate: "2024-09-04",
+  ageOfBatch: "weeks",
 };
 
 export default EditableCard;
