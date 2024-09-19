@@ -13,7 +13,11 @@ const addBatch = async (req, res) => {
     quantity: req.body.quantity,          
     moistureLevel: req.body.moistureLevel, 
     startDate: req.body.startDate,        
-    ageOfBatch: req.body.ageOfBatch 
+    ageOfBatch: req.body.ageOfBatch, 
+    pottingDate: req.body.pottingDate, 
+    nextFertilizationDate: req.body.nextFertilizationDate,
+    nextPesticideApplicationDate: req.body.nextPesticideApplicationDate,
+    estimatedSaleDate: req.body.estimatedSaleDate
   });
 
   try {

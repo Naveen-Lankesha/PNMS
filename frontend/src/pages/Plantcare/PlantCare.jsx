@@ -113,6 +113,10 @@ const PlantCare = () => {
           : "Sensor not connected!",
       startDate: "Date",
       ageOfBatch: "Batch start date not selected!",
+      pottingDate: "No type selected",
+      nextFertilizationDate: "No type selected",
+      nextPesticideApplicationDate: "No type selected",
+      estimatedSaleDate: "No type selected",
     };
 
     // Save the new batch to the backend
