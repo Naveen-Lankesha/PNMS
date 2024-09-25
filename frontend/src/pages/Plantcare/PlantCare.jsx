@@ -226,11 +226,10 @@ const PlantCare = () => {
           >
             {batchCards.map((card) => (
               <BatchCard
-                key={card.batchID}
+                key={card.batchID || index}
                 {...card}
                 onEdit={() => handleEditCard(card.batchID)}
                 onDelete={() => handleDeleteBatchCard(card.batchID)}
-                ndler
               />
             ))}
           </div>

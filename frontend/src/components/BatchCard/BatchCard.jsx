@@ -180,28 +180,60 @@ const EditableCard = ({
       nextFertilizationDate: dateOfFertilize,
       nextPesticideApplicationDate: dateOfPesticide,
       estimatedSaleDate: dateOfSell,
+      pottingCompleted,
+      fertilizingCompleted,
+      pesticidingCompleted,
     };
 
-    axios
-      .post("http://localhost:4000/api/batch/add", updatedData)
-      .then((response) => {
-        if (response.data.success) {
-          console.log("Data saved successfully:", response.data);
-          onEdit();
-        } else {
+    const checkBatchIDExists = async () => {
+      if (!batchID) {
+        console.log("Batch ID is not provided, treating as new batch.");
+        return false;
+      }
+
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/batch/list"
+        );
+        const exists =
+          Array.isArray(response.data.data) &&
+          response.data.data.some(
+            (batch) => String(batch.batchID).trim() === String(batchID).trim()
+          );
+        return exists;
+      } catch (error) {
+        console.error("Error fetching batch list:", error);
+        return false;
+      }
+    };
+
+    checkBatchIDExists().then((exists) => {
+      const endpoint = exists
+        ? `http://localhost:4000/api/batch/update/${batchID}`
+        : "http://localhost:4000/api/batch/add";
+
+      const requestMethod = exists ? axios.put : axios.post;
+
+      requestMethod(endpoint, updatedData)
+        .then((response) => {
+          if (response.data.success) {
+            console.log("Data saved successfully:", response.data);
+            onEdit(); // Callback to refresh or reset the form
+          } else {
+            setNotification({
+              open: true,
+              message: response.data.message || "Failed to save batch",
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error saving data:", error);
           setNotification({
             open: true,
-            message: response.data.message || "Failed to add new batch",
+            message: "Error saving data. Please try again later.",
           });
-        }
-      })
-      .catch((error) => {
-        console.error("Error saving data:", error);
-        setNotification({
-          open: true,
-          message: "Error saving data. Please try again later.",
         });
-      });
+    });
   };
 
   const handleTypeChange = (event) => {

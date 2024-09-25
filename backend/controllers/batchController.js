@@ -17,7 +17,10 @@ const addBatch = async (req, res) => {
     pottingDate: req.body.pottingDate, 
     nextFertilizationDate: req.body.nextFertilizationDate,
     nextPesticideApplicationDate: req.body.nextPesticideApplicationDate,
-    estimatedSaleDate: req.body.estimatedSaleDate
+    estimatedSaleDate: req.body.estimatedSaleDate,
+    pottingCompleted: req.body.pottingCompleted,
+    fertilizingCompleted: req.body.fertilizingCompleted,
+    pesticidingCompleted:req.body.pesticidingCompleted
   });
 
   try {
@@ -28,6 +31,40 @@ const addBatch = async (req, res) => {
     res.json({ success: false, message: "Failed to add new batch" });
   }
 };
+// update batch
+const updateBatch = async (req, res) => {
+  try {
+    // Find the batch by the batchID from the request params
+    const batch = await batchModel.findOne({ batchID: req.params.id });
+
+    if (!batch) {
+      return res.status(404).json({ success: false, message: "Batch not found" });
+    }
+
+    // Update batch with new data from req.body
+    batch.type = req.body.type || batch.type;
+    batch.quantity = req.body.quantity || batch.quantity;
+    batch.moistureLevel = req.body.moistureLevel || batch.moistureLevel;
+    batch.startDate = req.body.startDate || batch.startDate;
+    batch.ageOfBatch = req.body.ageOfBatch || batch.ageOfBatch;
+    batch.pottingDate = req.body.pottingDate || batch.pottingDate;
+    batch.nextFertilizationDate = req.body.nextFertilizationDate || batch.nextFertilizationDate;
+    batch.nextPesticideApplicationDate = req.body.nextPesticideApplicationDate || batch.nextPesticideApplicationDate;
+    batch.estimatedSaleDate = req.body.estimatedSaleDate || batch.estimatedSaleDate;
+    batch.pottingCompleted = req.body.pottingCompleted || batch.pottingCompleted;
+    batch.fertilizingCompleted = req.body.fertilizingCompleted || batch.fertilizingCompleted;
+    batch.pesticidingCompleted = req.body.pesticidingCompleted || batch.pesticidingCompleted;
+
+    // Save the updated batch
+    await batch.save();
+
+    res.json({ success: true, message: "Batch updated successfully", data: batch });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Failed to update batch" });
+  }
+};
+
 
 // all batch list
 const listBatch = async (req, res) => {
@@ -76,4 +113,4 @@ const removeAllBatches = async (req, res) => {
   }
 };
 
-export { addBatch, listBatch, removeBatch, removeAllBatches }; 
+export { addBatch,updateBatch, listBatch, removeBatch, removeAllBatches }; 

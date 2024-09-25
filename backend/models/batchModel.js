@@ -10,7 +10,11 @@ batchID: { type: String, required: true },
   pottingDate: { type: Date, required: true },
   nextFertilizationDate: { type: Date, required: true },
   nextPesticideApplicationDate: { type: Date, required: true },
-  estimatedSaleDate: { type: Date, required: true }
+  estimatedSaleDate: { type: Date, required: true },
+  pottingCompleted: { type: Boolean, default: false }, // New field
+  fertilizingCompleted: { type: Boolean, default: false }, // New field
+  pesticidingCompleted: { type: Boolean, default: false }, // New field
+
 });
 
 // The expression mongoose.models.batch is checking if there is already a model named "batch" defined in the mongoose.models object. If such a model exists, it will be assigned to batchModel.
