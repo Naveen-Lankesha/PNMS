@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Card,
@@ -9,6 +9,8 @@ import {
   Stack,
   Select,
   Box,
+  Checkbox,
+  FormControlLabel,
   MenuItem,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -17,129 +19,298 @@ import { veg_list } from "../../assets/frontend_assets/assets";
 const EditableCard = ({
   batchID,
   type,
-  stage,
   quantity,
   moistureLevel,
-  pestDate,
-  //cnextpestDate,
+  startDate,
+  ageOfBatch,
   onDelete,
   isEditing,
   onEdit,
 }) => {
-  const [editableType, setEditableType] = useState(type);
-  const [editableStage, setEditableStage] = useState(stage);
+  const [editableType, setEditableType] = useState(type || null);
   const [editableQuantity, setEditableQuantity] = useState(quantity);
-  const [editablePesticidesDate, setEditablePesticidesDate] =
-    useState(pestDate);
-  //const [isEditing, setIsEditing] = useState(false);
-  const [notification, setNotification] = useState({
-    open: false,
-    message: "",
-  });
+  const [editableDate, setEditableDate] = useState(startDate);
+  const [dateOfPot, setDateOfPot] = useState(null);
+  const [dateOfFertilize, setDateOfFertilize] = useState(null);
+  const [dateOfPesticide, setDateOfPesticide] = useState(null);
+  const [dateOfSell, setDateOfSell] = useState(null);
+  const [pottingCompleted, setPottingCompleted] = useState(false);
+  const [fertilizingCompleted, setFertilizingCompleted] = useState(false);
+  const [pesticidingCompleted, setPesticidingCompleted] = useState(false);
+  const [notification, setNotification] = useState({});
+  const [plantData, setPlantData] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
+  const [error, setError] = useState(null); // Add error state
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/plant/list"
+        );
+        console.log("API Response:", response.data);
+
+        if (response.data.success && Array.isArray(response.data.data)) {
+          setPlantData(response.data.data);
+        } else {
+          console.error("Unexpected response data format:", response.data);
+          setError(new Error("Unexpected response data format"));
+        }
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (plantData.length > 0 && editableType && editableDate) {
+      const selectedPlant = plantData.find(
+        (plant) => plant.type === editableType
+      );
+      if (selectedPlant) {
+        calculateDate(
+          selectedPlant.duration_to_pot,
+          selectedPlant.duration_to_fertilize,
+          selectedPlant.duration_to_pesticide,
+          selectedPlant.duration_to_sell
+        );
+      }
+    }
+  }, [plantData, editableType, editableDate]);
+  const calculateDate = (
+    duration_to_pot,
+    duration_to_fertilize,
+    duration_to_pesticide,
+    duration_to_sell
+  ) => {
+    const start = new Date(editableDate);
+    if (isNaN(start.getTime())) {
+      console.error("Invalid start date");
+      return;
+    }
+    const durationPot = parseInt(duration_to_pot, 10) || 0;
+    const durationFertilize = parseInt(duration_to_fertilize, 10) || 0;
+    const durationPesticide = parseInt(duration_to_pesticide, 10) || 0;
+    const durationSell = parseInt(duration_to_sell, 10) || 0;
+
+    start.setDate(start.getDate() + durationPot);
+    const pottingDate = start.toISOString().split("T")[0];
+    setDateOfPot(pottingDate);
+
+    start.setDate(start.getDate() + durationFertilize);
+    const fertilizingDate = start.toISOString().split("T")[0];
+    setDateOfFertilize(fertilizingDate);
+
+    start.setDate(start.getDate() + durationPesticide);
+    const pesticideDate = start.toISOString().split("T")[0];
+    setDateOfPesticide(pesticideDate);
+
+    start.setDate(start.getDate() + durationSell);
+    const sellDate = start.toISOString().split("T")[0];
+    setDateOfSell(sellDate);
+  };
+
+  const calculateAge = (startDate) => {
+    const today = new Date();
+    const start = new Date(startDate);
+    const diffInMs = today - start;
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    const weeks = Math.floor(diffInDays / 7);
+    const days = diffInDays % 7;
+    return { weeks, days };
+  };
+  const getNotificationForDate = (targetDate, label) => {
+    const today = new Date();
+    const target = new Date(targetDate);
+
+    const diffInMs = target - today;
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+    if (isNaN(target.getTime())) return null; // Check if the date is valid
+
+    if (diffInDays === 0) {
+      return { message: `${label} is today!`, color: "red" };
+    } else if (diffInDays < 0) {
+      return { message: `${label} has passed!`, color: "red" };
+    } else if (diffInDays <= 5) {
+      return { message: `${label} is in ${diffInDays} days`, color: "orange" };
+    }
+    return null;
+  };
+  const notifications = !isEditing
+    ? [
+        !pottingCompleted && getNotificationForDate(dateOfPot, "Potting Date"),
+        !fertilizingCompleted &&
+          getNotificationForDate(dateOfFertilize, "Next Fertilization Date"),
+        !pesticidingCompleted &&
+          getNotificationForDate(
+            dateOfPesticide,
+            "Next Pesticide Application Date"
+          ),
+        getNotificationForDate(dateOfSell, "Estimated Sale Date"),
+      ].filter((notification) => notification !== null)
+    : []; // Filter out null values
 
   const handleEdit = () => {
-    if (!editablePesticidesDate) {
-      setEditablePesticidesDate(getCurrentDate());
+    if (!editableDate) {
+      setEditableDate(getCurrentDate());
     }
     onEdit();
   };
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-GB"); // Format as DD/MM/YYYY
+  };
 
   const handleSave = () => {
+    const { weeks, days } = calculateAge(editableDate);
     const updatedData = {
       batchID,
       type: editableType,
-      stage,
       quantity: editableQuantity,
       moistureLevel,
-      pestDate: editablePesticidesDate,
+      startDate: editableDate,
+      ageOfBatch: `${weeks} Weeks and ${days} Days`,
+      pottingDate: dateOfPot,
+      nextFertilizationDate: dateOfFertilize,
+      nextPesticideApplicationDate: dateOfPesticide,
+      estimatedSaleDate: dateOfSell,
+      pottingCompleted,
+      fertilizingCompleted,
+      pesticidingCompleted,
     };
 
-    axios
-      .post("http://localhost:4000/api/batch/add", updatedData)
-      .then((response) => {
-        if (response.data.success) {
-          console.log("Data saved successfully:", response.data);
-          onEdit();
-        } else {
+    const checkBatchIDExists = async () => {
+      if (!batchID) {
+        console.log("Batch ID is not provided, treating as new batch.");
+        return false;
+      }
+
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/batch/list"
+        );
+        const exists =
+          Array.isArray(response.data.data) &&
+          response.data.data.some(
+            (batch) => String(batch.batchID).trim() === String(batchID).trim()
+          );
+        return exists;
+      } catch (error) {
+        console.error("Error fetching batch list:", error);
+        return false;
+      }
+    };
+
+    checkBatchIDExists().then((exists) => {
+      const endpoint = exists
+        ? `http://localhost:4000/api/batch/update/${batchID}`
+        : "http://localhost:4000/api/batch/add";
+
+      const requestMethod = exists ? axios.put : axios.post;
+
+      requestMethod(endpoint, updatedData)
+        .then((response) => {
+          if (response.data.success) {
+            console.log("Data saved successfully:", response.data);
+            onEdit(); // Callback to refresh or reset the form
+          } else {
+            setNotification({
+              open: true,
+              message: response.data.message || "Failed to save batch",
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error saving data:", error);
           setNotification({
             open: true,
-            message: response.data.message || "Failed to add new batch",
+            message: "Error saving data. Please try again later.",
           });
-        }
-      })
-      .catch((error) => {
-        console.error("Error saving data:", error);
-        setNotification({
-          open: true,
-          message: "Error saving data. Please try again later.",
         });
-      });
+    });
   };
 
   const handleTypeChange = (event) => {
     setEditableType(event.target.value);
   };
 
-  const handleStageChange = (event) => {
-    setEditableStage(event.target.value);
-  };
   const handleQuantityChange = (event) => {
     setEditableQuantity(event.target.value);
   };
 
-  const handlePesticidesDateChange = (event) => {
-    setEditablePesticidesDate(event.target.value);
+  const handleDateChange = (event) => {
+    setEditableDate(event.target.value);
+  };
+  const handleCheckboxChange = (event) => {
+    const { name, checked } = event.target;
+    switch (name) {
+      case "potting":
+        setPottingCompleted(checked);
+        break;
+      case "fertilizing":
+        setFertilizingCompleted(checked);
+        break;
+      case "pesticiding":
+        setPesticidingCompleted(checked);
+        break;
+      default:
+        break;
+    }
   };
 
   const getCurrentDate = () => {
     const today = new Date();
-    return today.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+    return today.toISOString().split("T")[0];
   };
 
   const selectedItem = veg_list.find((item) => item.name === editableType);
   const imageUrl = selectedItem ? selectedItem.image : "";
-  // change strong style
   const strongStyle = { color: "#144F21" };
-  const typeOptions = veg_list.map((item) => ({
-    id: item._id,
-    value: item.name,
-  }));
-
-  const StageList = ["Seedlings", "Young Plants", "Mature Plants"];
+  const typeOptions = plantData.map((item) => (
+    <MenuItem key={item._id} value={item.type}>
+      {item.type}
+    </MenuItem>
+  ));
 
   const handleDelete = () => {
     const removedData = {
-      batchID
+      batchID,
     };
     axios
-    .post(`http://localhost:4000/api/batch/remove/${batchID}`, removedData)
-    .then((response) => {
-      if (response.data.success) {
-        console.log("Batch removed successfully:", response.data);
-        onDelete();
-      } else {
+      .post(`http://localhost:4000/api/batch/remove/${batchID}`, removedData)
+      .then((response) => {
+        if (response.data.success) {
+          console.log("Batch removed successfully:", response.data);
+          onDelete();
+        } else {
+          setNotification({
+            open: true,
+            message: response.data.message || "Failed to remove batch",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error removing data:", error);
         setNotification({
           open: true,
-          message: response.data.message || "Failed to remove batch",
+          message: "Error removing data. Please try again later.",
         });
-      }
-    })
-    .catch((error) => {
-      console.error("Error removing data:", error);
-      setNotification({
-        open: true,
-        message: "Error removing data. Please try again later.",
       });
-    });
   };
 
   return (
     <Card
       sx={{
         borderRadius: "20px",
-        maxWdith: { xs: "280px" },
-        minWidth: { sm: "700px" },
-        maxHeight: "400px",
+        maxWidth: { xs: "280px" },
+        minWidth: { sm: "800px" },
+        maxHeight: "550px",
         border: "solid",
         borderColor: "#144F21",
         borderBottomWidth: { sm: 8 },
@@ -154,14 +325,14 @@ const EditableCard = ({
       <Stack display={"flex"} direction={"row"}>
         <Box flex={4}>
           <CardContent>
-            <div style={{ marginBottom: "2px" }}>
+            <div style={{ marginBottom: "14px", display: "flex" }}>
               <strong style={{ ...strongStyle, marginRight: "11px" }}>
                 Batch ID :
-              </strong>{" "}
+              </strong>
               {batchID}
             </div>
 
-            <div style={{ marginBottom: "2px" }}>
+            <div style={{ marginBottom: "14px" }}>
               <strong style={strongStyle}>Type:</strong>{" "}
               {isEditing ? (
                 <Select
@@ -170,36 +341,18 @@ const EditableCard = ({
                   onChange={handleTypeChange}
                   style={{ minWidth: "50px", width: "50%", marginLeft: "48px" }}
                 >
-                  {typeOptions.map((option) => (
-                    <MenuItem key={option.id} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
+                  {typeOptions.length > 0 ? (
+                    typeOptions
+                  ) : (
+                    <MenuItem value="">No data available</MenuItem>
+                  )}
                 </Select>
               ) : (
                 editableType
               )}
             </div>
-            <div style={{ marginBottom: "2px" }}>
-              <strong style={strongStyle}>Stage:</strong>{" "}
-              {isEditing ? (
-                <Select
-                  size="small"
-                  value={editableStage}
-                  onChange={handleStageChange}
-                  style={{ minWidth: "50px", width: "50%", marginLeft: "40px" }}
-                >
-                  {StageList.map((option) => (
-                    <MenuItem key={option} value={option}>
-                      {option}
-                    </MenuItem>
-                  ))}
-                </Select>
-              ) : (
-                editableStage
-              )}
-            </div>
-            <div style={{ marginBottom: "2px", width: "300px" }}>
+
+            <div style={{ marginBottom: "14px", width: "300px" }}>
               <strong style={strongStyle}>Quantity:</strong>
               {isEditing ? (
                 <TextField
@@ -207,32 +360,111 @@ const EditableCard = ({
                   value={editableQuantity}
                   onChange={handleQuantityChange}
                   variant="outlined"
-                  style={{ minWidth: "50px", width: "22%", marginLeft: "24px" }} // Set desired min width and width
+                  style={{ minWidth: "50px", width: "22%", marginLeft: "24px" }}
                   inputProps={{ maxLength: 10 }}
                 />
               ) : (
                 editableQuantity
               )}
             </div>
-            <div style={{ marginBottom: "2px" }}>
+            <div style={{ marginBottom: "14px" }}>
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
               {moistureLevel}
-              {"%"}
             </div>
 
-            <div style={{ marginBottom: "2px" }}>
-              <strong style={strongStyle}>Pesticides applied on:</strong>{" "}
+            <div style={{ marginBottom: "14px" }}>
+              <strong style={strongStyle}>Batch Start Date :</strong>{" "}
               {isEditing ? (
                 <TextField
                   size="small"
-                  value={editablePesticidesDate}
-                  onChange={handlePesticidesDateChange}
+                  value={editableDate}
+                  onChange={handleDateChange}
                   variant="outlined"
                   type="date"
                 />
               ) : (
-                editablePesticidesDate
+                <span>{formatDate(editableDate)}</span>
               )}
+            </div>
+
+            <div style={{ marginBottom: "9px" }}>
+              <strong style={{ color: "#144F21" }}>Batch Age:</strong>{" "}
+              {(() => {
+                const { weeks, days } = calculateAge(editableDate);
+                return `${weeks} Weeks and ${days} Days`;
+              })()}
+            </div>
+            <Box
+              display="flex"
+              alignItems="center"
+              gap={20}
+              style={{ marginBottom: "2px" }}
+            >
+              <div>
+                <strong style={strongStyle}>Potting Date:</strong> {dateOfPot}
+              </div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="potting"
+                    checked={pottingCompleted}
+                    onChange={handleCheckboxChange}
+                    color="primary"
+                  />
+                }
+                label="Done"
+              />
+            </Box>
+            <Box
+              display="flex"
+              alignItems="center"
+              gap={10.75}
+              style={{ marginBottom: "1px" }}
+            >
+              <div>
+                <strong style={strongStyle}>Next Fertilization Date:</strong>{" "}
+                {dateOfFertilize}
+              </div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="fertilizing"
+                    checked={fertilizingCompleted}
+                    onChange={handleCheckboxChange}
+                    color="primary"
+                  />
+                }
+                label="Done"
+              />
+            </Box>
+
+            <Box
+              display="flex"
+              alignItems="center"
+              gap={2}
+              style={{ marginBottom: "5px" }}
+            >
+              <div>
+                <strong style={strongStyle}>
+                  Next Pesticide Application Date:
+                </strong>{" "}
+                {dateOfPesticide}
+              </div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="pesticiding"
+                    checked={pesticidingCompleted}
+                    onChange={handleCheckboxChange}
+                    color="primary"
+                  />
+                }
+                label="Done"
+              />
+            </Box>
+            <div style={{ marginBottom: "2px" }}>
+              <strong style={strongStyle}>Estimated Sale Date:</strong>{" "}
+              {dateOfSell}
             </div>
           </CardContent>
 
@@ -278,13 +510,13 @@ const EditableCard = ({
           </CardActions>
         </Box>
         <Box
-          flex={1}
+          flex={2}
           sx={{
             display: { xs: "none", sm: "block flex" },
             flexDirection: "column",
-            alignItems: "left",
+            alignItems: "flex-start",
             border: "2px solid #144F21",
-            padding: 8,
+            padding: 3,
             borderRadius: "8px",
             marginLeft: "6px",
             position: "relative",
@@ -294,31 +526,41 @@ const EditableCard = ({
           <div
             style={{
               top: 20,
-              aligh: "center",
+              textAlign: "left",
               position: "absolute",
+              width: "100%",
             }}
           >
-            <div style={{ color: "red", fontSize: "Medium" }}>
-              NOTIFICATIONS!
-            </div>
+            <div style={{ fontSize: "Medium" }}>NOTIFICATIONS</div>
+          </div>
+          <div style={{ marginTop: "40px", color: "#144F21" }}>
+            {notifications.length > 0 ? (
+              notifications.map((notification, index) => (
+                <div key={index} style={{ color: notification.color }}>
+                  {notification.message}
+                </div>
+              ))
+            ) : (
+              <div>No upcoming events</div>
+            )}
           </div>
 
           {imageUrl && (
             <Box
+              component="img"
               sx={{
-                width: "150px",
-                height: "150px",
-                backgroundImage: `url(${imageUrl})`,
+                height: "200px",
+                width: "200px",
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundColor: "white",
                 borderRadius: "8px",
-                //position: "absolute",
-                bottom: 0,
+                bottom: -20,
                 position: "absolute",
-                right: 0,
-                //border: "2px solid #144F21",
+                right: -20,
               }}
+              alt="Plant Image"
+              src={imageUrl}
             />
           )}
         </Box>
@@ -327,14 +569,16 @@ const EditableCard = ({
   );
 };
 
-// Default data
 EditableCard.defaultProps = {
   type: "type",
-  stage: "stage",
   quantity: "00",
   moistureLevel: 600,
-  pestDate: "Date",
+  startDate: "2024-09-04",
+  ageOfBatch: "weeks",
+  pottingDate: "weeks",
+  nextFertilizationDate: "weeks",
+  nextPesticideApplicationDate: "weeks",
+  estimatedSaleDate: "weeks",
 };
 
 export default EditableCard;
-

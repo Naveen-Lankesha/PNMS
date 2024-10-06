@@ -15,12 +15,15 @@ import AddIcon from "@mui/icons-material/Add";
 const PlantCare = () => {
   const [batchCards, setBatchCards] = useState([]);
   const [nextBatchID, setNextBatchID] = useState(1);
-  const [deleteConfirmation, setDeleteConfirmation] = useState(null); // State to handle delete confirmation dialog
+  const [deleteConfirmation, setDeleteConfirmation] = useState(null);
   const [moistureLevel, setMoistureLevel] = useState(null);
   const [notification, setNotification] = useState({
     open: false,
     message: "",
-  }); // State for notifications
+  });
+
+  // Local state to store edits
+  //const [editingBatch, setEditingBatch] = useState({});
 
   // Define the custom hook useAutoRefresh
   const useAutoRefresh = (url, interval) => {
@@ -72,25 +75,28 @@ const PlantCare = () => {
   }, [moistureLevel]);
 
   // Fetch initial batch list
+  // Fetching batches from the database
   useEffect(() => {
     const fetchBatches = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/batch/list");
+        const response = await axios.get(
+          "http://localhost:4000/api/batch/list"
+        );
         if (response.data.success) {
-          setBatchCards(response.data.data); // Set the fetched batches to state
+          setBatchCards(response.data.data);
           const highestBatchID = Math.max(
             ...response.data.data.map((batch) => parseInt(batch.batchID, 10)),
             0
           );
-          setNextBatchID(highestBatchID + 1); // Update nextBatchID based on the highest batchID
+          setNextBatchID(highestBatchID + 1);
         }
       } catch (error) {
         console.error("Error fetching batch list:", error);
       }
     };
-  
+
     fetchBatches();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []);
 
  // Use the custom hook
  const { data: sensorData, error } = useAutoRefresh(
@@ -101,13 +107,25 @@ const PlantCare = () => {
   // Function to add a new batch card
   const handleAddBatchCard = () => {
     const newBatchCard = {
-      batchID: `00${nextBatchID}`, // Generate unique batchID
-      type: "select type",
-      stage: "select stage",
+      batchID: `00${nextBatchID}`,
+      type: "Select Type",
       quantity: "00",
       moistureLevel: moistureLevel || 100,
       pestDate: "Date"
     };
+      moistureLevel:
+        moistureLevel !== null && moistureLevel !== undefined
+          ? `${moistureLevel}%`
+          : "Sensor not connected!",
+      startDate: "Date",
+      ageOfBatch: "Batch start date not selected!",
+      pottingDate: "No type selected",
+      nextFertilizationDate: "No type selected",
+      nextPesticideApplicationDate: "No type selected",
+      estimatedSaleDate: "No type selected",
+    };
+
+    // Save the new batch to the backend
 
     setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]); // Add new card at the beginning of the array
     setNextBatchID(nextBatchID + 1); // Increment the counter for next batchID
@@ -121,10 +139,12 @@ const PlantCare = () => {
   // Function to confirm deletion
   const confirmDelete = () => {
     const batchIDToDelete = deleteConfirmation.batchID;
+
     setBatchCards(
       batchCards.filter((card) => card.batchID !== batchIDToDelete)
     );
-    setDeleteConfirmation(null); // Close the confirmation dialog
+
+    setDeleteConfirmation(null);
   };
 
   // Function to cancel deletion
@@ -144,15 +164,15 @@ const PlantCare = () => {
       )
     );
   };
+
   return (
     <div>
       <div
         style={{
-          position: "relative", // Position relative for the container
-          //width: "100vw",
+          position: "relative",
           minHeight: "100vh",
           backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${localImage})`,
-          backgroundSize: "auto", // Default size to allow tiling
+          backgroundSize: "auto",
           backgroundRepeat: "repeat",
           backgroundPosition: "top left",
           backgroundColor: "rgba(255, 255, 255, 0.05)",
@@ -212,7 +232,7 @@ const PlantCare = () => {
           >
             {batchCards.map((card) => (
               <BatchCard
-                key={card.batchID}
+                key={card.batchID || index}
                 {...card}
                 onEdit={() => handleEditCard(card.batchID)}
                 onDelete={() => handleDeleteBatchCard(card.batchID)}

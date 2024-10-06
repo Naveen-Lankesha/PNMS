@@ -7,12 +7,20 @@ const addBatch = async (req, res) => {
 
   const batch = new batchModel({
     // Creating a new instance of the batchModel class
-    batchID: req.body.batchID, 
-    type: req.body.type, 
-    stage: req.body.stage, 
-    quantity: req.body.quantity, 
+    
+    batchID: req.body.batchID,          
+    type: req.body.type,                  
+    quantity: req.body.quantity,          
     moistureLevel: req.body.moistureLevel, 
-    pestDate: req.body.pestDate
+    startDate: req.body.startDate,        
+    ageOfBatch: req.body.ageOfBatch, 
+    pottingDate: req.body.pottingDate, 
+    nextFertilizationDate: req.body.nextFertilizationDate,
+    nextPesticideApplicationDate: req.body.nextPesticideApplicationDate,
+    estimatedSaleDate: req.body.estimatedSaleDate,
+    pottingCompleted: req.body.pottingCompleted,
+    fertilizingCompleted: req.body.fertilizingCompleted,
+    pesticidingCompleted:req.body.pesticidingCompleted
   });
 
   try {
@@ -23,27 +31,39 @@ const addBatch = async (req, res) => {
     res.json({ success: false, message: "Failed to add new batch" });
   }
 };
-
-// Update moisture level
-const updateMoistureLevel = async (req, res) => {
-  const { plantId, moistureLevel } = req.body;
-
+// update batch
+const updateBatch = async (req, res) => {
   try {
-    const batch = await batchModel.findOne({ batchID: plantId });
+    // Find the batch by the batchID from the request params
+    const batch = await batchModel.findOne({ batchID: req.params.id });
+
     if (!batch) {
       return res.status(404).json({ success: false, message: "Batch not found" });
     }
 
-    batch.moistureLevel = moistureLevel;
+    // Update batch with new data from req.body
+    batch.type = req.body.type || batch.type;
+    batch.quantity = req.body.quantity || batch.quantity;
+    batch.moistureLevel = req.body.moistureLevel || batch.moistureLevel;
+    batch.startDate = req.body.startDate || batch.startDate;
+    batch.ageOfBatch = req.body.ageOfBatch || batch.ageOfBatch;
+    batch.pottingDate = req.body.pottingDate || batch.pottingDate;
+    batch.nextFertilizationDate = req.body.nextFertilizationDate || batch.nextFertilizationDate;
+    batch.nextPesticideApplicationDate = req.body.nextPesticideApplicationDate || batch.nextPesticideApplicationDate;
+    batch.estimatedSaleDate = req.body.estimatedSaleDate || batch.estimatedSaleDate;
+    batch.pottingCompleted = req.body.pottingCompleted || batch.pottingCompleted;
+    batch.fertilizingCompleted = req.body.fertilizingCompleted || batch.fertilizingCompleted;
+    batch.pesticidingCompleted = req.body.pesticidingCompleted || batch.pesticidingCompleted;
+
+    // Save the updated batch
     await batch.save();
 
-    res.json({ success: true, message: "Moisture level updated successfully" });
+    res.json({ success: true, message: "Batch updated successfully", data: batch });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Failed to update moisture level" });
+    res.status(500).json({ success: false, message: "Failed to update batch" });
   }
 };
-
 
 
 // all batch list
@@ -93,4 +113,4 @@ const removeAllBatches = async (req, res) => {
   }
 };
 
-export { addBatch, listBatch, removeBatch, removeAllBatches, updateMoistureLevel }; 
+export { addBatch,updateBatch, listBatch, removeBatch, removeAllBatches }; 

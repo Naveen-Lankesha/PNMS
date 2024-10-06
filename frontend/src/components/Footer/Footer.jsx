@@ -5,7 +5,7 @@ import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import XIcon from "@mui/icons-material/X";
-
+import localImage from "./../../assets/frontend_assets/newlogo.png";
 import { assets } from "../../assets/frontend_assets/assets";
 
 const Footer = () => {
@@ -18,9 +18,14 @@ const Footer = () => {
         <Box flex={1} sx={{ pr: 8 }}>
           <Stack spacing={2}>
             <img
-              src={assets.PNMSlogo}
+              src={localImage}
               alt="logo"
-              style={{ maxHeight: 150, maxWidth: 150 }}
+              style={{
+                maxHeight: 150,
+                maxWidth: 150,
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
             />
             {/* <Typography
               variant="p"
