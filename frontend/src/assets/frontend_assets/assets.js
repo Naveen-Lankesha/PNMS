@@ -105,7 +105,7 @@ export const menu_list = [
 ];
 export const veg_list=[{
   _id: "6",
-  name: "Green Cabbage",
+  name: "Green cabbage",
   image: veg1,
   price: 15000,
   description: "50g packet",
@@ -113,7 +113,7 @@ export const veg_list=[{
 },
 {
   _id: "7",
-  name: "Purple Cabbage",
+  name: "Purple cabbage",
   image: veg2,
   price: 15000,
   description: "50g packet",
@@ -121,7 +121,7 @@ export const veg_list=[{
 },
 {
   _id: "8",
-  name: "Green Chilli",
+  name: "Green Chilli(F1)",
   image: veg3,
   price: 1000,
   description: "50g packet",
@@ -153,7 +153,7 @@ export const veg_list=[{
 },
 {
   _id: "12",
-  name: " Tomato",
+  name: "Tomato",
   image: veg7,
   price: 2300,
   description: "2g packet",
@@ -209,7 +209,7 @@ export const veg_list=[{
 },
 {
   _id: "19",
-  name: "Nokol ",
+  name: "Nokol",
   image: veg14,
   price: 1500,
   description: "10g packet",
