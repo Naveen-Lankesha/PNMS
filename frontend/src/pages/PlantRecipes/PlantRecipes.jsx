@@ -261,14 +261,14 @@ export default function PlantRecipes() {
           <TableHead>
             <TableRow>
               <StyledTableCell>Type</StyledTableCell>
-              <StyledTableCell align="right">Duration to Pot</StyledTableCell>
-              <StyledTableCell align="right">
-                Duration to Fertilize
+              <StyledTableCell align="center">Days to Pot </StyledTableCell>
+              <StyledTableCell align="center">
+                Days to Fertilize
               </StyledTableCell>
-              <StyledTableCell align="right">
-                Duration to Pesticide
+              <StyledTableCell align="center">
+                Days to Pesticide
               </StyledTableCell>
-              <StyledTableCell align="right">Duration to Sell</StyledTableCell>
+              <StyledTableCell align="center">Days to Sell</StyledTableCell>
               <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
           </TableHead>

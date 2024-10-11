@@ -247,20 +247,35 @@ const EditableCard = ({
   const handleDateChange = (event) => {
     setEditableDate(event.target.value);
   };
+  useEffect(() => {
+    const fetchBatchData = async () => {
+      try {
+        const response = await fetch("http://localhost:4000/api/batch/list");
+        const data = await response.json();
+
+        // Assuming the response contains a batch object with the three states
+        if (data && data.batch) {
+          setPottingCompleted(data.batch.pottingCompleted);
+          setFertilizingCompleted(data.batch.fertilizingCompleted);
+          setPesticidingCompleted(data.batch.pesticidingCompleted);
+        }
+      } catch (error) {
+        console.error("Error fetching batch data:", error);
+      }
+    };
+
+    fetchBatchData();
+  }, []); // Empty dependency array ensures this effect runs only once, when the component mounts
+
+  // Handler for checkbox change
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
-    switch (name) {
-      case "potting":
-        setPottingCompleted(checked);
-        break;
-      case "fertilizing":
-        setFertilizingCompleted(checked);
-        break;
-      case "pesticiding":
-        setPesticidingCompleted(checked);
-        break;
-      default:
-        break;
+    if (name === "potting") {
+      setPottingCompleted(checked);
+    } else if (name === "fertilizing") {
+      setFertilizingCompleted(checked);
+    } else if (name === "pesticiding") {
+      setPesticidingCompleted(checked);
     }
   };
 
@@ -310,7 +325,7 @@ const EditableCard = ({
         borderRadius: "20px",
         maxWidth: { xs: "280px" },
         minWidth: { sm: "800px" },
-        maxHeight: "550px",
+        maxHeight: "560px",
         border: "solid",
         borderColor: "#144F21",
         borderBottomWidth: { sm: 8 },
@@ -325,14 +340,14 @@ const EditableCard = ({
       <Stack display={"flex"} direction={"row"}>
         <Box flex={4}>
           <CardContent>
-            <div style={{ marginBottom: "14px", display: "flex" }}>
+            <div style={{ marginBottom: "16px", display: "flex" }}>
               <strong style={{ ...strongStyle, marginRight: "11px" }}>
                 Batch ID :
               </strong>
               {batchID}
             </div>
 
-            <div style={{ marginBottom: "14px" }}>
+            <div style={{ marginBottom: "16px" }}>
               <strong style={strongStyle}>Type:</strong>{" "}
               {isEditing ? (
                 <Select
@@ -352,7 +367,7 @@ const EditableCard = ({
               )}
             </div>
 
-            <div style={{ marginBottom: "14px", width: "300px" }}>
+            <div style={{ marginBottom: "16px", width: "300px" }}>
               <strong style={strongStyle}>Quantity:</strong>
               {isEditing ? (
                 <TextField
@@ -367,12 +382,12 @@ const EditableCard = ({
                 editableQuantity
               )}
             </div>
-            <div style={{ marginBottom: "14px" }}>
+            <div style={{ marginBottom: "16px" }}>
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
               {moistureLevel}
             </div>
 
-            <div style={{ marginBottom: "14px" }}>
+            <div style={{ marginBottom: "16px" }}>
               <strong style={strongStyle}>Batch Start Date :</strong>{" "}
               {isEditing ? (
                 <TextField
@@ -387,18 +402,22 @@ const EditableCard = ({
               )}
             </div>
 
-            <div style={{ marginBottom: "9px" }}>
+            <div style={{ marginBottom: "16px" }}>
               <strong style={{ color: "#144F21" }}>Batch Age:</strong>{" "}
               {(() => {
                 const { weeks, days } = calculateAge(editableDate);
                 return `${weeks} Weeks and ${days} Days`;
               })()}
             </div>
+            <div style={{ marginBottom: "12px" }}>
+              <strong style={strongStyle}>Estimated Sale Date:</strong>{" "}
+              {dateOfSell}
+            </div>
             <Box
               display="flex"
               alignItems="center"
               gap={20}
-              style={{ marginBottom: "2px" }}
+              //style={{ marginBottom: "2px" }}
             >
               <div>
                 <strong style={strongStyle}>Potting Date:</strong> {dateOfPot}
@@ -419,7 +438,7 @@ const EditableCard = ({
               display="flex"
               alignItems="center"
               gap={10.75}
-              style={{ marginBottom: "1px" }}
+              //style={{ marginBottom: "1px" }}
             >
               <div>
                 <strong style={strongStyle}>Next Fertilization Date:</strong>{" "}
@@ -462,10 +481,6 @@ const EditableCard = ({
                 label="Done"
               />
             </Box>
-            <div style={{ marginBottom: "2px" }}>
-              <strong style={strongStyle}>Estimated Sale Date:</strong>{" "}
-              {dateOfSell}
-            </div>
           </CardContent>
 
           <CardActions>
