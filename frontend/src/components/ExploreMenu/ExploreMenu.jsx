@@ -114,7 +114,8 @@ const ExploreMenu = ({ category, setCategory }) => {
                       setCategory((prev) =>
                         prev === item.menu_name ? "All" : item.menu_name
                       );
-                    }}>
+                    }}
+                  >
                     <img
                       style={{ maxHeight: 120 }}
                       src={item.menu_image}

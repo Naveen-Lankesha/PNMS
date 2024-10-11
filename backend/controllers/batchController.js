@@ -66,6 +66,28 @@ const updateBatch = async (req, res) => {
 };
 
 
+// Update moisture level
+const updateMoistureLevel = async (req, res) => {
+  const { plantId, moistureLevel } = req.body;
+
+  try {
+    const batch = await batchModel.findOne({ batchID: plantId });
+    if (!batch) {
+      return res.status(404).json({ success: false, message: "Batch not found" });
+    }
+
+    batch.moistureLevel = moistureLevel;
+    await batch.save();
+
+    res.json({ success: true, message: "Moisture level updated successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: "Failed to update moisture level" });
+  }
+};
+
+
+
 // all batch list
 const listBatch = async (req, res) => {
   try {
@@ -113,4 +135,4 @@ const removeAllBatches = async (req, res) => {
   }
 };
 
-export { addBatch,updateBatch, listBatch, removeBatch, removeAllBatches }; 
+export { addBatch,updateBatch, listBatch, removeBatch, removeAllBatches, updateMoistureLevel }; 
