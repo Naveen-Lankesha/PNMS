@@ -247,25 +247,6 @@ const EditableCard = ({
   const handleDateChange = (event) => {
     setEditableDate(event.target.value);
   };
-  useEffect(() => {
-    const fetchBatchData = async () => {
-      try {
-        const response = await fetch("http://localhost:4000/api/batch/list");
-        const data = await response.json();
-
-        // Assuming the response contains a batch object with the three states
-        if (data && data.batch) {
-          setPottingCompleted(data.batch.pottingCompleted);
-          setFertilizingCompleted(data.batch.fertilizingCompleted);
-          setPesticidingCompleted(data.batch.pesticidingCompleted);
-        }
-      } catch (error) {
-        console.error("Error fetching batch data:", error);
-      }
-    };
-
-    fetchBatchData();
-  }, []); // Empty dependency array ensures this effect runs only once, when the component mounts
 
   // Handler for checkbox change
   const handleCheckboxChange = (event) => {
@@ -328,8 +309,6 @@ const EditableCard = ({
         maxHeight: "560px",
         border: "solid",
         borderColor: "#144F21",
-        borderBottomWidth: { sm: 8 },
-        borderRightWidth: { sm: 8 },
         margin: 3,
         padding: { sm: "10px" },
         display: "flex",
@@ -510,6 +489,7 @@ const EditableCard = ({
               </Button>
             )}
             {/* Delete button */}
+            {/*
             <Button
               size={"small"}
               variant="contained"
@@ -521,7 +501,7 @@ const EditableCard = ({
               }}
             >
               <DeleteIcon sx={{ color: "white" }} />
-            </Button>
+            </Button>*/}
           </CardActions>
         </Box>
         <Box
