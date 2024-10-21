@@ -2,7 +2,7 @@
 FROM node:20-alpine
 
 # set environment variables
-ENV VITE_PORT=3003
+ENV VITE_PORT=5173
 
 # set working directory
 WORKDIR /app
@@ -17,7 +17,7 @@ RUN npm install
 COPY . .
 
 # expose port
-EXPOSE 3003
+EXPOSE 5173
 
 # start app
 CMD ["npm", "run", "dev"]
