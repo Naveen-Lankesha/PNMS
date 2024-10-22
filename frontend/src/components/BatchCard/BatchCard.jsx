@@ -43,7 +43,10 @@ const EditableCard = ({
   const [plantData, setPlantData] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
   const [error, setError] = useState(null); // Add error state
-
+  const [moistureThresholds, setMoistureThresholds] = useState({
+    low: 60,
+    critical: 50,
+  });
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -70,23 +73,31 @@ const EditableCard = ({
   }, []);
 
   useEffect(() => {
-    if (plantData.length > 0 && editableType && editableDate) {
-      const selectedPlant = plantData.find(
-        (plant) => plant.type === editableType
+    if (!editableType || !editableDate) return;
+
+    const selectedPlant = plantData.find(
+      (plant) => plant?.type === editableType
+    );
+
+    if (selectedPlant) {
+      // Safely calculate dates
+      calculateDate(
+        selectedPlant.duration_to_pot || 0,
+        selectedPlant.duration_to_fertilize || 0,
+        selectedPlant.duration_to_pesticide || 0,
+        selectedPlant.duration_to_sell || 0
       );
-      if (selectedPlant) {
-        calculateDate(
-          selectedPlant.duration_to_pot,
-          selectedPlant.duration_to_fertilize,
-          selectedPlant.duration_to_pesticide,
-          selectedPlant.duration_to_sell
-        );
-      }
+
+      // Safely update moisture thresholds
       if (selectedPlant.moistureThresholds) {
-        setMoistureThresholds(selectedPlant.moistureThresholds);
+        setMoistureThresholds({
+          low: selectedPlant.moistureThresholds.low || 60,
+          critical: selectedPlant.moistureThresholds.critical || 50,
+        });
       }
     }
   }, [plantData, editableType, editableDate]);
+
   useEffect(() => {
     const fetchBatchData = async () => {
       try {
@@ -115,14 +126,16 @@ const EditableCard = ({
   }, [batchID]);
 
   const getMoistureNotification = (currentMoisture) => {
-    if (currentMoisture <= moistureThresholds.critical) {
+    const moisture = Number(currentMoisture) || 0;
+
+    if (moisture <= moistureThresholds.critical) {
       return {
-        message: `CRITICAL: Moisture level (${currentMoisture}) is extremely low!`,
+        message: `CRITICAL: Moisture level (${moisture}%) is extremely low!`,
         color: "red",
       };
-    } else if (currentMoisture <= moistureThresholds.low) {
+    } else if (moisture <= moistureThresholds.low) {
       return {
-        message: `WARNING: Moisture level (${currentMoisture}) is low`,
+        message: `WARNING: Moisture level (${moisture}%) is low`,
         color: "orange",
       };
     }
@@ -161,11 +174,6 @@ const EditableCard = ({
     const sellDate = start.toISOString().split("T")[0];
     setDateOfSell(sellDate);
   };
-
-  const [moistureThresholds, setMoistureThresholds] = useState({
-    low: 60, // Default low threshold
-    critical: 50, // Default critical threshold
-  });
 
   const calculateAge = (startDate) => {
     const today = new Date();
