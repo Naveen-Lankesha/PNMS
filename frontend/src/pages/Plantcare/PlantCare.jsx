@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import localImage from "./../../assets/frontend_assets/background.png";
 import BatchCard from "../../components/BatchCard/BatchCard";
-
 import {
   Dialog,
   DialogTitle,
@@ -10,7 +10,6 @@ import {
   Button,
   Snackbar,
 } from "@mui/material";
-
 import AddIcon from "@mui/icons-material/Add";
 
 const PlantCare = () => {
@@ -21,72 +20,111 @@ const PlantCare = () => {
   const [notification, setNotification] = useState({
     open: false,
     message: "",
-  }); // State for notificationsconst [notification, setNotification] = useState({ open: false, message: "" }); // State for notifications
+  }); // State for notifications
 
-  //useEffect hook to fetch moisture level every 10 seconds
+  // Local state to store edits
+  //const [editingBatch, setEditingBatch] = useState({});
 
-  // useEffect(() => {
-  //   const ws = new WebSocket("ws://192.168.43.189/ws"); // Establish WebSocket connection
+  // Define the custom hook useAutoRefresh
+  const useAutoRefresh = (url, interval) => {
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
 
-  //   ws.onopen = () => {
-  //     console.log("Connected to WebSocket");
-  //     ws.send("getMoisture"); // Initial request for moisture level
-  //   };
+    useEffect(() => {
+      const saveScrollPosition = () => {
+        sessionStorage.setItem("scrollPosition", window.scrollY);
+      };
 
-  //   ws.onmessage = (event) => {
-  //     console.log("WebSocket message received:", event.data);
-  //     if (!isNaN(event.data)) {
-  //       setMoistureLevel(parseInt(event.data, 10)); // Update moisture level state
-  //       console.log(event.data);
-  //     } else {
-  //       setNotification({ open: true, message: event.data }); // Show notification
-  //       console.log(event.data);
-  //     }
-  //   };
+      const restoreScrollPosition = () => {
+        const savedPosition = sessionStorage.getItem("scrollPosition");
+        if (savedPosition !== null) {
+          window.scrollTo(0, parseInt(savedPosition, 10));
+        }
+      };
 
-  //   ws.onclose = () => {
-  //     console.log("WebSocket connection closed");
-  //   };
+      const fetchData = async () => {
+        saveScrollPosition(); // Save the current scroll position
+        try {
+          const response = await axios.get(url);
+          if (response.data.success) {
+            setData(response.data);
+          } else {
+            setError(response.data.message || "Error fetching data");
+          }
+        } catch (err) {
+          setError("Error fetching data");
+          console.error(err);
+        }
+        restoreScrollPosition(); // Restore the scroll position after fetching data
+      };
 
-  //   ws.onerror = (error) => {
-  //     console.error("WebSocket error:", error);
-  //   };
+      fetchData(); // Fetch data immediately on mount
+      const id = setInterval(fetchData, interval); // Set up auto-refresh
 
-  //   // Clean up the WebSocket connection when the component unmounts
-  //   return () => {
-  //     ws.close();
-  //   };
-  // }, []); // Empty dependency array means this effect runs once on mount
+      return () => clearInterval(id); // Cleanup interval on component unmount
+    }, [url, interval]);
 
-  // useEffect(() => {
-  //   const fetchMoistureLevel = async () => {
-  //     try {
-  //       const response = await fetch("http://192.168.43.189/moisture");
-  //       const data = await response.text();
-  //       setMoistureLevel(parseInt(data, 10)); // Convert the string response to an integer
-  //     } catch (error) {
-  //       console.error("Error fetching moisture level:", error);
-  //     }
-  //   };
+    return { data, error };
+  };
 
-  //   fetchMoistureLevel(); // Initial fetch
-  //   const interval = setInterval(fetchMoistureLevel, 10000); // Fetch every 10 seconds
+  // Handle sensor data update
+  useEffect(() => {
+    if (moistureLevel) {
+      console.log("Moisture Level Updated:", moistureLevel);
+    }
+  }, [moistureLevel]);
 
-  //   return () => clearInterval(interval); // Cleanup interval on component unmount
-  // }, []);
+  // Fetch initial batch list
+  useEffect(() => {
+    const fetchBatches = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/api/batch/list"
+        );
+        if (response.data.success) {
+          setBatchCards(response.data.data);
+          const highestBatchID = Math.max(
+            ...response.data.data.map((batch) => parseInt(batch.batchID, 10)),
+            0
+          );
+          setNextBatchID(highestBatchID + 1);
+        }
+      } catch (error) {
+        console.error("Error fetching batch list:", error);
+      }
+    };
+
+    fetchBatches();
+  }, []); // Empty dependency array means this effect runs once on mount
+
+ // Use the custom hook
+ const { data: sensorData, error } = useAutoRefresh(
+  "http://192.168.1.4:4000/api/upload-sensor-data",
+  5000
+);
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
     const newBatchCard = {
-      batchID: `00${nextBatchID}`, // Generate unique batchID
-      type: "Type",
-      stage: "Ready to Sell",
-      quantity: "Quantity",
-      moistureLevel: moistureLevel || 600,
-      pesticidesDate: "Date",
+      batchID: `00${nextBatchID}`,
+      type: "Select Type",
+      stage: "select stage",
+      quantity: "00",
+      moistureLevel:
+        moistureLevel !== null && moistureLevel !== undefined
+          ? `${moistureLevel}%`
+          : "Sensor not connected!",
+      startDate: "Date",
+      ageOfBatch: "Batch start date not selected!",
+      pottingDate: "No type selected",
+      nextFertilizationDate: "No type selected",
+      nextPesticideApplicationDate: "No type selected",
+      estimatedSaleDate: "No type selected",
     };
 
-    setBatchCards([newBatchCard, ...batchCards]); // Add new card at the beginning of the array
+    // Save the new batch to the backend
+
+    setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]); // Add new card at the beginning of the array
     setNextBatchID(nextBatchID + 1); // Increment the counter for next batchID
   };
 
@@ -98,10 +136,12 @@ const PlantCare = () => {
   // Function to confirm deletion
   const confirmDelete = () => {
     const batchIDToDelete = deleteConfirmation.batchID;
+
     setBatchCards(
       batchCards.filter((card) => card.batchID !== batchIDToDelete)
     );
-    setDeleteConfirmation(null); // Close the confirmation dialog
+
+    setDeleteConfirmation(null);
   };
 
   // Function to cancel deletion
@@ -112,17 +152,27 @@ const PlantCare = () => {
   const handleCloseNotification = () => {
     setNotification({ open: false, message: "" }); // Close notification
   };
-
+  const handleEditCard = (batchID) => {
+    setBatchCards(
+      batchCards.map((card) =>
+        card.batchID === batchID
+          ? { ...card, isEditing: !card.isEditing }
+          : card
+      )
+    );
+  };
+  
   return (
     <div>
       <div
         style={{
           position: "relative", // Position relative for the container
-          width: "100vw",
-          height: "100vh",
+          //width: "100vw",
+          minHeight: "100vh",
           backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${localImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          backgroundSize: "auto",
+          backgroundRepeat: "repeat",
+          backgroundPosition: "top left",
           backgroundColor: "rgba(255, 255, 255, 0.05)",
         }}
       >
@@ -138,9 +188,9 @@ const PlantCare = () => {
               style={{
                 backgroundColor: "#289040",
                 position: "absolute",
-                top: "10px", // Adjust as needed
-                right: "20px", // Adjust as needed
-                zIndex: 9999, // Ensure button appears on top
+                top: "10px",
+                right: "20px",
+                zIndex: 9999,
               }}
             >
               <AddIcon /> Add a New Batch
@@ -149,9 +199,9 @@ const PlantCare = () => {
 
           {/* Delete confirmation dialog */}
           <Dialog open={!!deleteConfirmation} onClose={cancelDelete}>
-            <DialogTitle>Delete Batch Card</DialogTitle>
+            <DialogTitle>Delete Batch</DialogTitle>
             <DialogContent>
-              <p>Are you sure you want to delete this batch card?</p>
+              <p>Are you sure you want to delete this batch?</p>
             </DialogContent>
             <DialogActions>
               <Button onClick={confirmDelete}>Yes</Button>
@@ -163,7 +213,7 @@ const PlantCare = () => {
           <Snackbar
             open={notification.open}
             message={notification.message}
-            autoHideDuration={60000}
+            autoHideDuration={6000}
             onClose={handleCloseNotification}
           />
 
@@ -173,7 +223,6 @@ const PlantCare = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-
               marginTop: "50px",
               paddingLeft: "20px",
               paddingRight: "20px",
@@ -181,8 +230,9 @@ const PlantCare = () => {
           >
             {batchCards.map((card) => (
               <BatchCard
-                key={card.batchID}
+                key={card.batchID || index}
                 {...card}
+                onEdit={() => handleEditCard(card.batchID)}
                 onDelete={() => handleDeleteBatchCard(card.batchID)}
               />
             ))}

@@ -142,7 +142,8 @@ const Add = () => {
               required
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              label="Category">
+              label="Category"
+            >
               <MenuItem value="Material">Material</MenuItem>
               <MenuItem value="Seeds">Seeds</MenuItem>
               <MenuItem value="Plants">Plants</MenuItem>
@@ -155,7 +156,7 @@ const Add = () => {
             onChange={onChangeHandler}
             name="price"
             value={data.price}
-            label="Product Price (£)"
+            label="Product Price (Rs.)"
             required
             error={!!errors.price}
             helperText={errors.price}
@@ -165,7 +166,8 @@ const Add = () => {
             type="button"
             variant="contained"
             sx={{ fontWeight: 600 }}
-            onClick={handleDialogOpen}>
+            onClick={handleDialogOpen}
+          >
             Add
           </Button>
         </Stack>
@@ -175,14 +177,15 @@ const Add = () => {
         <DialogTitle sx={{ fontWeight: 600 }}>Confirm Add</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to add this shoe?
+            Are you sure you want to add this Item?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
             variant="contained"
             onClick={handleDialogClose}
-            color="primary">
+            color="primary"
+          >
             Cancel
           </Button>
           <Button variant="outlined" onClick={handleFormSubmit} color="primary">
