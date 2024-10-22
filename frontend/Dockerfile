@@ -3,6 +3,7 @@ FROM node:20-alpine
 
 # set environment variables
 ENV VITE_PORT=5173
+ENV VITE_API_URL=http://20.198.23.60:4000
 
 # set working directory
 WORKDIR /app
