@@ -94,7 +94,7 @@ const PlantCare = () => {
 
  // Use the custom hook
  const { data: sensorData, error } = useAutoRefresh(
-  "http://192.168.230.207:4000/api/upload-sensor-data",
+  "http://192.168.1.4:4000/api/upload-sensor-data",
   5000
 );
 
