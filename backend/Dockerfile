@@ -1,5 +1,5 @@
-# base image 
-FROM node:20-alpine
+# Use the official Node.js image
+FROM node:20
 
 # set environment variables
 ENV JWT_SECRET="random#secret"
@@ -10,19 +10,14 @@ WORKDIR /app
 # copy package.json and package-lock.json
 COPY package*.json ./
 
-# install dependencies
+# clean node_modules and install dependencies
 RUN npm install
 
 # copy app files
 COPY . .
-
-# Build the NestJS application
-RUN npm run build
 
 # expose port
 EXPOSE 4000
 
 # Define the default command to run your app in production mode
 CMD ["npm", "start"]
-
-
