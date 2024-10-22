@@ -44,7 +44,7 @@ const EditableCard = ({
   const [loading, setLoading] = useState(true); // Add loading state
   const [error, setError] = useState(null); // Add error state
   const [moistureThresholds, setMoistureThresholds] = useState({
-    low: 60,
+    low: 60, // Default low threshold
     critical: 50,
   });
   useEffect(() => {
@@ -102,16 +102,22 @@ const EditableCard = ({
     const fetchBatchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/api/batch/${batchID}`
+          "http://localhost:4000/api/batch/list"
         );
         const batchData = response.data;
 
-        // Update the state with the fetched data
+        // Find the batch with the matching batchID
         if (batchData.success) {
-          const batch = batchData.data;
-          setPottingCompleted(batch.pottingCompleted || false);
-          setFertilizingCompleted(batch.fertilizingCompleted || false);
-          setPesticidingCompleted(batch.pesticidingCompleted || false);
+          const batch = batchData.data.find((b) => b.batchID === batchID);
+
+          if (batch) {
+            // Update the state with the fetched batch data
+            setPottingCompleted(batch.pottingCompleted || false);
+            setFertilizingCompleted(batch.fertilizingCompleted || false);
+            setPesticidingCompleted(batch.pesticidingCompleted || false);
+          } else {
+            setError(new Error("Batch not found"));
+          }
         } else {
           setError(new Error("Failed to load batch data"));
         }
@@ -120,9 +126,7 @@ const EditableCard = ({
       }
     };
 
-    if (batchID) {
-      fetchBatchData();
-    }
+    fetchBatchData();
   }, [batchID]);
 
   const getMoistureNotification = (currentMoisture) => {
@@ -224,7 +228,12 @@ const EditableCard = ({
     : [];
 
   const renderTaskCheckbox = (name, date, isCompleted, setCompleted) => (
-    <Box display="flex" alignItems="center" gap={2}>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      width="100%"
+    >
       <div>
         <strong style={strongStyle}>{name}:</strong> {date}
       </div>
@@ -334,18 +343,6 @@ const EditableCard = ({
     setEditableDate(event.target.value);
   };
 
-  // Handler for checkbox change
-  const handleCheckboxChange = (event) => {
-    const { name, checked } = event.target;
-    if (name === "potting") {
-      setPottingCompleted(checked);
-    } else if (name === "fertilizing") {
-      setFertilizingCompleted(checked);
-    } else if (name === "pesticiding") {
-      setPesticidingCompleted(checked);
-    }
-  };
-
   const getCurrentDate = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
@@ -390,16 +387,17 @@ const EditableCard = ({
     <Card
       sx={{
         borderRadius: "20px",
-        maxWidth: { xs: "280px" },
-        minWidth: "1000px",
-        maxHeight: "560px",
+        maxWidth: { xs: "100%", sm: "600px", md: "900px" }, // Full width on small screens, constrained on larger screens
+        minWidth: "280px", // Ensure a minimum width
+        maxHeight: { xs: "auto", md: "560px" }, // Auto height on small screens, fixed height on larger screens
         border: "solid",
         borderColor: "#144F21",
-        margin: 3,
-        padding: { sm: "10px" },
+        margin: { xs: 1, sm: 2, md: 3 }, // Responsive margins
+        padding: { xs: "5px", sm: "10px", md: "15px" }, // Adjust padding for various screen sizes
         display: "flex",
         flexDirection: "column",
         position: "relative",
+        overflow: "hidden", // Proper use of overflow to handle content overflow
       }}
     >
       <Stack display={"flex"} direction={"row"}>
@@ -557,7 +555,7 @@ const EditableCard = ({
         <Box
           flex={2}
           sx={{
-            display: { xs: "none", sm: "block flex" },
+            display: { sm: "block flex", xs: "none" },
             flexDirection: "column",
             alignItems: "flex-start",
             border: "2px solid #144F21",
