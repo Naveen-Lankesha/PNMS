@@ -22,48 +22,51 @@ const PlantCare = () => {
     message: "",
   }); // State for notifications
 
+  // Local state to store edits
+  //const [editingBatch, setEditingBatch] = useState({});
+
   // Define the custom hook useAutoRefresh
   const useAutoRefresh = (url, interval) => {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const saveScrollPosition = () => {
-      sessionStorage.setItem("scrollPosition", window.scrollY);
-    };
+    useEffect(() => {
+      const saveScrollPosition = () => {
+        sessionStorage.setItem("scrollPosition", window.scrollY);
+      };
 
-    const restoreScrollPosition = () => {
-      const savedPosition = sessionStorage.getItem("scrollPosition");
-      if (savedPosition !== null) {
-        window.scrollTo(0, parseInt(savedPosition, 10));
-      }
-    };
-
-    const fetchData = async () => {
-      saveScrollPosition(); // Save the current scroll position
-      try {
-        const response = await axios.get(url);
-        if (response.data.success) {
-          setData(response.data);
-        } else {
-          setError(response.data.message || "Error fetching data");
+      const restoreScrollPosition = () => {
+        const savedPosition = sessionStorage.getItem("scrollPosition");
+        if (savedPosition !== null) {
+          window.scrollTo(0, parseInt(savedPosition, 10));
         }
-      } catch (err) {
-        setError("Error fetching data");
-        console.error(err);
-      }
-      restoreScrollPosition(); // Restore the scroll position after fetching data
-    };
+      };
 
-    fetchData(); // Fetch data immediately on mount
-    const id = setInterval(fetchData, interval); // Set up auto-refresh
+      const fetchData = async () => {
+        saveScrollPosition(); // Save the current scroll position
+        try {
+          const response = await axios.get(url);
+          if (response.data.success) {
+            setData(response.data);
+          } else {
+            setError(response.data.message || "Error fetching data");
+          }
+        } catch (err) {
+          setError("Error fetching data");
+          console.error(err);
+        }
+        restoreScrollPosition(); // Restore the scroll position after fetching data
+      };
 
-    return () => clearInterval(id); // Cleanup interval on component unmount
-  }, [url, interval]);
+      fetchData(); // Fetch data immediately on mount
+      const id = setInterval(fetchData, interval); // Set up auto-refresh
 
-  return { data, error };
-};
-  
+      return () => clearInterval(id); // Cleanup interval on component unmount
+    }, [url, interval]);
+
+    return { data, error };
+  };
+
   // Handle sensor data update
   useEffect(() => {
     if (moistureLevel) {
@@ -75,39 +78,51 @@ const PlantCare = () => {
   useEffect(() => {
     const fetchBatches = async () => {
       try {
-        const response = await axios.get("http://localhost:4000/api/batch/list");
+        const response = await axios.get(
+          "http://localhost:4000/api/batch/list"
+        );
         if (response.data.success) {
-          setBatchCards(response.data.data); // Set the fetched batches to state
+          setBatchCards(response.data.data);
           const highestBatchID = Math.max(
             ...response.data.data.map((batch) => parseInt(batch.batchID, 10)),
             0
           );
-          setNextBatchID(highestBatchID + 1); // Update nextBatchID based on the highest batchID
+          setNextBatchID(highestBatchID + 1);
         }
       } catch (error) {
         console.error("Error fetching batch list:", error);
       }
     };
-  
+
     fetchBatches();
   }, []); // Empty dependency array means this effect runs once on mount
 
  // Use the custom hook
  const { data: sensorData, error } = useAutoRefresh(
-  "http://192.168.230.207:4000/api/upload-sensor-data",
+  "http://192.168.1.4:4000/api/upload-sensor-data",
   5000
 );
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
     const newBatchCard = {
-      batchID: `00${nextBatchID}`, // Generate unique batchID
-      type: "select type",
+      batchID: `00${nextBatchID}`,
+      type: "Select Type",
       stage: "select stage",
       quantity: "00",
-      moistureLevel: moistureLevel || 100,
-      pestDate: "Date"
+      moistureLevel:
+        moistureLevel !== null && moistureLevel !== undefined
+          ? `${moistureLevel}%`
+          : "Sensor not connected!",
+      startDate: "Date",
+      ageOfBatch: "Batch start date not selected!",
+      pottingDate: "No type selected",
+      nextFertilizationDate: "No type selected",
+      nextPesticideApplicationDate: "No type selected",
+      estimatedSaleDate: "No type selected",
     };
+
+    // Save the new batch to the backend
 
     setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]); // Add new card at the beginning of the array
     setNextBatchID(nextBatchID + 1); // Increment the counter for next batchID
@@ -121,10 +136,12 @@ const PlantCare = () => {
   // Function to confirm deletion
   const confirmDelete = () => {
     const batchIDToDelete = deleteConfirmation.batchID;
+
     setBatchCards(
       batchCards.filter((card) => card.batchID !== batchIDToDelete)
     );
-    setDeleteConfirmation(null); // Close the confirmation dialog
+
+    setDeleteConfirmation(null);
   };
 
   // Function to cancel deletion
@@ -144,6 +161,7 @@ const PlantCare = () => {
       )
     );
   };
+  
   return (
     <div>
       <div
@@ -152,7 +170,7 @@ const PlantCare = () => {
           //width: "100vw",
           minHeight: "100vh",
           backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${localImage})`,
-          backgroundSize: "auto", // Default size to allow tiling
+          backgroundSize: "auto",
           backgroundRepeat: "repeat",
           backgroundPosition: "top left",
           backgroundColor: "rgba(255, 255, 255, 0.05)",
@@ -212,7 +230,7 @@ const PlantCare = () => {
           >
             {batchCards.map((card) => (
               <BatchCard
-                key={card.batchID}
+                key={card.batchID || index}
                 {...card}
                 onEdit={() => handleEditCard(card.batchID)}
                 onDelete={() => handleDeleteBatchCard(card.batchID)}
