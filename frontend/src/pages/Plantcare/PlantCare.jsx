@@ -5,11 +5,12 @@ import { veg_list } from "../../assets/frontend_assets/assets";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import BatchCard from "../../components/BatchCard/BatchCard";
+import { useMediaQuery } from "@mui/material";
+
 import {
   Card,
   CardActionArea,
   CardContent,
-  Typography,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -37,6 +38,8 @@ const PlantCare = () => {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
+  const isLargeScreen = useMediaQuery("(min-width:1024px)");
+
   // Custom hook for auto-refresh
   const useAutoRefresh = (url, interval) => {
     const [data, setData] = useState(null);
@@ -192,23 +195,17 @@ const PlantCare = () => {
       >
         <CardActionArea onClick={() => handleMinimizedCardClick(batchID)}>
           <CardContent>
-            <div style={{ marginBottom: "16px" }}>
-              <strong style={{ marginRight: "11px", fontSize: "13px" }}>
-                Batch ID :
-              </strong>
-              {batchID}
+            <div style={{ marginBottom: "14px" }}>
+              <strong style={{ fontSize: "14px" }}>Batch ID :</strong>
+              <strong style={{ fontSize: "14px" }}>{batchID}</strong>
             </div>
-            <div style={{ marginBottom: "16px" }}>
-              <strong style={{ marginRight: "11px", fontSize: "13px" }}>
-                Type :
-              </strong>
-              {type}
+            <div style={{ marginBottom: "14px" }}>
+              <strong style={{ fontSize: "14px" }}>Type :</strong>
+              <strong style={{ fontSize: "14px" }}>{type}</strong>
             </div>
-            <div style={{ marginBottom: "16px" }}>
-              <strong style={{ marginRight: "11px", fontSize: "13px" }}>
-                Quantity:
-              </strong>
-              {quantity}
+            <div style={{ marginBottom: "14px" }}>
+              <strong style={{ fontSize: "14px" }}>Quantity :</strong>
+              <strong style={{ fontSize: "14px" }}>{quantity}</strong>
             </div>
 
             <img
@@ -258,7 +255,7 @@ const PlantCare = () => {
           </Button>
         </div>
 
-        {/* Delete confirmation dialog */}
+        {/* Delete confirmation dialog 
         <Dialog open={!!deleteConfirmation} onClose={cancelDelete}>
           <DialogTitle>Delete Batch</DialogTitle>
           <DialogContent>
@@ -268,7 +265,7 @@ const PlantCare = () => {
             <Button onClick={confirmDelete}>Yes</Button>
             <Button onClick={cancelDelete}>No</Button>
           </DialogActions>
-        </Dialog>
+        </Dialog>*/}
 
         {/* Notification snackbar */}
         <Snackbar
@@ -303,8 +300,8 @@ const PlantCare = () => {
         {/* Expanded batch cards */}
         <div
           style={{
-            display: "flex", // Flexbox layout for side-by-side columns
-            justifyContent: "space-between", // Space between the columns
+            display: "flex",
+            justifyContent: "space-between",
             width: "100%",
           }}
         >
@@ -347,21 +344,28 @@ const PlantCare = () => {
               flexDirection: "column",
               flexWrap: "wrap",
               marginLeft: "20px",
+              marginTop: "25px",
               backgroundColor: "#c9f2d3",
             }}
           >
-            <div style={{ marginBottom: "16px" }}>
-              <strong
-                style={{
-                  marginRight: "11px",
-                  fontSize: "20px",
-                  color: "#289040",
-                }}
-              >
-                CALENDER
-              </strong>
-            </div>
-            <Calendar onChange={setDate} value={date} />
+            {isLargeScreen && (
+              <div style={{ marginBottom: "16px" }}>
+                <strong
+                  style={{
+                    marginRight: "11px",
+                    fontSize: "20px",
+                    color: "#289040",
+                  }}
+                >
+                  CALENDER
+                </strong>
+              </div>
+            )}
+            {isLargeScreen && (
+              <div>
+                <Calendar onChange={setDate} value={date} />
+              </div>
+            )}
           </div>
         </div>
       </div>

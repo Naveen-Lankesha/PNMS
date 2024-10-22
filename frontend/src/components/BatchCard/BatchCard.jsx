@@ -12,6 +12,8 @@ import {
   Checkbox,
   FormControlLabel,
   MenuItem,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { veg_list } from "../../assets/frontend_assets/assets";
@@ -80,8 +82,53 @@ const EditableCard = ({
           selectedPlant.duration_to_sell
         );
       }
+      if (selectedPlant.moistureThresholds) {
+        setMoistureThresholds(selectedPlant.moistureThresholds);
+      }
     }
   }, [plantData, editableType, editableDate]);
+  useEffect(() => {
+    const fetchBatchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/api/batch/${batchID}`
+        );
+        const batchData = response.data;
+
+        // Update the state with the fetched data
+        if (batchData.success) {
+          const batch = batchData.data;
+          setPottingCompleted(batch.pottingCompleted || false);
+          setFertilizingCompleted(batch.fertilizingCompleted || false);
+          setPesticidingCompleted(batch.pesticidingCompleted || false);
+        } else {
+          setError(new Error("Failed to load batch data"));
+        }
+      } catch (err) {
+        setError(err);
+      }
+    };
+
+    if (batchID) {
+      fetchBatchData();
+    }
+  }, [batchID]);
+
+  const getMoistureNotification = (currentMoisture) => {
+    if (currentMoisture <= moistureThresholds.critical) {
+      return {
+        message: `CRITICAL: Moisture level (${currentMoisture}) is extremely low!`,
+        color: "red",
+      };
+    } else if (currentMoisture <= moistureThresholds.low) {
+      return {
+        message: `WARNING: Moisture level (${currentMoisture}) is low`,
+        color: "orange",
+      };
+    }
+    return null;
+  };
+
   const calculateDate = (
     duration_to_pot,
     duration_to_fertilize,
@@ -115,6 +162,11 @@ const EditableCard = ({
     setDateOfSell(sellDate);
   };
 
+  const [moistureThresholds, setMoistureThresholds] = useState({
+    low: 60, // Default low threshold
+    critical: 50, // Default critical threshold
+  });
+
   const calculateAge = (startDate) => {
     const today = new Date();
     const start = new Date(startDate);
@@ -124,7 +176,9 @@ const EditableCard = ({
     const days = diffInDays % 7;
     return { weeks, days };
   };
-  const getNotificationForDate = (targetDate, label) => {
+  const getNotificationForDate = (targetDate, label, isCompleted) => {
+    if (isCompleted) return null;
+
     const today = new Date();
     const target = new Date(targetDate);
 
@@ -144,17 +198,41 @@ const EditableCard = ({
   };
   const notifications = !isEditing
     ? [
-        !pottingCompleted && getNotificationForDate(dateOfPot, "Potting Date"),
-        !fertilizingCompleted &&
-          getNotificationForDate(dateOfFertilize, "Next Fertilization Date"),
-        !pesticidingCompleted &&
-          getNotificationForDate(
-            dateOfPesticide,
-            "Next Pesticide Application Date"
-          ),
-        getNotificationForDate(dateOfSell, "Estimated Sale Date"),
+        getMoistureNotification(moistureLevel),
+        getNotificationForDate(dateOfPot, "Potting Date", pottingCompleted),
+        getNotificationForDate(
+          dateOfFertilize,
+          "Next Fertilization Date",
+          fertilizingCompleted
+        ),
+        getNotificationForDate(
+          dateOfPesticide,
+          "Next Pesticide Application Date",
+          pesticidingCompleted
+        ),
+        // Sale date notification is always shown regardless of completion status
+        getNotificationForDate(dateOfSell, "Estimated Sale Date", false),
       ].filter((notification) => notification !== null)
-    : []; // Filter out null values
+    : [];
+
+  const renderTaskCheckbox = (name, date, isCompleted, setCompleted) => (
+    <Box display="flex" alignItems="center" gap={2}>
+      <div>
+        <strong style={strongStyle}>{name}:</strong> {date}
+      </div>
+      <FormControlLabel
+        control={
+          <Checkbox
+            name={name.toLowerCase().replace(/\s+/g, "")}
+            checked={isCompleted}
+            onChange={(e) => setCompleted(e.target.checked)} // Proper state update
+            color="primary"
+          />
+        }
+        label="Done"
+      />
+    </Box>
+  );
 
   const handleEdit = () => {
     if (!editableDate) {
@@ -305,7 +383,7 @@ const EditableCard = ({
       sx={{
         borderRadius: "20px",
         maxWidth: { xs: "280px" },
-        minWidth: { sm: "800px" },
+        minWidth: "1000px",
         maxHeight: "560px",
         border: "solid",
         borderColor: "#144F21",
@@ -361,9 +439,20 @@ const EditableCard = ({
                 editableQuantity
               )}
             </div>
+            <div
+              style={{
+                marginBottom: "16px",
+                color:
+                  moistureLevel <= moistureThresholds.critical
+                    ? "red"
+                    : moistureLevel <= moistureThresholds.low
+                    ? "orange"
+                    : "#144F21",
+              }}
+            ></div>
             <div style={{ marginBottom: "16px" }}>
               <strong style={strongStyle}>Moisture Level:</strong>{" "}
-              {moistureLevel}
+              {moistureLevel}%
             </div>
 
             <div style={{ marginBottom: "16px" }}>
@@ -392,74 +481,27 @@ const EditableCard = ({
               <strong style={strongStyle}>Estimated Sale Date:</strong>{" "}
               {dateOfSell}
             </div>
-            <Box
-              display="flex"
-              alignItems="center"
-              gap={20}
-              //style={{ marginBottom: "2px" }}
-            >
-              <div>
-                <strong style={strongStyle}>Potting Date:</strong> {dateOfPot}
-              </div>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="potting"
-                    checked={pottingCompleted}
-                    onChange={handleCheckboxChange}
-                    color="primary"
-                  />
-                }
-                label="Done"
-              />
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              gap={10.75}
-              //style={{ marginBottom: "1px" }}
-            >
-              <div>
-                <strong style={strongStyle}>Next Fertilization Date:</strong>{" "}
-                {dateOfFertilize}
-              </div>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="fertilizing"
-                    checked={fertilizingCompleted}
-                    onChange={handleCheckboxChange}
-                    color="primary"
-                  />
-                }
-                label="Done"
-              />
-            </Box>
 
-            <Box
-              display="flex"
-              alignItems="center"
-              gap={2}
-              style={{ marginBottom: "5px" }}
-            >
-              <div>
-                <strong style={strongStyle}>
-                  Next Pesticide Application Date:
-                </strong>{" "}
-                {dateOfPesticide}
-              </div>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    name="pesticiding"
-                    checked={pesticidingCompleted}
-                    onChange={handleCheckboxChange}
-                    color="primary"
-                  />
-                }
-                label="Done"
-              />
-            </Box>
+            {renderTaskCheckbox(
+              "Potting Date",
+              dateOfPot,
+              pottingCompleted,
+              setPottingCompleted
+            )}
+
+            {renderTaskCheckbox(
+              "Next Fertilization Date",
+              dateOfFertilize,
+              fertilizingCompleted,
+              setFertilizingCompleted
+            )}
+
+            {renderTaskCheckbox(
+              "Next Pesticide Application Date",
+              dateOfPesticide,
+              pesticidingCompleted,
+              setPesticidingCompleted
+            )}
           </CardContent>
 
           <CardActions>
@@ -511,32 +553,67 @@ const EditableCard = ({
             flexDirection: "column",
             alignItems: "flex-start",
             border: "2px solid #144F21",
-            padding: 3,
+            padding: "24px",
             borderRadius: "8px",
             marginLeft: "6px",
             position: "relative",
+            maxHeight: "500px",
+            height: "520px",
+            width: "380px",
           }}
         >
-          {/* Content for the new box */}
           <div
             style={{
-              top: 20,
-              textAlign: "left",
-              position: "absolute",
+              position: "sticky",
+              top: 0,
+              backgroundColor: "white",
+              padding: "5px 0",
+              borderBottom: "2px solid #144F21",
               width: "100%",
+              marginBottom: "16px",
             }}
           >
-            <div style={{ fontSize: "Medium" }}>NOTIFICATIONS</div>
+            <strong style={{ fontSize: "16px", color: "#144F21" }}>
+              NOTIFICATIONS
+            </strong>
           </div>
-          <div style={{ marginTop: "40px", color: "#144F21" }}>
+
+          <div style={{ marginTop: "10px" }}>
             {notifications.length > 0 ? (
-              notifications.map((notification, index) => (
-                <div key={index} style={{ color: notification.color }}>
-                  {notification.message}
-                </div>
-              ))
+              <Stack spacing={0.5}>
+                {notifications.map((notification, index) => (
+                  <Alert
+                    key={index}
+                    severity={
+                      notification.color === "red"
+                        ? "error"
+                        : notification.color === "orange"
+                        ? "warning"
+                        : "info"
+                    }
+                    sx={{
+                      "& .MuiAlert-icon": {
+                        fontSize: "25px",
+                      },
+                    }}
+                  >
+                    {notification.message}
+                  </Alert>
+                ))}
+              </Stack>
             ) : (
-              <div>No upcoming events</div>
+              <Alert
+                severity="success"
+                sx={{
+                  backgroundColor: "#e8f5e9",
+                  "& .MuiAlert-icon": {
+                    color: "#2e7d32",
+                  },
+                }}
+              >
+                <AlertTitle>All Good!</AlertTitle>
+                No pending notifications
+              </Alert>
             )}
           </div>
 
