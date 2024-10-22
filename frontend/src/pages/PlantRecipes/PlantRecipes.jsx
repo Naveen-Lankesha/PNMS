@@ -7,11 +7,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Box, Button, TextField, InputAdornment } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import localImage from "./../../assets/frontend_assets/background.png";
-import axios from 'axios';
+import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -61,19 +68,15 @@ export default function PlantRecipes() {
   const [rows, setRows] = React.useState(initialRows);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [editIdx, setEditIdx] = React.useState(null);
-  const [notification, setNotification] = React.useState({ open: false, message: "" });
+  const [notification, setNotification] = React.useState({
+    open: false,
+    message: "",
+  });
 
   const addNewRow = () => {
-    const newRow = createData(
-      `New Plant ${rows.length + 1}`,
-      0,
-      0,
-      0,
-      0
-    );
+    const newRow = createData(`New Plant ${rows.length + 1}`, 0, 0, 0, 0);
     setRows([newRow, ...rows]);
   };
-
 
   const handleEdit = (idx) => {
     setEditIdx(idx);
@@ -85,7 +88,7 @@ export default function PlantRecipes() {
       duration_to_pot: rows[idx].DurationtoPot,
       duration_to_fertilize: rows[idx].DurationtoFertilize,
       duration_to_pesticide: rows[idx].DurationtoPesticide,
-      duration_to_sell: rows[idx].DurationtoSell
+      duration_to_sell: rows[idx].DurationtoSell,
     };
 
     axios
@@ -115,11 +118,15 @@ export default function PlantRecipes() {
   React.useEffect(() => {
     const fetchRows = async (query = "") => {
       try {
-        const response = await axios.get("http://localhost:4000/api/plant/list", {
-          params: { type: query }, // Assuming backend supports querying by name
-        });
+        const response = await axios.get(
+          "http://localhost:4000/api/plant/list",
+          {
+            params: { type: query }, // Assuming backend supports querying by name
+          }
+        );
         if (response.data.success) {
           const fetchedData = response.data.data.map((plant) => ({
+            _id: plant._id,
             type: plant.type,
             DurationtoPot: plant.duration_to_pot,
             DurationtoFertilize: plant.duration_to_fertilize,
@@ -132,35 +139,44 @@ export default function PlantRecipes() {
         console.error("Error fetching plant list:", error);
       }
     };
-  
+
     fetchRows();
   }, []);
 
-  // const handleDelete = (idx) => {
-  //   const removedData = {
-  //     plant: rows[idx].type
-  //   };
-  //   axios
-  //   .post("http://localhost:4000/api/plant/remove", removedData)
-  //   .then((response) => {
-  //     if (response.data.success) {
-  //       console.log("Plant removed successfully:", response.data);
-  //       onDelete();
-  //     } else {
-  //       setNotification({
-  //         open: true,
-  //         message: response.data.message || "Failed to remove plant",
-  //       });
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error removing data:", error);
-  //     setNotification({
-  //       open: true,
-  //       message: "Error removing data. Please try again later.",
-  //     });
-  //   });
-  // };
+  const handleDelete = (idx) => {
+    const removedData = {
+      id: rows[idx]._id, // Assuming _id is the unique identifier
+    };
+
+    axios
+      .post("http://localhost:4000/api/plant/remove", removedData)
+      .then((response) => {
+        if (response.data.success) {
+          console.log("Plant removed successfully:", response.data);
+
+          // Remove the row from the state
+          const updatedRows = rows.filter((_, rowIdx) => rowIdx !== idx);
+          setRows(updatedRows);
+
+          setNotification({
+            open: true,
+            message: "Plant removed successfully!",
+          });
+        } else {
+          setNotification({
+            open: true,
+            message: response.data.message || "Failed to remove plant",
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Error removing data:", error);
+        setNotification({
+          open: true,
+          message: "Error removing data. Please try again later.",
+        });
+      });
+  };
 
   const handleChange = (e, field, idx) => {
     const updatedRows = rows.map((row, rowIdx) =>
@@ -229,7 +245,7 @@ export default function PlantRecipes() {
         sx={{
           display: "flex",
           justifyContent: "center",
-          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${localImage})`,
+          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url(${localImage})`,
         }}
       >
         <Table
@@ -245,18 +261,14 @@ export default function PlantRecipes() {
           <TableHead>
             <TableRow>
               <StyledTableCell>Type</StyledTableCell>
-              <StyledTableCell align="right">
-                Duration to Pot (Weeks)
+              <StyledTableCell align="center">Days to Pot </StyledTableCell>
+              <StyledTableCell align="center">
+                Days to Fertilize
               </StyledTableCell>
-              <StyledTableCell align="right">
-                Duration to Fertilize (Weeks)
+              <StyledTableCell align="center">
+                Days to Pesticide
               </StyledTableCell>
-              <StyledTableCell align="right">
-                Duration to Pesticide (Weeks)
-              </StyledTableCell>
-              <StyledTableCell align="right">
-                Duration to Sell (Weeks)
-              </StyledTableCell>
+              <StyledTableCell align="center">Days to Sell</StyledTableCell>
               <StyledTableCell align="center">Actions</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -324,7 +336,12 @@ export default function PlantRecipes() {
                   {editIdx === idx ? (
                     <Button onClick={() => handleSave(idx)}>Save</Button>
                   ) : (
-                    <Button onClick={() => handleEdit(idx)}>Edit</Button>
+                    <>
+                      <Button onClick={() => handleEdit(idx)}>Edit</Button>
+                      <IconButton onClick={() => handleDelete(idx)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </>
                   )}
                 </StyledTableCell>
               </StyledTableRow>
