@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import localImage from "./../../assets/frontend_assets/background.png";
+import { veg_list } from "../../assets/frontend_assets/assets";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import BatchCard from "../../components/BatchCard/BatchCard";
+import { useMediaQuery } from "@mui/material";
+
 import {
+  Card,
+  CardActionArea,
+  CardContent,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -17,15 +25,22 @@ const PlantCare = () => {
   const [nextBatchID, setNextBatchID] = useState(1);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
   const [moistureLevel, setMoistureLevel] = useState(null);
+  const [date, setDate] = useState(new Date());
   const [notification, setNotification] = useState({
     open: false,
     message: "",
   });
+  const expandedCardsRef = useRef({});
 
-  // Local state to store edits
-  //const [editingBatch, setEditingBatch] = useState({});
+  const handleMinimizedCardClick = (batchID) => {
+    const element = expandedCardsRef.current[batchID];
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+  const isLargeScreen = useMediaQuery("(min-width:1024px)");
 
-  // Define the custom hook useAutoRefresh
+  // Custom hook for auto-refresh
   const useAutoRefresh = (url, interval) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -43,7 +58,7 @@ const PlantCare = () => {
       };
 
       const fetchData = async () => {
-        saveScrollPosition(); // Save the current scroll position
+        saveScrollPosition();
         try {
           const response = await axios.get(url);
           if (response.data.success) {
@@ -55,13 +70,13 @@ const PlantCare = () => {
           setError("Error fetching data");
           console.error(err);
         }
-        restoreScrollPosition(); // Restore the scroll position after fetching data
+        restoreScrollPosition();
       };
 
-      fetchData(); // Fetch data immediately on mount
-      const id = setInterval(fetchData, interval); // Set up auto-refresh
+      fetchData();
+      const id = setInterval(fetchData, interval);
 
-      return () => clearInterval(id); // Cleanup interval on component unmount
+      return () => clearInterval(id);
     }, [url, interval]);
 
     return { data, error };
@@ -95,7 +110,7 @@ const PlantCare = () => {
     };
 
     fetchBatches();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []);
 
  // Use the custom hook
  const { data: sensorData, error } = useAutoRefresh(
@@ -116,15 +131,16 @@ const PlantCare = () => {
       startDate: "Date",
       ageOfBatch: "Batch start date not selected!",
       pottingDate: "No type selected",
+      pottingCompleted: false, // Default value for potting status
+      fertilizingCompleted: false, // Default value for fertilizing status
+      pesticidingCompleted: false, // Default value for pesticiding status
       nextFertilizationDate: "No type selected",
       nextPesticideApplicationDate: "No type selected",
       estimatedSaleDate: "No type selected",
     };
 
-    // Save the new batch to the backend
-
-    setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]); // Add new card at the beginning of the array
-    setNextBatchID(nextBatchID + 1); // Increment the counter for next batchID
+    setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]); // Add new card at the beginning
+    setNextBatchID(nextBatchID + 1);
   };
 
   // Function to delete a batch card
@@ -161,79 +177,195 @@ const PlantCare = () => {
     );
   };
 
-  return (
-    <div>
-      <div
+  const MinimizedBatchCard = ({ batchID, type, quantity }) => {
+    const selectedItem = veg_list.find((item) => item.name === type);
+    const imageUrl = selectedItem
+      ? selectedItem.image
+      : "/placeholder-image.jpg";
+
+    return (
+      <Card
         style={{
-          position: "relative",
-          minHeight: "100vh",
-          backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${localImage})`,
-          backgroundSize: "auto",
-          backgroundRepeat: "repeat",
-          backgroundPosition: "top left",
-          backgroundColor: "rgba(255, 255, 255, 0.05)",
+          margin: "10px",
+          width: "200px",
+          borderRadius: "20px",
+          border: "solid",
+          borderColor: "#54785c",
         }}
       >
-        {/* Add Batch Card button */}
-        <div
-          className="Content"
-          style={{ display: "flex", flexDirection: "column" }}
-        >
-          <div>
-            <Button
-              variant="contained"
-              onClick={handleAddBatchCard}
+        <CardActionArea onClick={() => handleMinimizedCardClick(batchID)}>
+          <CardContent>
+            <div style={{ marginBottom: "14px" }}>
+              <strong style={{ fontSize: "14px" }}>Batch ID :</strong>
+              <strong style={{ fontSize: "14px" }}>{batchID}</strong>
+            </div>
+            <div style={{ marginBottom: "14px" }}>
+              <strong style={{ fontSize: "14px" }}>Type :</strong>
+              <strong style={{ fontSize: "14px" }}>{type}</strong>
+            </div>
+            <div style={{ marginBottom: "14px" }}>
+              <strong style={{ fontSize: "14px" }}>Quantity :</strong>
+              <strong style={{ fontSize: "14px" }}>{quantity}</strong>
+            </div>
+
+            <img
+              src={imageUrl}
+              alt={type}
               style={{
-                backgroundColor: "#289040",
-                position: "absolute",
-                top: "10px",
-                right: "20px",
-                zIndex: 9999,
+                height: "150px",
+                objectFit: "cover",
               }}
-            >
-              <AddIcon /> Add a New Batch
-            </Button>
-          </div>
+            />
+          </CardContent>
+        </CardActionArea>
+      </Card>
+    );
+  };
+  return (
+    <div
+      style={{
+        position: "relative",
+        minHeight: "100vh",
+        backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${localImage})`,
+        backgroundSize: "auto",
+        backgroundRepeat: "repeat",
+        backgroundPosition: "top left",
+        backgroundColor: "rgba(255, 255, 255, 0.05)",
+      }}
+    >
+      {/* Add Batch Card button */}
+      <div
+        className="Content"
+        style={{ display: "flex", flexDirection: "column" }}
+      >
+        <div>
+          <Button
+            variant="contained"
+            onClick={handleAddBatchCard}
+            style={{
+              backgroundColor: "#289040",
+              position: "absolute",
+              top: "10px",
+              right: "20px",
+              marginBottom: "100px",
+              zIndex: 9999,
+            }}
+          >
+            <AddIcon /> Add a New Batch
+          </Button>
+        </div>
 
-          {/* Delete confirmation dialog */}
-          <Dialog open={!!deleteConfirmation} onClose={cancelDelete}>
-            <DialogTitle>Delete Batch</DialogTitle>
-            <DialogContent>
-              <p>Are you sure you want to delete this batch?</p>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={confirmDelete}>Yes</Button>
-              <Button onClick={cancelDelete}>No</Button>
-            </DialogActions>
-          </Dialog>
+        {/* Delete confirmation dialog 
+        <Dialog open={!!deleteConfirmation} onClose={cancelDelete}>
+          <DialogTitle>Delete Batch</DialogTitle>
+          <DialogContent>
+            <p>Are you sure you want to delete this batch?</p>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={confirmDelete}>Yes</Button>
+            <Button onClick={cancelDelete}>No</Button>
+          </DialogActions>
+        </Dialog>*/}
 
-          {/* Notification snackbar */}
-          <Snackbar
-            open={notification.open}
-            message={notification.message}
-            autoHideDuration={6000}
-            onClose={handleCloseNotification}
-          />
+        {/* Notification snackbar */}
+        <Snackbar
+          open={notification.open}
+          message={notification.message}
+          autoHideDuration={6000}
+          onClose={handleCloseNotification}
+        />
 
-          {/* Render existing batch cards */}
+        {/* Render existing batch cards */}
+
+        {/* Minimized batch cards */}
+        <div
+          style={{
+            marginTop: "100px",
+            display: "flex",
+            flexWrap: "wrap",
+            marginBottom: "30px",
+            justifyContent: "center",
+          }}
+        >
+          {batchCards.map((card) => (
+            <MinimizedBatchCard
+              key={card.batchID}
+              batchID={card.batchID}
+              type={card.type}
+              quantity={card.quantity}
+            />
+          ))}
+        </div>
+
+        {/* Expanded batch cards */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          {/* Left Column: Expanded Batch List */}
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              marginTop: "50px",
-              paddingLeft: "20px",
-              paddingRight: "20px",
+              flex: 2,
+              marginBottom: "30px",
             }}
           >
             {batchCards.map((card) => (
-              <BatchCard
-                key={card.batchID || index}
-                {...card}
-                onEdit={() => handleEditCard(card.batchID)}
-                onDelete={() => handleDeleteBatchCard(card.batchID)}
-              />
+              <div
+                key={card.batchID}
+                ref={(el) => (expandedCardsRef.current[card.batchID] = el)}
+                style={{
+                  marginBottom: "30px",
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+              >
+                <BatchCard
+                  {...card}
+                  onEdit={() => handleEditCard(card.batchID)}
+                  onDelete={() => handleDeleteBatchCard(card.batchID)}
+                />
+              </div>
             ))}
+          </div>
+
+          {/* Right Column: Upcoming Events */}
+          <div
+            style={{
+              flex: 0.8,
+              //padding: "20px",
+              borderRadius: "20px",
+              height: "400px",
+              justifyContent: "center",
+              alignItems: "center",
+              display: "flex",
+              flexDirection: "column",
+              flexWrap: "wrap",
+              marginLeft: "20px",
+              marginTop: "25px",
+              backgroundColor: "#c9f2d3",
+            }}
+          >
+            {isLargeScreen && (
+              <div style={{ marginBottom: "16px" }}>
+                <strong
+                  style={{
+                    marginRight: "11px",
+                    fontSize: "20px",
+                    color: "#289040",
+                  }}
+                >
+                  CALENDER
+                </strong>
+              </div>
+            )}
+            {isLargeScreen && (
+              <div>
+                <Calendar onChange={setDate} value={date} />
+              </div>
+            )}
           </div>
         </div>
       </div>
