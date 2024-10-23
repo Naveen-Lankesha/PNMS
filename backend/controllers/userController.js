@@ -12,7 +12,7 @@ const loginUser = async (req, res) => {
   try {
     const user = await userModel.findOne({ email });
     if (!user) {
-      return res.json({ success: false, message: "User doesn't exit" });
+      return res.json({ success: false, message: "User doesn't exist" });
     }
 
     //check if password is correct

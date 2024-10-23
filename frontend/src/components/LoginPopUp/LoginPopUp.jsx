@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"; // Import the useState hook
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
@@ -9,7 +9,7 @@ import { StoreContext } from "../../context/StoreContext";
 const LoginPopUp = ({ setShowLogin }) => {
   const { url, token, setToken } = useContext(StoreContext);
   const [currState, setCurrState] = useState("Login");
-  const navigate = useNavigate();  // Initialize useNavigate
+  const navigate = useNavigate(); // Initialize useNavigate
   const [error, setError] = useState(""); // State for managing error messages
 
   const [data, setData] = useState({
@@ -40,7 +40,7 @@ const LoginPopUp = ({ setShowLogin }) => {
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
         setShowLogin(false);
-        navigate('/home'); // Navigate to home page after successful login
+        navigate("/home"); // Navigate to home page after successful login
       } else {
         setError(response.data.message); // Set error message from backend
       }
@@ -118,17 +118,25 @@ const LoginPopUp = ({ setShowLogin }) => {
               defaultValue=""
               sx={{ pb: 4 }}
             />
-            <Button type="submit" sx={{ p: 1, mb: 2, backgroundColor: 'green', '&:hover': { backgroundColor: 'darkgreen' } }} variant="contained">
+            <Button
+              type="submit"
+              sx={{
+                p: 1,
+                mb: 2,
+                backgroundColor: "green",
+                "&:hover": { backgroundColor: "darkgreen" },
+              }}
+              variant="contained">
               <Typography sx={{ fontWeight: 400 }}>
                 {currState === "Sign Up" ? "Create Account" : "Login"}
               </Typography>
             </Button>
             {error && (
-              <Typography sx={{ color: 'red', mb: 2 }}>
+              <Typography sx={{ color: "red", mb: 2 }}>
                 {error} {/* Display error message */}
               </Typography>
             )}
-            <Box>
+            {/* <Box>
               {currState === "Login" ? (
                 <Typography sx={{ fontSize: 14 }}>
                   Create a new account ?{" "}
@@ -148,7 +156,7 @@ const LoginPopUp = ({ setShowLogin }) => {
                   </span>
                 </Typography>
               )}
-            </Box>
+            </Box> */}
           </Stack>
         </div>
       </Box>
