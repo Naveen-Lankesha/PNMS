@@ -128,7 +128,7 @@ const EditableCard = ({
   }, [batchID]);
 
   const getMoistureNotification = (currentMoisture) => {
-    const moisture = Number(currentMoisture) || 0;
+    const moisture = Number(currentMoisture) || 100;
 
     if (moisture <= moistureThresholds.critical) {
       return {
@@ -230,7 +230,8 @@ const EditableCard = ({
       display="flex"
       alignItems="center"
       justifyContent="space-between"
-      width="100%">
+      width="100%"
+    >
       <div>
         <strong style={strongStyle}>{name}:</strong> {date}
       </div>
@@ -382,18 +383,19 @@ const EditableCard = ({
     <Card
       sx={{
         borderRadius: "20px",
-        maxWidth: { xs: "100%", sm: "600px", md: "900px" }, // Full width on small screens, constrained on larger screens
-        minWidth: "280px", // Ensure a minimum width
-        maxHeight: { xs: "auto", md: "560px" }, // Auto height on small screens, fixed height on larger screens
+        maxWidth: { xs: "100%", sm: "600px", md: "900px" },
+        minWidth: "280px",
+        maxHeight: { xs: "auto", md: "560px" },
         border: "solid",
         borderColor: "#144F21",
-        margin: { xs: 1, sm: 2, md: 3 }, // Responsive margins
-        padding: { xs: "5px", sm: "10px", md: "15px" }, // Adjust padding for various screen sizes
+        margin: { xs: 1, sm: 2, md: 3 },
+        padding: { xs: "5px", sm: "10px", md: "15px" },
         display: "flex",
         flexDirection: "column",
         position: "relative",
-        overflow: "hidden", // Proper use of overflow to handle content overflow
-      }}>
+        overflow: "hidden",
+      }}
+    >
       <Stack display={"flex"} direction={"row"}>
         <Box flex={4}>
           <CardContent>
@@ -415,7 +417,8 @@ const EditableCard = ({
                     minWidth: "50px",
                     width: "50%",
                     marginLeft: "48px",
-                  }}>
+                  }}
+                >
                   {typeOptions.length > 0 ? (
                     typeOptions
                   ) : (
@@ -451,10 +454,11 @@ const EditableCard = ({
                     : moistureLevel <= moistureThresholds.low
                     ? "orange"
                     : "#144F21",
-              }}></div>
+              }}
+            ></div>
             <div style={{ marginBottom: "16px" }}>
-              <strong style={strongStyle}>Moisture Level:</strong>{" "}
-              {moistureLevel}%
+              <strong style={strongStyle}>Moisture Level %:</strong>{" "}
+              {moistureLevel}
             </div>
 
             <div style={{ marginBottom: "16px" }}>
@@ -515,7 +519,8 @@ const EditableCard = ({
                 sx={{
                   backgroundColor: "#289040",
                   "&:hover": { backgroundColor: "#144820" },
-                }}>
+                }}
+              >
                 Save
               </Button>
             ) : (
@@ -526,7 +531,8 @@ const EditableCard = ({
                 sx={{
                   backgroundColor: "#289040",
                   "&:hover": { backgroundColor: "#144820" },
-                }}>
+                }}
+              >
                 Edit
               </Button>
             )}
@@ -560,7 +566,8 @@ const EditableCard = ({
             maxHeight: "500px",
             height: "520px",
             width: "380px",
-          }}>
+          }}
+        >
           <div
             style={{
               position: "sticky",
@@ -570,7 +577,8 @@ const EditableCard = ({
               borderBottom: "2px solid #144F21",
               width: "100%",
               marginBottom: "16px",
-            }}>
+            }}
+          >
             <strong style={{ fontSize: "16px", color: "#144F21" }}>
               NOTIFICATIONS
             </strong>
@@ -593,7 +601,8 @@ const EditableCard = ({
                       "& .MuiAlert-icon": {
                         fontSize: "25px",
                       },
-                    }}>
+                    }}
+                  >
                     {notification.message}
                   </Alert>
                 ))}
@@ -606,7 +615,8 @@ const EditableCard = ({
                   "& .MuiAlert-icon": {
                     color: "#2e7d32",
                   },
-                }}>
+                }}
+              >
                 <AlertTitle>All Good!</AlertTitle>
                 No pending notifications
               </Alert>
