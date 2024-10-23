@@ -1,5 +1,5 @@
 # Use the official Node.js image
-FROM node:20
+FROM node:20-alpine
 
 # set environment variables
 ENV JWT_SECRET="random#secret"
@@ -9,9 +9,6 @@ WORKDIR /app
 
 # copy package.json and package-lock.json
 COPY package*.json ./
-
-# clean node_modules and install dependencies
-RUN npm install
 
 # copy app files
 COPY . .
