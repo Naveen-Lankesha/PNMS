@@ -44,8 +44,8 @@ const EditableCard = ({
   const [loading, setLoading] = useState(true); // Add loading state
   const [error, setError] = useState(null); // Add error state
   const [moistureThresholds, setMoistureThresholds] = useState({
-    low: 60, // Default low threshold
-    critical: 50,
+    low: 10, // Default low threshold
+    critical: 1,
   });
   useEffect(() => {
     const fetchData = async () => {
@@ -91,8 +91,8 @@ const EditableCard = ({
       // Safely update moisture thresholds
       if (selectedPlant.moistureThresholds) {
         setMoistureThresholds({
-          low: selectedPlant.moistureThresholds.low || 60,
-          critical: selectedPlant.moistureThresholds.critical || 50,
+          low: selectedPlant.moistureThresholds.low || 10,
+          critical: selectedPlant.moistureThresholds.critical || 1,
         });
       }
     }
