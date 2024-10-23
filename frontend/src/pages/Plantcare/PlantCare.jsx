@@ -21,6 +21,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 
 const PlantCare = () => {
+  const url = import.meta.env.VITE_API_URL;
   const [batchCards, setBatchCards] = useState([]);
   const [nextBatchID, setNextBatchID] = useState(1);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
@@ -93,9 +94,7 @@ const PlantCare = () => {
   useEffect(() => {
     const fetchBatches = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/batch/list"
-        );
+        const response = await axios.get(`${url}/api/batch/list`);
         if (response.data.success) {
           setBatchCards(response.data.data);
           const highestBatchID = Math.max(

@@ -18,6 +18,8 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import { veg_list } from "../../assets/frontend_assets/assets";
 
+const url = import.meta.env.VITE_API_URL;
+
 const EditableCard = ({
   batchID,
   type,
@@ -50,9 +52,7 @@ const EditableCard = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/plant/list"
-        );
+        const response = await axios.get(`${url}/api/plant/list`);
         console.log("API Response:", response.data);
 
         if (response.data.success && Array.isArray(response.data.data)) {
@@ -101,9 +101,7 @@ const EditableCard = ({
   useEffect(() => {
     const fetchBatchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/batch/list"
-        );
+        const response = await axios.get(`${url}/api/batch/list`);
         const batchData = response.data;
 
         // Find the batch with the matching batchID
@@ -286,9 +284,7 @@ const EditableCard = ({
       }
 
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/batch/list"
-        );
+        const response = await axios.get(`${url}/api/batch/list`);
         const exists =
           Array.isArray(response.data.data) &&
           response.data.data.some(
@@ -303,8 +299,8 @@ const EditableCard = ({
 
     checkBatchIDExists().then((exists) => {
       const endpoint = exists
-        ? `http://localhost:4000/api/batch/update/${batchID}`
-        : "http://localhost:4000/api/batch/add";
+        ? `${url}/api/batch/update/${batchID}`
+        : `${url}/api/batch/add`;
 
       const requestMethod = exists ? axios.put : axios.post;
 
@@ -361,7 +357,7 @@ const EditableCard = ({
       batchID,
     };
     axios
-      .post(`http://localhost:4000/api/batch/remove/${batchID}`, removedData)
+      .post(`${url}/api/batch/remove/${batchID}`, removedData)
       .then((response) => {
         if (response.data.success) {
           console.log("Batch removed successfully:", response.data);
