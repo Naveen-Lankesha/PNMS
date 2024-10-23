@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import { Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Typography, Stack, useMediaQuery, useTheme, Modal } from "@mui/material";
 import { assets } from "../../assets/frontend_assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 import LoginIcon from "@mui/icons-material/Login";
@@ -14,8 +14,11 @@ import localImage from "./../../assets/frontend_assets/newlogo.png";
 
 export default function ButtonAppBar({ setShowLogin }) {
   const [activeButton, setActiveButton] = React.useState("Home");
+  const [openModal, setOpenModal] = React.useState(false);
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const { setToken } = useContext(StoreContext);
+  const navigate = useNavigate();
 
   const handleHomeClick = () => {
     const menuElement = document.getElementById("home");
@@ -31,11 +34,18 @@ export default function ButtonAppBar({ setShowLogin }) {
     }
   };
 
-  const handleContactClick = () => {
-    const menuElement = document.getElementById("footer");
-    if (menuElement) {
-      menuElement.scrollIntoView({ behavior: "smooth" });
-    }
+  // const handleContactClick = () => {
+  //   const menuElement = document.getElementById("footer");
+  //   if (menuElement) {
+  //     menuElement.scrollIntoView({ behavior: "smooth" });
+  //   }
+  // };
+
+  const handleLogout = () => {
+    // Perform logout actions
+    localStorage.removeItem("token");
+    setToken(""); // Update token in context
+    navigate("/login"); // Navigate to the login page
   };
 
   const { getTotalCartAmount } = useContext(StoreContext);
@@ -68,7 +78,7 @@ export default function ButtonAppBar({ setShowLogin }) {
             sx={{ ml: { xs: 0, sm: 4 } }}
           >
             <img
-              onClick={() => (window.location.href = "/")}
+              onClick={() => (window.location.href = "/home")}
               src={localImage}
               style={{
                 maxHeight: isSmallScreen ? 30 : 80,
@@ -86,7 +96,7 @@ export default function ButtonAppBar({ setShowLogin }) {
               display: "flex",
             }}
           >
-            <Link to="/">
+            <Link to="/home">
               <Button
                 sx={{
                   fontSize: { xs: "0.6rem", sm: "1rem" },
@@ -147,25 +157,6 @@ export default function ButtonAppBar({ setShowLogin }) {
                 Plant Recipes
               </Button>
             </Link>
-            <Button
-              sx={{
-                fontSize: { xs: "0.6rem", sm: "1rem" },
-                "&:hover": {
-                  textDecoration: "underline",
-                  textDecorationThickness: "1px",
-                },
-                textDecoration:
-                  activeButton === "Contact Us" ? "underline" : "none",
-                textDecorationThickness:
-                  activeButton === "Contact Us" ? "3px" : "0",
-              }}
-              onClick={() => {
-                setActiveButton("Contact Us");
-                handleContactClick();
-              }}
-            >
-              Contact Us
-            </Button>
           </Stack>
           <Button
             variant="outlined"
@@ -175,11 +166,11 @@ export default function ButtonAppBar({ setShowLogin }) {
               ml: { xs: 1, sm: 4 },
               display: { xs: "none", sm: "inline-flex" },
             }}
-            onClick={() => {
-              setShowLogin(true);
-            }}
+            onClick={() => setOpenModal(true)} // Open modal on click
+            // component={Link}
+            // to="/logout"
           >
-            Login
+            Logout
           </Button>
           <IconButton
             sx={{
@@ -192,6 +183,39 @@ export default function ButtonAppBar({ setShowLogin }) {
           </IconButton>
         </Toolbar>
       </AppBar>
+      {/* Logout Confirmation Modal */}
+      <Modal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        aria-labelledby="logout-confirmation-modal"
+        aria-describedby="confirm-logout-action"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 300,
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography id="logout-confirmation-modal" variant="h6">
+            Are you sure you want to log out?
+          </Typography>
+          <Box mt={2} display="flex" justifyContent="space-between">
+            <Button onClick={handleLogout} variant="contained" color="primary">
+              Yes
+            </Button>
+            <Button onClick={() => setOpenModal(false)} variant="outlined" color="secondary">
+              No
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 }
