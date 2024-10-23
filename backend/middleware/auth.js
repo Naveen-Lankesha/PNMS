@@ -12,8 +12,10 @@ const authMiddleware = async (req, res, next) => {
     req.body.userId = toke_decode.id;
     next();
   } catch (error) {
-    console.log(error);
-    res.status(401).json({ message: "Token is not valid" });
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({ message: "Token expired. Please log in again." });
+    }
+    return res.status(401).json({ message: "Unauthorized access." });
   }
 };
 
