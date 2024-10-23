@@ -10,6 +10,9 @@ WORKDIR /app
 # copy package.json and package-lock.json
 COPY package*.json ./
 
+# install dependencies
+RUN npm install
+
 # copy app files
 COPY . .
 
