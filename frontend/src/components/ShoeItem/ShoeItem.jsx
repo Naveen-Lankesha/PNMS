@@ -28,7 +28,7 @@ const ShoeItem = ({ id, name, price, catergory, description, image }) => {
   // Function to handle delete action
   const handleDelete = async () => {
     try {
-      const response = await axios.post(`${url}/api/item/remove`, {
+      const response = await axios.post(`${url2}/api/item/remove`, {
         id,
       });
     } catch (error) {
