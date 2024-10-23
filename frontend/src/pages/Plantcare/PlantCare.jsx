@@ -13,6 +13,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 
 const PlantCare = () => {
+  const url = import.meta.env.VITE_API_URL;
   const [batchCards, setBatchCards] = useState([]);
   const [nextBatchID, setNextBatchID] = useState(1);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null); // State to handle delete confirmation dialog
@@ -78,9 +79,7 @@ const PlantCare = () => {
   useEffect(() => {
     const fetchBatches = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/batch/list"
-        );
+        const response = await axios.get(`${url}/api/batch/list`);
         if (response.data.success) {
           setBatchCards(response.data.data);
           const highestBatchID = Math.max(
@@ -97,11 +96,11 @@ const PlantCare = () => {
     fetchBatches();
   }, []); // Empty dependency array means this effect runs once on mount
 
- // Use the custom hook
- const { data: sensorData, error } = useAutoRefresh(
-  "http://192.168.1.4:4000/api/upload-sensor-data",
-  5000
-);
+  // Use the custom hook
+  const { data: sensorData, error } = useAutoRefresh(
+    "http://192.168.1.4:4000/api/upload-sensor-data",
+    5000
+  );
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
@@ -161,7 +160,7 @@ const PlantCare = () => {
       )
     );
   };
-  
+
   return (
     <div>
       <div
@@ -174,13 +173,11 @@ const PlantCare = () => {
           backgroundRepeat: "repeat",
           backgroundPosition: "top left",
           backgroundColor: "rgba(255, 255, 255, 0.05)",
-        }}
-      >
+        }}>
         {/* Add Batch Card button */}
         <div
           className="Content"
-          style={{ display: "flex", flexDirection: "column" }}
-        >
+          style={{ display: "flex", flexDirection: "column" }}>
           <div>
             <Button
               variant="contained"
@@ -191,8 +188,7 @@ const PlantCare = () => {
                 top: "10px",
                 right: "20px",
                 zIndex: 9999,
-              }}
-            >
+              }}>
               <AddIcon /> Add a New Batch
             </Button>
           </div>
@@ -226,8 +222,7 @@ const PlantCare = () => {
               marginTop: "50px",
               paddingLeft: "20px",
               paddingRight: "20px",
-            }}
-          >
+            }}>
             {batchCards.map((card) => (
               <BatchCard
                 key={card.batchID || index}
