@@ -72,7 +72,7 @@ const Inventory = () => {
           <Dialog open={!!deleteConfirmation} onClose={cancelDelete}>
             <DialogTitle>Delete Batch Card</DialogTitle>
             <DialogContent>
-              <p>Are you sure you want to delete this batch card?</p>
+              <p>Are you sure you want to delete this item?</p>
             </DialogContent>
             <DialogActions>
               <Button onClick={confirmDelete}>Yes</Button>
