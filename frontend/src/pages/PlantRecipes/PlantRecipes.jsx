@@ -32,7 +32,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-const url = "http://localhost:4000"; // Backend URL
+const url = import.meta.env.VITE_API_URL;
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
@@ -92,7 +92,7 @@ export default function PlantRecipes() {
     };
 
     axios
-      .post("http://localhost:4000/api/plant/add", updatedData)
+      .post(`${url}/api/plant/add`, updatedData)
       .then((response) => {
         if (response.data.success) {
           console.log("Data saved successfully:", response.data);
@@ -118,12 +118,9 @@ export default function PlantRecipes() {
   React.useEffect(() => {
     const fetchRows = async (query = "") => {
       try {
-        const response = await axios.get(
-          "http://localhost:4000/api/plant/list",
-          {
-            params: { type: query }, // Assuming backend supports querying by name
-          }
-        );
+        const response = await axios.get(`${url}/api/plant/list`, {
+          params: { type: query }, // Assuming backend supports querying by name
+        });
         if (response.data.success) {
           const fetchedData = response.data.data.map((plant) => ({
             _id: plant._id,
@@ -149,7 +146,7 @@ export default function PlantRecipes() {
     };
 
     axios
-      .post("http://localhost:4000/api/plant/remove", removedData)
+      .post(`${url}/api/plant/remove`, removedData)
       .then((response) => {
         if (response.data.success) {
           console.log("Plant removed successfully:", response.data);
