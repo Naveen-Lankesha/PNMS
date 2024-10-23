@@ -125,20 +125,20 @@ const PlantCare = () => {
       quantity: "00",
       moistureLevel:
         moistureLevel !== null && moistureLevel !== undefined
-          ? `${moistureLevel}%`
+          ? `${moistureLevel}`
           : "Sensor not connected!",
       startDate: "Date",
       ageOfBatch: "Batch start date not selected!",
       pottingDate: "No type selected",
-      pottingCompleted: false, // Default value for potting status
-      fertilizingCompleted: false, // Default value for fertilizing status
-      pesticidingCompleted: false, // Default value for pesticiding status
+      pottingCompleted: false,
+      fertilizingCompleted: false,
+      pesticidingCompleted: false,
       nextFertilizationDate: "No type selected",
       nextPesticideApplicationDate: "No type selected",
       estimatedSaleDate: "No type selected",
     };
 
-    setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]); // Add new card at the beginning
+    setBatchCards([{ ...newBatchCard, isEditing: true }, ...batchCards]);
     setNextBatchID(nextBatchID + 1);
   };
 
@@ -190,7 +190,8 @@ const PlantCare = () => {
           borderRadius: "20px",
           border: "solid",
           borderColor: "#54785c",
-        }}>
+        }}
+      >
         <CardActionArea onClick={() => handleMinimizedCardClick(batchID)}>
           <CardContent>
             <div style={{ marginBottom: "14px" }}>
@@ -229,11 +230,13 @@ const PlantCare = () => {
         backgroundRepeat: "repeat",
         backgroundPosition: "top left",
         backgroundColor: "rgba(255, 255, 255, 0.05)",
-      }}>
+      }}
+    >
       {/* Add Batch Card button */}
       <div
         className="Content"
-        style={{ display: "flex", flexDirection: "column" }}>
+        style={{ display: "flex", flexDirection: "column" }}
+      >
         <div>
           <Button
             variant="contained"
@@ -245,7 +248,8 @@ const PlantCare = () => {
               right: "20px",
               marginBottom: "100px",
               zIndex: 9999,
-            }}>
+            }}
+          >
             <AddIcon /> Add a New Batch
           </Button>
         </div>
@@ -280,7 +284,8 @@ const PlantCare = () => {
             flexWrap: "wrap",
             marginBottom: "30px",
             justifyContent: "center",
-          }}>
+          }}
+        >
           {batchCards.map((card) => (
             <MinimizedBatchCard
               key={card.batchID}
@@ -297,13 +302,14 @@ const PlantCare = () => {
             display: "flex",
             justifyContent: "space-between",
             width: "100%",
-          }}>
-          {/* Left Column: Expanded Batch List */}
+          }}
+        >
           <div
             style={{
               flex: 2,
               marginBottom: "30px",
-            }}>
+            }}
+          >
             {batchCards.map((card) => (
               <div
                 key={card.batchID}
@@ -312,7 +318,8 @@ const PlantCare = () => {
                   marginBottom: "30px",
                   display: "flex",
                   justifyContent: "center",
-                }}>
+                }}
+              >
                 <BatchCard
                   {...card}
                   onEdit={() => handleEditCard(card.batchID)}
@@ -320,41 +327,6 @@ const PlantCare = () => {
                 />
               </div>
             ))}
-          </div>
-
-          {/* Right Column: Upcoming Events */}
-          <div
-            style={{
-              flex: 0.8,
-              //padding: "20px",
-              borderRadius: "20px",
-              height: "400px",
-              justifyContent: "center",
-              alignItems: "center",
-              display: "flex",
-              flexDirection: "column",
-              flexWrap: "wrap",
-              marginLeft: "20px",
-              marginTop: "25px",
-              backgroundColor: "#c9f2d3",
-            }}>
-            {isLargeScreen && (
-              <div style={{ marginBottom: "16px" }}>
-                <strong
-                  style={{
-                    marginRight: "11px",
-                    fontSize: "20px",
-                    color: "#289040",
-                  }}>
-                  CALENDER
-                </strong>
-              </div>
-            )}
-            {isLargeScreen && (
-              <div>
-                <Calendar onChange={setDate} value={date} />
-              </div>
-            )}
           </div>
         </div>
       </div>
