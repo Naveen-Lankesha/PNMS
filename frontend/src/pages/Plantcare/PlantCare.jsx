@@ -42,7 +42,7 @@ const PlantCare = () => {
   const isLargeScreen = useMediaQuery("(min-width:1024px)");
 
   // Custom hook for auto-refresh
-  const useAutoRefresh = (url, interval) => {
+  /*const useAutoRefresh = (url, interval) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
 
@@ -81,7 +81,7 @@ const PlantCare = () => {
     }, [url, interval]);
 
     return { data, error };
-  };
+  };*/
 
   // Handle sensor data update
   useEffect(() => {
@@ -112,10 +112,10 @@ const PlantCare = () => {
   }, []);
 
   // Use the custom hook
-  const { data: sensorData, error } = useAutoRefresh(
+  /*const { data: sensorData, error } = useAutoRefresh(
     "http://192.168.189.207:4000/api/upload-sensor-data",
     5000
-  );
+  );*/
 
   // Function to add a new batch card
   const handleAddBatchCard = () => {
