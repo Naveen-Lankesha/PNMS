@@ -10,10 +10,12 @@ import {
 
 const batchRouter = express.Router(); 
 
+ 
+
 batchRouter.post("/add", addBatch); 
 batchRouter.get("/list", listBatch); 
-batchRouter.post("/remove/:id", removeBatch); 
-//batchRouter.put("/update/:id", updateBatch);
+batchRouter.delete("/remove/:id", removeBatch); 
+batchRouter.put("/update/:id", updateBatch);
 batchRouter.post("/removeAll", removeAllBatches); 
 batchRouter.post("/upload-sensor-data", updateMoistureLevel); // New route for sensor data
 
